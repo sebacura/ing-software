@@ -1,0 +1,22 @@
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/PIL/Image.py", line 455, in _getdecoder
+    decoder = getattr(core, decoder_name + "_decoder")
+AttributeError: module 'PIL._imaging' has no attribute 'jpeg2k_decoder'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "controlador_lsc.py", line 18, in <module>
+    main()
+  File "controlador_lsc.py", line 15, in main
+    img.save(ruta_archivo_formato)
+  File "/usr/lib/python3/dist-packages/PIL/Image.py", line 1960, in save
+    self.load()
+  File "/usr/lib/python3/dist-packages/PIL/Jpeg2KImagePlugin.py", line 210, in load
+    return ImageFile.ImageFile.load(self)
+  File "/usr/lib/python3/dist-packages/PIL/ImageFile.py", line 212, in load
+    args, self.decoderconfig)
+  File "/usr/lib/python3/dist-packages/PIL/Image.py", line 458, in _getdecoder
+    raise IOError("decoder %s not available" % decoder_name)
+OSError: decoder jpeg2k not available

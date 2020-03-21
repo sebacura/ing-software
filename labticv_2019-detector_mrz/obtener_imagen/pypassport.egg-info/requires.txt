@@ -1,0 +1,4 @@
+PyCryptodome
+pyasn1
+pyscard
+setuptools

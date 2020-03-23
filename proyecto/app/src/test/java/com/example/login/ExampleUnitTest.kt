@@ -1,4 +1,4 @@
-package com.proyectoingsoftware
+package com.example.login
 
 import org.junit.Test
 

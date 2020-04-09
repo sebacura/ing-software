@@ -6,4 +6,44 @@
     android:layout_height="match_parent"
     tools:context="pantallas.MainIngresoCedula">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="374dp"
+        android:layout_height="56dp"
+        android:text="Para comenzar, utilizaremos su cédula y una foto de usted tomada en el momento para comprobar su identidad y extraer sus datos personales."
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="57dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paso 1: Apoye la cédula detrás de su celular"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="144dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Paso 2: Aprete el botón de abajo y tómese una foto"
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="278dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="138dp"
+        android:layout_height="38dp"
+        android:text="Abrir cámara"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="312dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Formulario de solicitud"
+        tools:layout_editor_absoluteX="132dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -106,10 +107,22 @@ public class MainActivity extends AppCompatActivity {
     private View mainLayout;
     private View loadingLayout;
 
+    Button btnIrFormulario2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
+
+        btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, completarDatos.class);
+                startActivity(intent);
+            }
+        });
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 

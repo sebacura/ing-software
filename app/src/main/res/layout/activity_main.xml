@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Formulario de solicitud"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -67,13 +67,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.181">
+        app:layout_constraintVertical_bias="0.225">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
-            android:text="Para comenzar, utilizaremos su cédula y una foto de usted tomada en el momento para comprobar su identidad y extraer sus datos personales."
+            android:layout_height="wrap_content"
+            android:text="Para comenzar, utilizaremos su cédula y una foto suya tomada en el momento para comprobar su identidad y extraer sus datos personales."
             android:textSize="18sp"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
@@ -81,7 +81,8 @@
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Paso 1: Apoye la cédula detrás de su celular y complete los siguientes datos"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="0dp"
@@ -119,6 +120,7 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="20dp"
             android:text="Paso 2: Aprete el botón de abajo y tómese una foto"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="16dp"
@@ -143,6 +145,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.752" />
+        app:layout_constraintVertical_bias="0.788" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

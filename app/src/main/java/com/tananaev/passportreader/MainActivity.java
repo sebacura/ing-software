@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
         String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
         String passportNumber = getIntent().getStringExtra("passportNumber");
-        encodePhotoToBase64 = getIntent().getBooleanExtra("photoAsBase64", false);
+//        encodePhotoToBase64 = getIntent().getBooleanExtra("photoAsBase64", false);
 
         if (dateOfBirth != null) {
             PreferenceManager.getDefaultSharedPreferences(this)
@@ -425,18 +425,18 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ResultActivity.KEY_STATE, mrzInfo.getIssuingState());
                 intent.putExtra(ResultActivity.KEY_NATIONALITY, mrzInfo.getNationality());
 
-                if (bitmap != null) {
-                    if (encodePhotoToBase64) {
-                        intent.putExtra(ResultActivity.KEY_PHOTO_BASE64, imageBase64);
-                    } else {
-                        double ratio = 320.0 / bitmap.getHeight();
-                        int targetHeight = (int) (bitmap.getHeight() * ratio);
-                        int targetWidth = (int) (bitmap.getWidth() * ratio);
-
-                        intent.putExtra(ResultActivity.KEY_PHOTO,
-                            Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
-                    }
-                }
+//                if (bitmap != null) {
+//                    if (encodePhotoToBase64) {
+//                        intent.putExtra(ResultActivity.KEY_PHOTO_BASE64, imageBase64);
+//                    } else {
+//                        double ratio = 320.0 / bitmap.getHeight();
+//                        int targetHeight = (int) (bitmap.getHeight() * ratio);
+//                        int targetWidth = (int) (bitmap.getWidth() * ratio);
+//
+//                        intent.putExtra(ResultActivity.KEY_PHOTO,
+//                            Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
+//                    }
+//                }
 
                 if (getCallingActivity() != null) {
                     setResult(Activity.RESULT_OK, intent);

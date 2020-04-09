@@ -68,6 +68,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
+import pantallas.MainCompletarDatos;
+
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, completarDatos.class);
+                Intent intent = new Intent(MainActivity.this, MainCompletarDatos.class);
                 startActivity(intent);
             }
         });

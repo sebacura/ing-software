@@ -28,6 +28,8 @@ public class ResultActivity extends AppCompatActivity {
     public static final String KEY_GENDER = "gender";
     public static final String KEY_STATE = "state";
     public static final String KEY_NATIONALITY = "nationality";
+    public static final String KEY_CI = "ci";
+
 //    public static final String KEY_PHOTO = "photo";
 //    public static final String KEY_PHOTO_BASE64 = "photoBase64";
 
@@ -38,9 +40,11 @@ public class ResultActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.output_first_name)).setText(getIntent().getStringExtra(KEY_FIRST_NAME));
         ((TextView) findViewById(R.id.output_last_name)).setText(getIntent().getStringExtra(KEY_LAST_NAME));
-        ((TextView) findViewById(R.id.output_gender)).setText(getIntent().getStringExtra(KEY_GENDER));
-        ((TextView) findViewById(R.id.output_state)).setText(getIntent().getStringExtra(KEY_STATE));
-        ((TextView) findViewById(R.id.output_nationality)).setText(getIntent().getStringExtra(KEY_NATIONALITY));
+//        ((TextView) findViewById(R.id.output_gender)).setText(getIntent().getStringExtra(KEY_GENDER));
+//        ((TextView) findViewById(R.id.output_state)).setText(getIntent().getStringExtra(KEY_STATE));
+//        ((TextView) findViewById(R.id.output_nationality)).setText(getIntent().getStringExtra(KEY_NATIONALITY));
+        ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
+
 
 //        if (getIntent().hasExtra(KEY_PHOTO)) {
 //            ((ImageView) findViewById(R.id.view_photo)).setImageBitmap((Bitmap) getIntent().getParcelableExtra(KEY_PHOTO));

@@ -424,6 +424,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ResultActivity.KEY_GENDER, mrzInfo.getGender().toString());
                 intent.putExtra(ResultActivity.KEY_STATE, mrzInfo.getIssuingState());
                 intent.putExtra(ResultActivity.KEY_NATIONALITY, mrzInfo.getNationality());
+                intent.putExtra(ResultActivity.KEY_CI, mrzInfo.getPersonalNumber());
 
 //                if (bitmap != null) {
 //                    if (encodePhotoToBase64) {

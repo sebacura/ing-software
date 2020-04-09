@@ -288,25 +288,32 @@ tools:context=".MainActivity">
             tools:text="Jackson" />
 
         <TextView
-            android:id="@+id/output_gender"
+            android:id="@+id/output_ci"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            tools:text="Male" />
+            tools:text="47976654" />
 
-        <TextView
-            android:id="@+id/output_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            tools:text="NZD" />
+<!--        <TextView-->
+<!--            android:id="@+id/output_gender"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+<!--            tools:text="Male" />-->
 
-        <TextView
-            android:id="@+id/output_nationality"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-            tools:text="New Zealand" />
+<!--        <TextView-->
+<!--            android:id="@+id/output_state"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+<!--            tools:text="NZD" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/output_nationality"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"-->
+<!--            tools:text="New Zealand" />-->
 
         <TextView
             android:id="@+id/textView4"

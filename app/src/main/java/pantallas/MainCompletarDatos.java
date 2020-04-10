@@ -21,13 +21,12 @@ public class MainCompletarDatos extends AppCompatActivity {
         setContentView(R.layout.activity_main_completar_datos);
 
         et1 = (EditText)findViewById(R.id.txt_sueldo);
-        et2 = (EditText)findViewById(R.id.txt_direcc);
-
+      
         String v1= et1.getText().toString();
         int s = Integer.parseInt(v1);
 
         if(s>10000){
-            Toast.makeText(getApplicationContext(), "Su sueldo no es suficiente para solicitar una tarjeta de crédito, disculpas",Toast.LENGTH_LONG ).show();
+            Toast.makeText(getApplicationContext(), "k",Toast.LENGTH_LONG ).show();
         }
     }
 }

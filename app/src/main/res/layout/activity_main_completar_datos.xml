@@ -40,12 +40,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/textView2"
+    <EditText
+        android:id="@+id/txt_sueldo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingrese su sueldo"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="192dp" />
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        android:hint="Ingrese su salario"
+        android:inputType="number"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Paso3" />
+
+    <EditText
+        android:id="@+id/txt_direcc"
+        android:layout_width="289dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="53dp"
+        android:ems="10"
+        android:hint="Ingrese su dirección"
+        android:inputType="textPostalAddress"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_sueldo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,7 +27,7 @@ public class MainCompletarDatos extends AppCompatActivity {
         int s = Integer.parseInt(v1);
 
         if(s>10000){
-            Toast.makeText(getApplicationContext(), "Su sueldo no es suficiente para solicitar una tarjeta de crédito, disculpas", 5).show();
+            Toast.makeText(getApplicationContext(), "Su sueldo no es suficiente para solicitar una tarjeta de crédito, disculpas",Toast.LENGTH_LONG ).show();
         }
     }
 }

@@ -15,19 +15,29 @@
  */
 package com.tananaev.passportreader;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -58,6 +68,7 @@ import org.jmrtd.lds.SODFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,11 +122,25 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnIrFormulario2;
 
+    Button btnTomarFoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Tomar foto desde app
+        btnTomarFoto = findViewById(R.id.btnTomarFoto);
+
+        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
+        //Fin tomar foto desde app
+
+        //Pasar a siguiente pantalla
         btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
 
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //Fin pasar a siguiente pantalla
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -201,6 +227,25 @@ public class MainActivity extends AppCompatActivity {
                 getFragmentManager().beginTransaction().add(dialog, null).commit();
             }
         });
+
+
+    }
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+//            imageView.setImageBitmap(imageBitmap);
+        }
     }
 
     @Override

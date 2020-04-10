@@ -171,10 +171,10 @@
             tools:layout_editor_absoluteY="413dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnTomarFoto"
             android:layout_width="138dp"
             android:layout_height="38dp"
-            android:text="Abrir cámara"
+            android:text="Tomar foto"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="469dp" />
 

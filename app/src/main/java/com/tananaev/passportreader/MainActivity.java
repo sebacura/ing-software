@@ -31,7 +31,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -42,6 +46,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -84,7 +89,7 @@ import pantallas.MainCompletarDatos;
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -131,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
-
         btnTomarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         //Fin tomar foto desde app
 
         //Pasar a siguiente pantalla
-        btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
+        btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
 
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         //Fin pasar a siguiente pantalla
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
         String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
         String passportNumber = getIntent().getStringExtra("passportNumber");
@@ -227,8 +230,6 @@ public class MainActivity extends AppCompatActivity {
                 getFragmentManager().beginTransaction().add(dialog, null).commit();
             }
         });
-
-
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -241,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -269,13 +271,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         NfcAdapter adapter = NfcAdapter.getDefaultAdapter(this);
         if (adapter != null) {
             adapter.disableForegroundDispatch(this);
         }
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    int getBottomNavigationMenuItemId() {
+         return R.id.action_main;
     }
 
     private static String convertDate(String input) {
@@ -293,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(intent.getAction())) {
             Tag tag = intent.getExtras().getParcelable(NfcAdapter.EXTRA_TAG);
             if (Arrays.asList(tag.getTechList()).contains("android.nfc.tech.IsoDep")) {

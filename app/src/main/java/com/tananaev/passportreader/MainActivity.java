@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText birthDateView;
     private boolean passportNumberFromIntent = false;
     private boolean encodePhotoToBase64 = false;
-    private View mainLayout;
+    private View camposLayout;
     private View loadingLayout;
 
     Button btnIrFormulario2;
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         expirationDateView = findViewById(R.id.input_expiration_date);
         birthDateView = findViewById(R.id.input_date_of_birth);
 
-        mainLayout = findViewById(R.id.main_layout);
+        camposLayout = findViewById(R.id.campos);
         loadingLayout = findViewById(R.id.loading_layout);
 
         passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
                         && birthDate != null && !birthDate.isEmpty()) {
                     BACKeySpec bacKey = new BACKey(passportNumber, birthDate, expirationDate);
                     new ReadTask(IsoDep.get(tag), bacKey).execute();
-                    mainLayout.setVisibility(View.GONE);
+                    camposLayout.setVisibility(View.GONE);
                     loadingLayout.setVisibility(View.VISIBLE);
                 } else {
                     Snackbar.make(passportNumberView, R.string.error_input, Snackbar.LENGTH_SHORT).show();
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Exception result) {
-            mainLayout.setVisibility(View.VISIBLE);
+            camposLayout.setVisibility(View.VISIBLE);
             loadingLayout.setVisibility(View.GONE);
 
             if (result == null) {

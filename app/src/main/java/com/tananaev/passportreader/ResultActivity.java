@@ -15,11 +15,17 @@
  */
 package com.tananaev.passportreader;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import pantallas.MainCompletarDatos;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -33,6 +39,8 @@ public class ResultActivity extends AppCompatActivity {
 //    public static final String KEY_PHOTO = "photo";
 //    public static final String KEY_PHOTO_BASE64 = "photoBase64";
 
+    Button btnIrFormulario2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,16 @@ public class ResultActivity extends AppCompatActivity {
 //        ((TextView) findViewById(R.id.output_state)).setText(getIntent().getStringExtra(KEY_STATE));
 //        ((TextView) findViewById(R.id.output_nationality)).setText(getIntent().getStringExtra(KEY_NATIONALITY));
         ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
+
+        btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
+
+        btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResultActivity.this, MainCompletarDatos.class);
+                startActivity(intent);
+            }
+        });
 
 
 //        if (getIntent().hasExtra(KEY_PHOTO)) {

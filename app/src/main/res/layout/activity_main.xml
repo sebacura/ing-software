@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
+    android:background="@color/backgroundColor"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -12,8 +13,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:text="Formulario de solicitud"
         android:textSize="20sp"
+        app:fontFamily="@font/lato"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -81,6 +84,8 @@
             android:layout_height="wrap_content"
             android:text="Para comenzar, utilizaremos su cédula y una foto suya tomada en el momento para comprobar su identidad y extraer sus datos personales."
             android:textSize="18sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/open_sans_light"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
 
@@ -91,6 +96,8 @@
             android:layout_marginTop="20dp"
             android:text="Paso 1: Apoye la cédula detrás de su celular y complete los siguientes datos"
             android:textSize="18sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/open_sans_light"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="177dp" />
 
@@ -110,6 +117,8 @@
                 android:id="@+id/input_date_of_birth"
                 android:layout_width="match_parent"
                 android:layout_height="47dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_light"
                 android:focusableInTouchMode="false"
                 android:hint="@string/input_date_of_birth"
                 android:inputType="date"
@@ -122,6 +131,8 @@
                 android:layout_height="51dp"
                 android:focusableInTouchMode="false"
                 android:hint="@string/input_expiration_date"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_light"
                 android:inputType="date"
                 tools:layout_editor_absoluteX="18dp"
                 tools:layout_editor_absoluteY="286dp" />
@@ -130,6 +141,8 @@
                 android:id="@+id/input_passport_number"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_light"
                 android:hint="@string/input_passport_number"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="230dp" />
@@ -157,6 +170,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_light"
                 android:text="Leyendo cédula" />
 
         </LinearLayout>
@@ -168,6 +183,8 @@
             android:layout_marginTop="20dp"
             android:text="Paso 2: Aprete el botón de abajo y tómese una foto"
             android:textSize="18sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/open_sans_light"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="413dp" />
 
@@ -192,6 +209,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.788" />
 
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="229dp"
+        android:layout_height="51dp"
+        android:text="Login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.888" />
 
     <include
         layout="@layout/item_bottom_navigation"

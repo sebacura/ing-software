@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">e-Passport Reader</string>
+    <string name="app_name">Banco App</string>
 
     <string name="input_passport_number">Passport number</string>
     <string name="input_expiration_date">Expiration date</string>
@@ -16,5 +16,16 @@
     <string name="result_gender">Gender</string>
     <string name="result_state">Country</string>
     <string name="result_nationality">Nationality</string>
-
+    <string name="hint_password">Contraseña</string>
+    <string name="lbl_forget">Olvidó la contraseña? Click aquí!</string>
+    <string name="btn_login">Login</string>
+    <string name="hint_employee_id">Usuario</string>
+    <string name="user_login">Login</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="user_email">E-mail</string>
+    <string name="registration">User Registration</string>
+    <string name="lbl_register">Don\'t have an account? Register here!</string>
+    <string name="lbl_login">Already Registered? Click here!</string>
+    <string name="hint_re_password">Confirm Password</string>
+    <string name="hint_new_password">New Password</string>
 </resources>

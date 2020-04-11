@@ -3,4 +3,12 @@
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
     <color name="colorAccent">#536DFE</color>
+
+    <color name="backgroundColor">#1d4e89</color>
+
+    <!-- White Transparent -->
+    <color name="transparent_white_hex_7">#77ffffff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#2962FF</color>
+
 </resources>

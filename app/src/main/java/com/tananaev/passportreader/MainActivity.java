@@ -129,10 +129,26 @@ public class MainActivity extends BaseActivity {
 
     Button btnTomarFoto;
 
+    Button btnLogin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Login
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);

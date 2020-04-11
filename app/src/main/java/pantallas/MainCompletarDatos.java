@@ -51,10 +51,10 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
         et2 = findViewById(R.id.txt_direcc);
         mySwitch = (Switch) findViewById(R.id.swubic);
         txtGPS = (TextView) findViewById(R.id.txtGPS);
-        etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
-        etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
+       // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
+       // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
         etxtDirec = (EditText) findViewById(R.id.etxtDirec);
-        IniciarServicio();
+       // IniciarServicio();
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -106,11 +106,11 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
         }
         Location location = handle.getLastKnownLocation(provider);
         if(location==null){
-            etxtLatitud.setText("Desconocida");
-            etxtLongitud.setText("Desconocida");
+            //etxtLatitud.setText("Desconocida");
+           // etxtLongitud.setText("Desconocida");
         }else{
-            etxtLatitud.setText(String.valueOf(location.getLatitude()));
-            etxtLongitud.setText(String.valueOf(location.getLongitude()));
+           // etxtLatitud.setText(String.valueOf(location.getLatitude()));
+           // etxtLongitud.setText(String.valueOf(location.getLongitude()));
 
 
             }
@@ -147,7 +147,7 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
 
         }
 
-
+    
     public void btnSig(View view){
         String v1= et1.getText().toString();
         String v2= et2.getText().toString();
@@ -176,8 +176,8 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
             etxtLatitud.setText("Desconocida");
             etxtLongitud.setText("Desconocida");
         }else{
-            etxtLatitud.setText(String.valueOf(location.getLatitude()));
-            etxtLongitud.setText(String.valueOf(location.getLongitude()));
+           // etxtLatitud.setText(String.valueOf(location.getLatitude()));
+           // etxtLongitud.setText(String.valueOf(location.getLongitude()));
 
         }
         setDireccion(location);

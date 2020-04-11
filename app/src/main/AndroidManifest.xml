@@ -52,6 +52,9 @@
         <activity
             android:name=".ResultActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".StatusActivity"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

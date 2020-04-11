@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DashboardActivity extends AppCompatActivity {
 
+//    NO USO
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

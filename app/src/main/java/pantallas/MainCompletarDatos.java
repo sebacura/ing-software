@@ -147,7 +147,9 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
 
         }
 
-    
+    public void agregarUbicActual(View view){
+        et2.setText(etxtDirec.getText());
+    }
     public void btnSig(View view){
         String v1= et1.getText().toString();
         String v2= et2.getText().toString();

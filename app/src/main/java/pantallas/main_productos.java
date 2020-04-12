@@ -1,5 +1,6 @@
 package pantallas;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tananaev.passportreader.LoginActivity;
 import com.tananaev.passportreader.MainActivity;
 import com.tananaev.passportreader.R;
+import com.tananaev.passportreader.StatusActivity;
 
 import java.util.ArrayList;
 
@@ -23,8 +26,9 @@ public class main_productos extends AppCompatActivity {
 
     private ListView lvItems;
     private Adaptador adaptador;
+    private int navBarItemId;
+    private BottomNavigationView navBarItemView;
 
-//    Button btnIrFormulario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,27 @@ public class main_productos extends AppCompatActivity {
     public static Entidad obtenerTarjeta(){
         return GetArrayItems().get(idBoton);
     }
+
+    // bottom nav bar
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                for (int i = 0; i < navigation.getMenu().size(); i++) {
+                    MenuItem menuItem = navigation.getMenu().getItem(i);
+                    boolean isChecked = menuItem.getItemId() == item.getItemId();
+                    menuItem.setChecked(isChecked);
+                }
+                switch (item.getItemId()) {
+                    case R.id.action_status:
+                        Intent a = new Intent(main_productos.this, StatusActivity.class);
+                        startActivity(a);
+                        break;
+                }
+                return true;
+            }
+        });
+        navigation.getMenu().findItem(R.id.action_main).setChecked(true);
 
     public static ArrayList<Entidad> GetArrayItems(){
         ArrayList<Entidad> listItems = new ArrayList<>();

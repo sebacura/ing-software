@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#1d4e89</color>
+
+<!--    barra de notificaciones-->
+    <color name="colorPrimaryDark">#133d6f</color>
     <color name="colorAccent">#1d4e89</color>
 
-    <color name="backgroundColor">#1d4e89</color>
+    <color name="backgroundColor">#ececec</color>
 
     <!-- White Transparent -->
     <color name="transparent_white_hex_7">#77ffffff</color>
     <color name="white">#ffffff</color>
     <color name="red">#A50203</color>
     <color name="blue">#1d4e89</color>
-
-    <color name="grey">#ececec</color>
-
+    <color name="grey">#77ffffff</color>
+    <color name="light_grey">#ececec</color>
+    <color name="black">#000000</color>
 </resources>

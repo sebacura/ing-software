@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.tananaev.passportreader.LoginActivity;
 import com.tananaev.passportreader.MainActivity;
 import com.tananaev.passportreader.R;
 
@@ -50,6 +54,28 @@ public class main_productos extends AppCompatActivity {
 
         return listItems;
     }
+
+    //LOGIN ITEM IN TOP BAR
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_login:
+                finish();
+                Intent intent = new Intent(main_productos.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 
 }

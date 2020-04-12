@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnIrFormulario2;
 
-    Button btnTomarFoto;
+    View btnTomarFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,26 +265,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //LOGIN ITEM IN TOP BAR
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.login, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_login:
-                finish();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     protected void onResume() {

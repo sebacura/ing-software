@@ -202,7 +202,7 @@
         <TextView
             android:id="@+id/textView2"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Para comenzar, utilizaremos su cédula y una foto suya tomada en el momento para comprobar su identidad y extraer sus datos personales."
@@ -216,7 +216,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:text="Paso 1: Apoye la cédula detrás de su celular y complete los siguientes datos"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="0dp"
@@ -228,7 +228,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:layout_marginTop="10dp"
             android:text="Datos obtenidos:"
             android:textSize="18sp" />
@@ -286,7 +286,7 @@
         <TextView
             android:id="@+id/output_first_name"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
@@ -296,7 +296,7 @@
             android:id="@+id/output_last_name"
             android:layout_width="match_parent"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="Jackson" />
@@ -306,7 +306,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="47976654" />
 
@@ -336,11 +336,11 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/open_sans"
+            android:fontFamily="@font/open_sans_light"
             android:text="Paso 2: Aprete el botón de abajo y tómese una foto"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:fontFamily="@font/open_sans" />
+            app:fontFamily="@font/open_sans_light" />
 
         <Button
             android:id="@+id/button"

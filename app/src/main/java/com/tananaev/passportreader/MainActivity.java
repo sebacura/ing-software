@@ -46,6 +46,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -90,10 +92,8 @@ import pantallas.main_productos;
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
-public class MainActivity extends BaseActivity {
-
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-
     private final static String KEY_PASSPORT_NUMBER = "passportNumber";
     private final static String KEY_EXPIRATION_DATE = "expirationDate";
     private final static String KEY_BIRTH_DATE = "birthDate";
@@ -231,6 +231,20 @@ public class MainActivity extends BaseActivity {
                 getFragmentManager().beginTransaction().add(dialog, null).commit();
             }
         });
+
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_status:
+                        Intent b = new Intent(MainActivity.this, StatusActivity.class);
+                        startActivity(b);
+                        break;
+                }
+                return false;
+            }
+        });
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -248,6 +262,27 @@ public class MainActivity extends BaseActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 //            imageView.setImageBitmap(imageBitmap);
+        }
+    }
+
+    //LOGIN ITEM IN TOP BAR
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_login:
+                finish();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -281,15 +316,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    int getBottomNavigationMenuItemId() {
-         return R.id.action_main;
-    }
+//    @Override
+//    int getLayoutId() {
+//        return R.layout.activity_main;
+//    }
+//
+//    @Override
+//    int getBottomNavigationMenuItemId() {
+//         return R.id.action_main;
+//    }
 
     private static String convertDate(String input) {
         if (input == null) {

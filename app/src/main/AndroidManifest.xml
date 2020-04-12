@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     package="com.tananaev.passportreader">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
 
     <uses-permission android:name="android.permission.NFC" />
 
@@ -17,15 +24,25 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:resource="@drawable/ic_notifications_black_24dp"
         android:theme="@style/AppTheme">
+
         <activity android:name="pantallas.main_productos">
-            <intent-filter>
+      <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="pantallas.MainCompletarDatos" />
+      </activity>
+
+        <activity android:name=".DashboardActivity"
+            android:parentActivityName=".LoginActivity"></activity>
+  
+        <activity android:name="pantallas.MainCompletarDatos"
+            android:parentActivityName=".ResultActivity"/>
+  
+        <activity android:name=".LoginActivity" />
+  
         <activity
             android:name=".MainActivity"
             android:screenOrientation="fullSensor">
@@ -47,9 +64,18 @@
             -->
 
         </activity>
+  
         <activity
             android:name=".ResultActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".StatusActivity"
+            android:screenOrientation="portrait" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

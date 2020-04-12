@@ -9,7 +9,7 @@
             android:pathData="M67.49,66.91m-34.08,0a34.08,34.08 0,1 1,68.17 0a34.08,34.08 0,1 1,-68.17 0"
             android:fillAlpha="1"
             android:strokeColor="#ffffff"
-            android:fillColor="#009688"
+            android:fillColor="#1d4e89"
             android:strokeWidth="10.58333333"
             android:strokeAlpha="1"/>
     </group>

@@ -3,9 +3,31 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+
+<!--        FONDO-->
+        <item name="colorControlNormal">@color/blue</item>
+        <item name="background">@color/blue</item>
+<!--        ICONOS seleccionado DE NAVBAR Y Fondo del TITULO-->
+        <item name="colorPrimary">#ececec</item>
+
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+<!--        TEXTO-->
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/open_sans_light</item>
+
+        <item name="titleTextColor">@color/blue</item>
+
+        <item name="android:textColor">@color/grey</item>
+
+<!--        Home and notifications title-->
+        <item name="android:title">@color/grey</item>
+
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <item name="android:textColorHint">@color/grey</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
+    android:background="@color/backgroundColor"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Formulario de solicitud"
         android:textSize="20sp"
+        app:fontFamily="@font/lato"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -81,6 +83,7 @@
             android:layout_height="wrap_content"
             android:text="Para comenzar, utilizaremos su cédula y una foto suya tomada en el momento para comprobar su identidad y extraer sus datos personales."
             android:textSize="18sp"
+            android:fontFamily="@font/open_sans_light"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
 

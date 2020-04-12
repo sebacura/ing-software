@@ -1,11 +1,13 @@
 package pantallas;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -14,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -21,7 +24,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tananaev.passportreader.R;
+import com.tananaev.passportreader.StatusActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -61,6 +66,27 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
                 setEstadoSwitch(isChecked);
             }
         });
+
+        // bottom nav bar
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                for (int i = 0; i < navigation.getMenu().size(); i++) {
+                    MenuItem menuItem = navigation.getMenu().getItem(i);
+                    boolean isChecked = menuItem.getItemId() == item.getItemId();
+                    menuItem.setChecked(isChecked);
+                }
+                switch (item.getItemId()) {
+                    case R.id.action_status:
+                        Intent a = new Intent(MainCompletarDatos.this, StatusActivity.class);
+                        startActivity(a);
+                        break;
+                }
+                return true;
+            }
+        });
+        navigation.getMenu().findItem(R.id.action_main).setChecked(true);
     }
 
     void setEstadoSwitch(boolean x){

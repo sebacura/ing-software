@@ -13,23 +13,31 @@
         android:id="@+id/status_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/include2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView6"
+        app:spb_currentStateDescriptionColor="@color/blue"
         app:spb_currentStateNumber="one"
         app:spb_descriptionLinesSpacing="5dp"
         app:spb_justifyMultilineDescription="true"
-        app:spb_maxStateNumber="five" />
+        app:spb_maxStateNumber="five"
+        app:spb_stateForegroundColor="@color/blue"
+        tools:layout_editor_absoluteX="100dp"
+        tools:layout_editor_absoluteY="93dp"
+
+        android:layout_marginTop="20dp"
+        />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="253dp"
-        android:layout_height="62dp"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Solicitudes en proceso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
 
     <include
         layout="@layout/item_bottom_navigation"

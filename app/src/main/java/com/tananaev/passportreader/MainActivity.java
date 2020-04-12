@@ -251,8 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        navigation.getMenu().findItem(R.id.action_status).setChecked(true);
-
+        navigation.getMenu().findItem(R.id.action_main).setChecked(true);
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 

@@ -9,7 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.tananaev.passportreader.LoginActivity;
 import com.tananaev.passportreader.MainActivity;
@@ -21,7 +23,8 @@ public class main_productos extends AppCompatActivity {
 
     private ListView lvItems;
     private Adaptador adaptador;
-    Button btnIrFormulario;
+
+//    Button btnIrFormulario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +35,26 @@ public class main_productos extends AppCompatActivity {
         adaptador = new Adaptador(this, GetArrayItems());
         lvItems.setAdapter(adaptador);
 
-        //Pasar a siguiente pantalla
-        btnIrFormulario = (Button) findViewById(R.id.btnIrFormulario);
-
-        btnIrFormulario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(main_productos.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        //Fin pasar a siguiente pantalla
     }
 
-    private ArrayList<Entidad> GetArrayItems(){
+    public void irAFormulario(View v){
+        Intent intent = new Intent(main_productos.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    static int idBoton;
+
+    public void verDetalles(View v){
+        idBoton = v.getId();
+        Intent intent = new Intent(main_productos.this, detalles_producto.class);
+        startActivity(intent);
+    }
+
+    public static Entidad obtenerTarjeta(){
+        return GetArrayItems().get(idBoton);
+    }
+
+    public static ArrayList<Entidad> GetArrayItems(){
         ArrayList<Entidad> listItems = new ArrayList<>();
         listItems.add(new Entidad(R.drawable.photo, "Tarjeta 1","Descripción"));
         listItems.add(new Entidad(R.drawable.photo, "Tarjeta 2","Descripción"));

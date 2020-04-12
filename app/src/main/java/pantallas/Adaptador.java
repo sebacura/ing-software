@@ -49,10 +49,11 @@ public class Adaptador extends BaseAdapter {
         imgFoto.setImageResource(Item.getImgFoto());
         tituloTarjeta.setText(Item.getTitulo());
         contenidoTarjeta.setText(Item.getContenido());
+//        btnSolicitar.setId(position);
+        btnVerDetalles.setId(position);
 
         return convertView;
     }
-
 
 }
 

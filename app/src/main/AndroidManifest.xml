@@ -10,7 +10,12 @@
 
 
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.nfc"
         android:required="true" />
 
     <application
@@ -22,19 +27,26 @@
         android:resource="@drawable/ic_notifications_black_24dp"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".DashboardActivity"
-            android:parentActivityName=".LoginActivity"></activity>
-        <activity android:name="pantallas.MainCompletarDatos"
-            android:parentActivityName=".ResultActivity"/>
-        <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="fullSensor">
-            <intent-filter>
+        <activity android:name="pantallas.main_productos">
+      <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+      </activity>
+
+        <activity android:name=".DashboardActivity"
+            android:parentActivityName=".LoginActivity"></activity>
+  
+        <activity android:name="pantallas.MainCompletarDatos"
+            android:parentActivityName=".ResultActivity"/>
+  
+        <activity android:name=".LoginActivity" />
+  
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="fullSensor">
+
             <intent-filter>
                 <action android:name="com.tananaev.passportreader.REQUEST" />
 
@@ -52,24 +64,18 @@
             -->
 
         </activity>
+  
         <activity
             android:name=".ResultActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+
         <activity android:name=".StatusActivity"
             android:screenOrientation="portrait" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.NFC" />
 
 </manifest>

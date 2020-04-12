@@ -16,6 +16,9 @@
     <string name="result_gender">Gender</string>
     <string name="result_state">Country</string>
     <string name="result_nationality">Nationality</string>
+
+    <string name="action_settings">Settings</string>
+
     <string name="hint_password">Contraseña</string>
     <string name="lbl_forget">Olvidó la contraseña? Click aquí!</string>
     <string name="btn_login">Login</string>

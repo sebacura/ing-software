@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/backgroundColor"
+    android:layout_height="match_parent"
+    tools:context="pantallas.detalles_producto"
+    android:id="@+id/detalles_producto">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp"
-    tools:context="pantallas.detalles_producto"
-    android:id="@+id/detalles_producto">
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:orientation="vertical"
@@ -55,6 +62,11 @@
             android:text="Solicitar" />
 
     </LinearLayout>
-
-
 </RelativeLayout>
+<include
+layout="@layout/item_bottom_navigation"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_gravity="bottom"
+app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

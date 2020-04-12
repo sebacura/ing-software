@@ -39,26 +39,7 @@ public class main_productos extends AppCompatActivity {
         adaptador = new Adaptador(this, GetArrayItems());
         lvItems.setAdapter(adaptador);
 
-    }
-
-    public void irAFormulario(View v){
-        Intent intent = new Intent(main_productos.this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    static int idBoton;
-
-    public void verDetalles(View v){
-        idBoton = v.getId();
-        Intent intent = new Intent(main_productos.this, detalles_producto.class);
-        startActivity(intent);
-    }
-
-    public static Entidad obtenerTarjeta(){
-        return GetArrayItems().get(idBoton);
-    }
-
-    // bottom nav bar
+        // bottom nav bar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -78,6 +59,24 @@ public class main_productos extends AppCompatActivity {
             }
         });
         navigation.getMenu().findItem(R.id.action_main).setChecked(true);
+    }
+
+    public void irAFormulario(View v){
+        Intent intent = new Intent(main_productos.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    static int idBoton;
+
+    public void verDetalles(View v){
+        idBoton = v.getId();
+        Intent intent = new Intent(main_productos.this, detalles_producto.class);
+        startActivity(intent);
+    }
+
+    public static Entidad obtenerTarjeta(){
+        return GetArrayItems().get(idBoton);
+    }
 
     public static ArrayList<Entidad> GetArrayItems(){
         ArrayList<Entidad> listItems = new ArrayList<>();

@@ -18,14 +18,20 @@ package com.tananaev.passportreader;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import pantallas.MainCompletarDatos;
+import pantallas.main_productos;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -62,11 +68,31 @@ public class ResultActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
 //        if (getIntent().hasExtra(KEY_PHOTO)) {
 //            ((ImageView) findViewById(R.id.view_photo)).setImageBitmap((Bitmap) getIntent().getParcelableExtra(KEY_PHOTO));
 //        }
+
+        // bottom nav bar
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                for (int i = 0; i < navigation.getMenu().size(); i++) {
+                    MenuItem menuItem = navigation.getMenu().getItem(i);
+                    boolean isChecked = menuItem.getItemId() == item.getItemId();
+                    menuItem.setChecked(isChecked);
+                }
+                switch (item.getItemId()) {
+                    case R.id.action_status:
+                        Intent a = new Intent(ResultActivity.this, StatusActivity.class);
+                        startActivity(a);
+                        break;
+                }
+                return true;
+            }
+        });
+        navigation.getMenu().findItem(R.id.action_main).setChecked(true);
+
     }
 
 }

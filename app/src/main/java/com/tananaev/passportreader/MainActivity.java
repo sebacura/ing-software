@@ -232,19 +232,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // bottom nav bar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                for (int i = 0; i < navigation.getMenu().size(); i++) {
+                    MenuItem menuItem = navigation.getMenu().getItem(i);
+                    boolean isChecked = menuItem.getItemId() == item.getItemId();
+                    menuItem.setChecked(isChecked);
+                }
                 switch (item.getItemId()) {
                     case R.id.action_status:
-                        Intent b = new Intent(MainActivity.this, StatusActivity.class);
-                        startActivity(b);
+                        Intent a = new Intent(MainActivity.this, StatusActivity.class);
+                        startActivity(a);
                         break;
                 }
-                return false;
+                return true;
             }
         });
+        navigation.getMenu().findItem(R.id.action_status).setChecked(true);
+
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -264,8 +272,6 @@ public class MainActivity extends AppCompatActivity {
 //            imageView.setImageBitmap(imageBitmap);
         }
     }
-
-
 
     @Override
     protected void onResume() {
@@ -296,16 +302,6 @@ public class MainActivity extends AppCompatActivity {
             adapter.disableForegroundDispatch(this);
         }
     }
-
-//    @Override
-//    int getLayoutId() {
-//        return R.layout.activity_main;
-//    }
-//
-//    @Override
-//    int getBottomNavigationMenuItemId() {
-//         return R.id.action_main;
-//    }
 
     private static String convertDate(String input) {
         if (input == null) {

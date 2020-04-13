@@ -70,7 +70,7 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
             }
         });
 
-        // bottom nav bar
+            // bottom nav bar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -95,31 +95,25 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
     void setEstadoSwitch(boolean x){
         if(x){
             IniciarServicio();
-            muestraPosicionActual();
         }else{
             pararServicio();
         }
     }
 
     public void IniciarServicio() {
-        Toast.makeText(this, "Busqueda de ubicación activada", Toast.LENGTH_SHORT).show();
         handle = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria c = new Criteria();
         c.setAccuracy(Criteria.ACCURACY_FINE);
         provider = handle.getBestProvider(c, true);
         txtGPS.setText("Proveedor: " + provider);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120); //*** Agrega la petición!
-            return;
+            mySwitch.setChecked(false);
+            ActivityCompat.requestPermissions(MainCompletarDatos.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120); //*** Agrega la petición!
+        } else {
+            Toast.makeText(this, "Busqueda de ubicación activada", Toast.LENGTH_SHORT).show();
+            muestraPosicionActual();
+            handle.requestLocationUpdates(provider, 10000, 1, this);
         }
-        handle.requestLocationUpdates(provider, 10000, 1, this);
     }
 
     public void muestraPosicionActual() {

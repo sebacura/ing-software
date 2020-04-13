@@ -15,9 +15,10 @@
  */
 package com.ingsoft.bancoapp;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import androidx.multidex.MultiDexApplication;
 
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.Security;
 

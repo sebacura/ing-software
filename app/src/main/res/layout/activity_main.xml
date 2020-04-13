@@ -121,6 +121,15 @@
             android:layout_marginLeft="13dp"
             app:srcCompat="@drawable/ic_tarjeta_de_credito" />
 
+
+<!--        <ImageView-->
+<!--            android:id="@+id/help"-->
+<!--            android:layout_marginTop="-20dp"-->
+<!--            android:layout_width="18dp"-->
+<!--            android:layout_height="18dp"-->
+<!--            android:layout_gravity="right"-->
+<!--            app:srcCompat="@drawable/ic_question_black" />-->
+
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"

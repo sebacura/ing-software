@@ -30,32 +30,30 @@ public class main_productos extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            setContentView(R.layout.activity_main_productos);
+        setContentView(R.layout.activity_main_productos);
 
-            lvItems = (ListView) findViewById(R.id.lvItems);
-            adaptador = new Adaptador(this, GetArrayItems());
-            lvItems.setAdapter(adaptador);
+        lvItems = (ListView) findViewById(R.id.lvItems);
+        adaptador = new Adaptador(this, GetArrayItems());
+        lvItems.setAdapter(adaptador);
 
-            // bottom nav bar
-            BottomNavigationView navigation = findViewById(R.id.navigation);
-            navigation.setSelectedItemId(R.id.action_main);
-            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_main:
-                            return true;
-                        case R.id.action_status:
-                            Intent a = new Intent(getApplicationContext(), StatusActivity.class);
-                            startActivity(a);
-                            overridePendingTransition(0, 0);
-                            return true;
-                    }
-                    return false;
+        // bottom nav bar
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.action_main);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_main:
+                        return true;
+                    case R.id.action_status:
+                        Intent a = new Intent(getApplicationContext(), StatusActivity.class);
+                        startActivity(a);
+                        overridePendingTransition(0,0);
+                        return true;
                 }
-            });
-        }
+                return false;
+            }
+        });
     }
 
     public void irAFormulario(View v){

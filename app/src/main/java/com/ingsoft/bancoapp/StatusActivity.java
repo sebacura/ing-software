@@ -18,28 +18,26 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            setContentView(R.layout.activity_status);
-            StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.status_bar);
-            stateProgressBar.setStateDescriptionData(descriptionData);
+        setContentView(R.layout.activity_status);
+        StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.status_bar);
+        stateProgressBar.setStateDescriptionData(descriptionData);
 
-            BottomNavigationView navigation = findViewById(R.id.navigation);
-            navigation.setSelectedItemId(R.id.action_status);
-            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.action_status:
-                            return true;
-                        case R.id.action_main:
-                            Intent a = new Intent(getApplicationContext(), main_productos.class);
-                            startActivity(a);
-                            overridePendingTransition(0, 0);
-                            return true;
-                    }
-                    return false;
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.action_status);
+        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_status:
+                        return true;
+                    case R.id.action_main:
+                        Intent a = new Intent(getApplicationContext(), main_productos.class);
+                        startActivity(a);
+                        overridePendingTransition(0,0);
+                        return true;
                 }
-            });
-        }
+                return false;
+            }
+        });
     }
 }

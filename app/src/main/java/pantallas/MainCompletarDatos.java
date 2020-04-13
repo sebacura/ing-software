@@ -191,8 +191,9 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
             } else if (v2.isEmpty()) {
                 Toast.makeText(this, "Debe ingresar su dirección", Toast.LENGTH_LONG).show();
             } else {
-                Intent intent = new Intent(MainCompletarDatos.this, SuccessActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SuccessActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
             }
         }
 

@@ -59,7 +59,8 @@ public class detalles_producto extends AppCompatActivity {
     }
 
     public void irAFormulario(View v){
-        Intent intent = new Intent(detalles_producto.this, MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 }

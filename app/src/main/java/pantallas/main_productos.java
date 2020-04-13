@@ -57,8 +57,9 @@ public class main_productos extends AppCompatActivity {
     }
 
     public void irAFormulario(View v){
-        Intent intent = new Intent(main_productos.this, MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     static int idBoton;

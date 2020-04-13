@@ -22,24 +22,22 @@ public class StatusActivity extends AppCompatActivity {
         StateProgressBar stateProgressBar = (StateProgressBar) findViewById(R.id.status_bar);
         stateProgressBar.setStateDescriptionData(descriptionData);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.action_status);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                for (int i = 0; i < navigation.getMenu().size(); i++) {
-                    MenuItem menuItem = navigation.getMenu().getItem(i);
-                    boolean isChecked = menuItem.getItemId() == item.getItemId();
-                    menuItem.setChecked(isChecked);
-                }
                 switch (item.getItemId()) {
+                    case R.id.action_status:
+                        return true;
                     case R.id.action_main:
-                        Intent a = new Intent(StatusActivity.this, main_productos.class);
+                        Intent a = new Intent(getApplicationContext(), main_productos.class);
                         startActivity(a);
-                        break;
+                        overridePendingTransition(0,0);
+                        return true;
                 }
-                return true;
+                return false;
             }
         });
-        navigation.getMenu().findItem(R.id.action_status).setChecked(true);
     }
 }

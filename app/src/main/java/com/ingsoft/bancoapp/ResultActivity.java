@@ -90,25 +90,23 @@ public class ResultActivity extends AppCompatActivity {
 
 
         // bottom nav bar
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.action_main);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                for (int i = 0; i < navigation.getMenu().size(); i++) {
-                    MenuItem menuItem = navigation.getMenu().getItem(i);
-                    boolean isChecked = menuItem.getItemId() == item.getItemId();
-                    menuItem.setChecked(isChecked);
-                }
                 switch (item.getItemId()) {
+                    case R.id.action_main:
+                        return true;
                     case R.id.action_status:
-                        Intent a = new Intent(ResultActivity.this, StatusActivity.class);
+                        Intent a = new Intent(getApplicationContext(), StatusActivity.class);
                         startActivity(a);
-                        break;
+                        overridePendingTransition(0,0);
+                        return true;
                 }
                 return true;
             }
         });
-        navigation.getMenu().findItem(R.id.action_main).setChecked(true);
 
     }
 

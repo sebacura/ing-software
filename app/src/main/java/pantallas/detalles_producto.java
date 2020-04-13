@@ -34,7 +34,7 @@ public class detalles_producto extends AppCompatActivity {
         imgFoto = findViewById(R.id.imgFotoD);
 
         tituloTarjeta.setText(tarjeta.getTitulo());
-        contenidoTarjeta.setText(tarjeta.getContenido());
+        contenidoTarjeta.setText(tarjeta.getDetalles());
         imgFoto.setImageResource(tarjeta.getImgFoto());
 
         // bottom nav bar

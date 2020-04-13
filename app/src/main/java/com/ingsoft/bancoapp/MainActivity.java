@@ -148,12 +148,12 @@ public class MainActivity extends AppCompatActivity {
 
         //Pasar a siguiente pantalla
         btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
-
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MainCompletarDatos.class);
+                Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
             }
         });
         //Fin pasar a siguiente pantalla

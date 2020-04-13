@@ -57,16 +57,18 @@ public class main_productos extends AppCompatActivity {
     }
 
     public void irAFormulario(View v){
-        Intent intent = new Intent(main_productos.this, MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     static int idBoton;
 
     public void verDetalles(View v){
         idBoton = v.getId();
-        Intent intent = new Intent(main_productos.this, detalles_producto.class);
+        Intent intent = new Intent(getApplicationContext(), detalles_producto.class);
         startActivity(intent);
+        overridePendingTransition(0,0);
     }
 
     public static Entidad obtenerTarjeta(){
@@ -96,8 +98,9 @@ public class main_productos extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_login:
                 finish();
-                Intent intent = new Intent(main_productos.this, LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

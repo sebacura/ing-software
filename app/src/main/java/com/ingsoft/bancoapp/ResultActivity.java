@@ -73,14 +73,13 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         //Fin tomar foto desde app
-
         btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
-
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResultActivity.this, MainCompletarDatos.class);
+                Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
             }
         });
 //        if (getIntent().hasExtra(KEY_PHOTO)) {

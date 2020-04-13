@@ -109,8 +109,9 @@ public class LoginActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_logout:
                 finish();
-                Intent intent = new Intent(LoginActivity.this, main_productos.class);
+                Intent intent = new Intent(getApplicationContext(), main_productos.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -20,8 +20,9 @@ public class SuccessActivity extends AppCompatActivity {
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SuccessActivity.this, StatusActivity.class);
+                Intent intent = new Intent(getApplicationContext(), StatusActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0,0);
             }
         });
     }

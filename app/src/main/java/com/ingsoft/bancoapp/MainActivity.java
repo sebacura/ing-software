@@ -123,134 +123,136 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            setContentView(R.layout.activity_main);
 
-        //Controlo que tenga NFC y que lo tenga prendido
-        NfcManager manager = (NfcManager) getSystemService(Context.NFC_SERVICE);
-        adapter = manager.getDefaultAdapter();
+            //Controlo que tenga NFC y que lo tenga prendido
+            NfcManager manager = (NfcManager) getSystemService(Context.NFC_SERVICE);
+            adapter = manager.getDefaultAdapter();
 
-        if (adapter != null && !adapter.isEnabled()) {
-            Toast.makeText(getApplicationContext(), "Debe encender el NFC de su celular!", Toast.LENGTH_LONG).show();
-        }else if (adapter==null){
-            Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
-        }
-
-
-        //Tomar foto desde app
-        btnTomarFoto = findViewById(R.id.btnTomarFoto);
-        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dispatchTakePictureIntent();
-            }
-        });
-        //Fin tomar foto desde app
-
-        //Pasar a siguiente pantalla
-        btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
-        btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-            }
-        });
-        //Fin pasar a siguiente pantalla
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
-        String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
-        String passportNumber = getIntent().getStringExtra("passportNumber");
-//        encodePhotoToBase64 = getIntent().getBooleanExtra("photoAsBase64", false);
-
-        if (dateOfBirth != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .edit().putString(KEY_BIRTH_DATE, dateOfBirth).apply();
-        }
-        if (dateOfExpiry != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit().putString(KEY_EXPIRATION_DATE, dateOfExpiry).apply();
-        }
-        if (passportNumber != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit().putString(KEY_PASSPORT_NUMBER, passportNumber).apply();
-            passportNumberFromIntent = true;
-        }
-
-        passportNumberView = findViewById(R.id.input_passport_number);
-        expirationDateView = findViewById(R.id.input_expiration_date);
-        birthDateView = findViewById(R.id.input_date_of_birth);
-
-        camposLayout = findViewById(R.id.campos);
-        loadingLayout = findViewById(R.id.loading_layout);
-
-        passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
-        expirationDateView.setText(preferences.getString(KEY_EXPIRATION_DATE, null));
-        birthDateView.setText(preferences.getString(KEY_BIRTH_DATE, null));
-
-        passportNumberView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            if (adapter != null && !adapter.isEnabled()) {
+                Toast.makeText(getApplicationContext(), "Debe encender el NFC de su celular!", Toast.LENGTH_LONG).show();
+            } else if (adapter == null) {
+                Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
-                        .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
-            }
-        });
-
-        expirationDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar c = loadDate(expirationDateView);
-                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        saveDate(expirationDateView, year, monthOfYear, dayOfMonth, KEY_EXPIRATION_DATE);
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                getFragmentManager().beginTransaction().add(dialog, null).commit();
-            }
-        });
-
-        birthDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar c = loadDate(birthDateView);
-                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        saveDate(birthDateView, year, monthOfYear, dayOfMonth, KEY_BIRTH_DATE);
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                getFragmentManager().beginTransaction().add(dialog, null).commit();
-            }
-        });
-
-        // bottom nav bar
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.action_main);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_main:
-                        return true;
-                    case R.id.action_status:
-                        Intent a = new Intent(getApplicationContext(), StatusActivity.class);
-                        startActivity(a);
-                        overridePendingTransition(0,0);
-                        return true;
+            //Tomar foto desde app
+            btnTomarFoto = findViewById(R.id.btnTomarFoto);
+            btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
                 }
-                return false;
+            });
+            //Fin tomar foto desde app
+
+            //Pasar a siguiente pantalla
+            btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
+            btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
+            //Fin pasar a siguiente pantalla
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
+            String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
+            String passportNumber = getIntent().getStringExtra("passportNumber");
+            //        encodePhotoToBase64 = getIntent().getBooleanExtra("photoAsBase64", false);
+
+            if (dateOfBirth != null) {
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit().putString(KEY_BIRTH_DATE, dateOfBirth).apply();
             }
-        });
+            if (dateOfExpiry != null) {
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit().putString(KEY_EXPIRATION_DATE, dateOfExpiry).apply();
+            }
+            if (passportNumber != null) {
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit().putString(KEY_PASSPORT_NUMBER, passportNumber).apply();
+                passportNumberFromIntent = true;
+            }
+
+            passportNumberView = findViewById(R.id.input_passport_number);
+            expirationDateView = findViewById(R.id.input_expiration_date);
+            birthDateView = findViewById(R.id.input_date_of_birth);
+
+            camposLayout = findViewById(R.id.campos);
+            loadingLayout = findViewById(R.id.loading_layout);
+
+            passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
+            expirationDateView.setText(preferences.getString(KEY_EXPIRATION_DATE, null));
+            birthDateView.setText(preferences.getString(KEY_BIRTH_DATE, null));
+
+            passportNumberView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                            .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
+                }
+            });
+
+            expirationDateView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Calendar c = loadDate(expirationDateView);
+                    DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                            saveDate(expirationDateView, year, monthOfYear, dayOfMonth, KEY_EXPIRATION_DATE);
+                        }
+                    }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                    getFragmentManager().beginTransaction().add(dialog, null).commit();
+                }
+            });
+
+            birthDateView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Calendar c = loadDate(birthDateView);
+                    DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                            saveDate(birthDateView, year, monthOfYear, dayOfMonth, KEY_BIRTH_DATE);
+                        }
+                    }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                    getFragmentManager().beginTransaction().add(dialog, null).commit();
+                }
+            });
+
+            // bottom nav bar
+            BottomNavigationView navigation = findViewById(R.id.navigation);
+            navigation.setSelectedItemId(R.id.action_main);
+            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_main:
+                            return true;
+                        case R.id.action_status:
+                            Intent a = new Intent(getApplicationContext(), StatusActivity.class);
+                            startActivity(a);
+                            overridePendingTransition(0, 0);
+                            return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
     static final int REQUEST_IMAGE_CAPTURE = 1;
 

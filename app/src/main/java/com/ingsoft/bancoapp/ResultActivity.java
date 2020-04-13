@@ -50,62 +50,63 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.campos).setVisibility(View.GONE);
-        findViewById(R.id.resultados).setVisibility(View.VISIBLE);
+        if (savedInstanceState == null) {
+            setContentView(R.layout.activity_main);
+            findViewById(R.id.campos).setVisibility(View.GONE);
+            findViewById(R.id.resultados).setVisibility(View.VISIBLE);
 
 
-        ((TextView) findViewById(R.id.output_first_name)).setText(getIntent().getStringExtra(KEY_FIRST_NAME));
-        ((TextView) findViewById(R.id.output_last_name)).setText(getIntent().getStringExtra(KEY_LAST_NAME));
+            ((TextView) findViewById(R.id.output_first_name)).setText(getIntent().getStringExtra(KEY_FIRST_NAME));
+            ((TextView) findViewById(R.id.output_last_name)).setText(getIntent().getStringExtra(KEY_LAST_NAME));
 //        ((TextView) findViewById(R.id.output_gender)).setText(getIntent().getStringExtra(KEY_GENDER));
 //        ((TextView) findViewById(R.id.output_state)).setText(getIntent().getStringExtra(KEY_STATE));
 //        ((TextView) findViewById(R.id.output_nationality)).setText(getIntent().getStringExtra(KEY_NATIONALITY));
-        ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
+            ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
 
 
-        //Tomar foto desde app
-        btnTomarFoto = findViewById(R.id.btnTomarFoto);
-        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dispatchTakePictureIntent();
-            }
-        });
+            //Tomar foto desde app
+            btnTomarFoto = findViewById(R.id.btnTomarFoto);
+            btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dispatchTakePictureIntent();
+                }
+            });
 
-        //Fin tomar foto desde app
-        btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
-        btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-            }
-        });
+            //Fin tomar foto desde app
+            btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
+            btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                }
+            });
 //        if (getIntent().hasExtra(KEY_PHOTO)) {
 //            ((ImageView) findViewById(R.id.view_photo)).setImageBitmap((Bitmap) getIntent().getParcelableExtra(KEY_PHOTO));
 //        }
 
 
-
-        // bottom nav bar
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.action_main);
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_main:
-                        return true;
-                    case R.id.action_status:
-                        Intent a = new Intent(getApplicationContext(), StatusActivity.class);
-                        startActivity(a);
-                        overridePendingTransition(0,0);
-                        return true;
+            // bottom nav bar
+            BottomNavigationView navigation = findViewById(R.id.navigation);
+            navigation.setSelectedItemId(R.id.action_main);
+            navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.action_main:
+                            return true;
+                        case R.id.action_status:
+                            Intent a = new Intent(getApplicationContext(), StatusActivity.class);
+                            startActivity(a);
+                            overridePendingTransition(0, 0);
+                            return true;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
 
     }
 

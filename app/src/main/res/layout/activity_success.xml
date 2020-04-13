@@ -7,13 +7,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".StatusActivity">
+    tools:context=".SuccessActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seguimiento de solicitudes"
+        android:text="Solicitud finalizada"
         android:textSize="20sp"
         app:fontFamily="@font/lato"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="10dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,26 +38,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.225">
 
-        <com.kofigyan.stateprogressbar.StateProgressBar
-            android:id="@+id/status_bar"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:spb_currentStateDescriptionColor="@color/blue"
-            app:spb_currentStateNumber="one"
-            app:spb_descriptionLinesSpacing="5dp"
-            app:spb_justifyMultilineDescription="true"
-            app:spb_maxStateNumber="five"
-            app:spb_stateForegroundColor="@color/blue"
-            tools:layout_editor_absoluteX="100dp"
-            tools:layout_editor_absoluteY="93dp"
-            />
+            android:textStyle="normal"
+            android:text="Su solicitud está en proceso de aprobación."
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="73dp" />
+
+        <TextView
+            android:id="@+id/click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:text="Puede seguir su estado clickeando aquí."
+            android:textSize="15sp"
+            android:textIsSelectable="true"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="73dp" />
 
     </LinearLayout>
 
-    <include
-        layout="@layout/item_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

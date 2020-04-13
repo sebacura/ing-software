@@ -1,6 +1,6 @@
-package com.tananaev.passportreader.data;
+package com.ingsoft.bancoapp.data;
 
-import com.tananaev.passportreader.data.model.LoggedInUser;
+import com.ingsoft.bancoapp.data.model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

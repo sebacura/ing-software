@@ -1,4 +1,4 @@
-package com.tananaev.passportreader;
+package com.ingsoft.bancoapp;
 
 import android.os.Bundle;
 

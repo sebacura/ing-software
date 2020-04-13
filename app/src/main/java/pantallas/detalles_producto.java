@@ -11,10 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.tananaev.passportreader.MainActivity;
-import com.tananaev.passportreader.R;
-import com.tananaev.passportreader.ResultActivity;
-import com.tananaev.passportreader.StatusActivity;
+import com.ingsoft.bancoapp.MainActivity;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.StatusActivity;
 
 import static pantallas.main_productos.obtenerTarjeta;
 

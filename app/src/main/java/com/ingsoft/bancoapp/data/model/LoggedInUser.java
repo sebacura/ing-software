@@ -1,4 +1,4 @@
-package com.tananaev.passportreader.data.model;
+package com.ingsoft.bancoapp.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

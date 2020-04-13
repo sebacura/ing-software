@@ -1,4 +1,4 @@
-package com.tananaev.passportreader.data;
+package com.ingsoft.bancoapp.data;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.

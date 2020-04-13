@@ -9,16 +9,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.tananaev.passportreader.LoginActivity;
-import com.tananaev.passportreader.MainActivity;
-import com.tananaev.passportreader.R;
-import com.tananaev.passportreader.StatusActivity;
+import com.ingsoft.bancoapp.LoginActivity;
+import com.ingsoft.bancoapp.MainActivity;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.StatusActivity;
 
 import java.util.ArrayList;
 

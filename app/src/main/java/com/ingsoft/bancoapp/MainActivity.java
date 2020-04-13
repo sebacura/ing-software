@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tananaev.passportreader;
+package com.ingsoft.bancoapp;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,17 +32,12 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -64,18 +54,15 @@ import org.jmrtd.BACKeySpec;
 import org.jmrtd.PassportService;
 import org.jmrtd.lds.CardSecurityFile;
 import org.jmrtd.lds.SecurityInfo;
-import org.jmrtd.lds.icao.COMFile;
 import org.jmrtd.lds.icao.DG1File;
 import org.jmrtd.lds.icao.DG2File;
 import org.jmrtd.lds.iso19794.FaceImageInfo;
 import org.jmrtd.lds.iso19794.FaceInfo;
 import org.jmrtd.lds.icao.MRZInfo;
 import org.jmrtd.lds.PACEInfo;
-import org.jmrtd.lds.SODFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,7 +74,6 @@ import java.util.List;
 import java.util.Locale;
 
 import pantallas.MainCompletarDatos;
-import pantallas.main_productos;
 
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
@@ -356,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
             String file = "";
             s.append(" (");
             for (StackTraceElement element : stack) {
-                if (count > 0 && element.getClassName().startsWith("com.tananaev")) {
+                if (count > 0 && element.getClassName().startsWith("com.ingsoft")) {
                     if (!first) {
                         s.append(" < ");
                     } else {

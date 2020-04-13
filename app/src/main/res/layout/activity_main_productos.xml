@@ -30,6 +30,7 @@
             android:layout_marginBottom="10dp"
             app:fontFamily="@font/lato"
             android:includeFontPadding="true"
+            android:textAlignment="center"
             android:text="Nuestros Productos"
             android:textSize="20dp"/>
 

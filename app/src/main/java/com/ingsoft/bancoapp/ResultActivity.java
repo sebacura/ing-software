@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tananaev.passportreader;
+package com.ingsoft.bancoapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import pantallas.MainCompletarDatos;
-import pantallas.main_productos;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -46,6 +44,8 @@ public class ResultActivity extends AppCompatActivity {
 //    public static final String KEY_PHOTO_BASE64 = "photoBase64";
 
     Button btnIrFormulario2;
+    View btnTomarFoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +62,18 @@ public class ResultActivity extends AppCompatActivity {
 //        ((TextView) findViewById(R.id.output_nationality)).setText(getIntent().getStringExtra(KEY_NATIONALITY));
         ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
 
+
+        //Tomar foto desde app
+        btnTomarFoto = findViewById(R.id.btnTomarFoto);
+        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
+
+        //Fin tomar foto desde app
+
         btnIrFormulario2 = (Button)findViewById(R.id.irFormulario2);
 
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +86,8 @@ public class ResultActivity extends AppCompatActivity {
 //        if (getIntent().hasExtra(KEY_PHOTO)) {
 //            ((ImageView) findViewById(R.id.view_photo)).setImageBitmap((Bitmap) getIntent().getParcelableExtra(KEY_PHOTO));
 //        }
+
+
 
         // bottom nav bar
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -98,4 +112,12 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
 }

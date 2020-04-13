@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -25,8 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.tananaev.passportreader.R;
-import com.tananaev.passportreader.StatusActivity;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.ResultActivity;
+import com.ingsoft.bancoapp.StatusActivity;
+import com.ingsoft.bancoapp.SuccessActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +40,7 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
     private EditText et1;
     private EditText et2;
     private EditText ubic;
-    private Switch mySwitch;
+    private CheckBox mySwitch;
     public LocationManager handle;
     private String provider;
     private TextView txtGPS;
@@ -54,7 +57,7 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
 
         et1 = findViewById(R.id.txt_sueldo);
         et2 = findViewById(R.id.txt_direcc);
-        mySwitch = (Switch) findViewById(R.id.swubic);
+        mySwitch = (CheckBox) findViewById(R.id.chubic);
         txtGPS = (TextView) findViewById(R.id.txtGPS);
        // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
        // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
@@ -164,36 +167,41 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
         }
 
         public void pararServicio(){
-            handle.removeUpdates(this);
-            etxtLatitud.setText(null);
-            etxtLongitud.setText(null);
+//            handle.removeUpdates(this);
+//            etxtLatitud.setText(null);
+//            etxtLongitud.setText(null);
             etxtDirec.setText(null);
             Toast.makeText(this, "Busqueda de ubicación desactivada", Toast.LENGTH_SHORT).show();
-
-
         }
 
     public void agregarUbicActual(View view){
-        et2.setText(etxtDirec.getText());
+
+        boolean checked = ((CheckBox) view).isChecked();
+        if (checked) {
+            et2.setText(etxtDirec.getText());
+            et2.setVisibility(View.GONE);
+        } else{
+            et2.setVisibility(View.VISIBLE);
+            et2.setText(null);
+        }
     }
     public void btnSig(View view){
         String v1= et1.getText().toString();
         String v2= et2.getText().toString();
-        int salario= Integer.parseInt(v1);
-
         if(v1.isEmpty()){
             Toast.makeText(this, "Debe ingresar su salario", Toast.LENGTH_LONG).show();
-        }else {
-
+        } else {
+            int salario = Integer.parseInt(v1);
             if (salario < 0) {
                 Toast.makeText(this, "Salario no aceptado", Toast.LENGTH_LONG).show();
             } else if (salario < 10000) {
                 Toast.makeText(this, "Su salario no es suficiente para solicitar una tarjeta, disculpe", Toast.LENGTH_LONG).show();
+            } else if (v2.isEmpty()) {
+                Toast.makeText(this, "Debe ingresar su dirección", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(MainCompletarDatos.this, SuccessActivity.class);
+                startActivity(intent);
             }
-        }
-
-        if(v2.isEmpty()){
-            Toast.makeText(this, "Debe ingresar su dirección", Toast.LENGTH_LONG).show();
         }
 
     }

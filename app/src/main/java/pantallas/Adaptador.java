@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tananaev.passportreader.R;
+import com.ingsoft.bancoapp.R;
 
 import java.util.ArrayList;
 

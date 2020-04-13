@@ -17,10 +17,12 @@ package com.ingsoft.bancoapp;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.AsyncTask;
@@ -43,6 +45,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -115,11 +118,23 @@ public class MainActivity extends AppCompatActivity {
     Button btnIrFormulario2;
 
     View btnTomarFoto;
+    NfcAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Controlo que tenga NFC y que lo tenga prendido
+        NfcManager manager = (NfcManager) getSystemService(Context.NFC_SERVICE);
+        adapter = manager.getDefaultAdapter();
+
+        if (adapter != null && !adapter.isEnabled()) {
+            Toast.makeText(getApplicationContext(), "Debe encender el NFC de su celular!", Toast.LENGTH_LONG).show();
+        }else if (adapter==null){
+            Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
+        }
+
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);

@@ -65,7 +65,7 @@
             android:layout_width="380dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="Ingrese su salario"
+            android:hint="Ingrese su salario en pesos uruguayos"
             android:inputType="number"
             android:textColor="@color/black"
             android:textSize="18sp"

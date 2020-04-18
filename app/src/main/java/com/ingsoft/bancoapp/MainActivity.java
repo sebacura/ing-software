@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
@@ -29,6 +31,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -65,7 +69,11 @@ import org.jmrtd.lds.icao.MRZInfo;
 import org.jmrtd.lds.PACEInfo;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -111,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText expirationDateView;
     private EditText birthDateView;
     private boolean passportNumberFromIntent = false;
-    private boolean encodePhotoToBase64 = false;
+    private boolean encodePhotoToBase64 = true;
     private View camposLayout;
     private View loadingLayout;
 
@@ -131,20 +139,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (adapter != null && !adapter.isEnabled()) {
             Toast.makeText(getApplicationContext(), "Debe encender el NFC de su celular!", Toast.LENGTH_LONG).show();
-        }else if (adapter==null){
+        }else if (adapter==null) {
             Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
         }
-
-
-        //Tomar foto desde app
-        btnTomarFoto = findViewById(R.id.btnTomarFoto);
-        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dispatchTakePictureIntent();
-            }
-        });
-        //Fin tomar foto desde app
 
         //Pasar a siguiente pantalla
         btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
@@ -162,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
         String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
         String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
         String passportNumber = getIntent().getStringExtra("passportNumber");
-//        encodePhotoToBase64 = getIntent().getBooleanExtra("photoAsBase64", false);
 
         if (dateOfBirth != null) {
             PreferenceManager.getDefaultSharedPreferences(this)
@@ -251,24 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            imageView.setImageBitmap(imageBitmap);
-        }
     }
 
     @Override
@@ -483,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                 if (getCallingActivity() != null) {
                     intent = new Intent();
                 } else {
-                    intent = new Intent(MainActivity.this, ResultActivity.class);
+                    intent = new Intent(getApplicationContext(), ResultActivity.class);
                 }
 
                 MRZInfo mrzInfo = dg1File.getMRZInfo();
@@ -495,24 +473,16 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(ResultActivity.KEY_NATIONALITY, mrzInfo.getNationality());
                 intent.putExtra(ResultActivity.KEY_CI, mrzInfo.getPersonalNumber());
 
-//                if (bitmap != null) {
-//                    if (encodePhotoToBase64) {
-//                        intent.putExtra(ResultActivity.KEY_PHOTO_BASE64, imageBase64);
-//                    } else {
-//                        double ratio = 320.0 / bitmap.getHeight();
-//                        int targetHeight = (int) (bitmap.getHeight() * ratio);
-//                        int targetWidth = (int) (bitmap.getWidth() * ratio);
-//
-//                        intent.putExtra(ResultActivity.KEY_PHOTO,
-//                            Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, false));
-//                    }
-//                }
+                if (bitmap != null) {
+                    intent.putExtra(ResultActivity.KEY_CI_PHOTO_BASE64, imageBase64);
+                }
 
                 if (getCallingActivity() != null) {
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 } else {
                     startActivity(intent);
+                    overridePendingTransition(0,0);
                 }
 
             } else {
@@ -521,5 +491,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 }

@@ -28,7 +28,6 @@ import pantallas.main_productos;
 public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     View loadingLayout;
-
     View errorMessage;
     private Menu _menu = null;
 
@@ -59,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-                        EditText username   = (EditText)findViewById(R.id.username);
+                        EditText username = (EditText)findViewById(R.id.username);
                         setContentView(R.layout.activity_dashboard);
 
                         MenuItem logout = (MenuItem) _menu.findItem(R.id.item_logout);

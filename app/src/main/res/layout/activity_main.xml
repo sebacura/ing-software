@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Formulario de solicitud"
+        android:layout_marginTop="20dp"
         android:textSize="20sp"
         app:fontFamily="@font/lato"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -77,18 +78,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.225">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:text="Para comenzar, utilizaremos su cédula y una foto suya tomada en el momento para comprobar su identidad y extraer sus datos personales."
-            android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            tools:layout_editor_absoluteX="12dp"
-            tools:layout_editor_absoluteY="73dp" />
 
         <TextView
             android:id="@+id/textViewPaso1"
@@ -103,11 +92,23 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="177dp" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:text="Para comenzar, escanearemos su cédula mediante NFC para poder extraer sus datos personales."
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="73dp" />
+
         <ImageView
             android:id="@+id/imgPhone"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="13dp"
             android:layout_gravity="center"
             app:srcCompat="@drawable/ic_telefono_celular" />
@@ -134,7 +135,7 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="Complete los siguientes datos y apoye la cédula detrás de su celular."
             android:textSize="18sp"
             android:gravity="center"
@@ -148,6 +149,7 @@
             android:layout_gravity="center"
             android:orientation="vertical"
             android:gravity="center"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -194,6 +196,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:visibility="gone"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -255,43 +258,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewPaso2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Paso 2"
-            android:textSize="25sp"
-            android:fontFamily="@font/lato"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="413dp" />
-
-        <ImageView
-            android:id="@+id/btnTomarFoto"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            app:srcCompat="@drawable/ic_foto" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="Oprima el botón para tomar la foto"
-            android:textSize="15sp"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="413dp" />
-
-        <!--        <Button-->
-<!--            android:id="@+id/btnTomarFoto"-->
-<!--            android:layout_width="138dp"-->
-<!--            android:layout_height="38dp"-->
-<!--            android:text="Tomar foto"-->
-<!--            tools:layout_editor_absoluteX="16dp"-->
-<!--            tools:layout_editor_absoluteY="469dp" />-->
 
     </LinearLayout>
 

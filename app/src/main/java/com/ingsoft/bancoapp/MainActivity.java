@@ -84,8 +84,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-import pantallas.MainCompletarDatos;
-
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
@@ -119,13 +117,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText expirationDateView;
     private EditText birthDateView;
     private boolean passportNumberFromIntent = false;
+
     private boolean encodePhotoToBase64 = true;
+
     private View camposLayout;
     private View loadingLayout;
 
     Button btnIrFormulario2;
 
-    View btnTomarFoto;
     NfcAdapter adapter;
 
     @Override
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
+                Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
             }
@@ -248,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     @Override
     protected void onResume() {
@@ -488,7 +490,19 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Snackbar.make(passportNumberView, exceptionStack(result), Snackbar.LENGTH_LONG).show();
             }
+            //Pasar a siguiente pantalla
+            btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
+            btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                }
+            });
+            //Fin pasar a siguiente pantalla
         }
+
 
     }
 }

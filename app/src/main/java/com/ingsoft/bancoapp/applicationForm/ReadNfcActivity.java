@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.applicationForm;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -21,8 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
@@ -31,15 +29,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -51,6 +46,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ingsoft.bancoapp.ImageUtil;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import net.sf.scuba.smartcards.CardFileInputStream;
@@ -69,11 +67,7 @@ import org.jmrtd.lds.icao.MRZInfo;
 import org.jmrtd.lds.PACEInfo;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,8 +81,8 @@ import java.util.Locale;
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class ReadNfcActivity extends AppCompatActivity {
+    private static final String TAG = ReadNfcActivity.class.getSimpleName();
     private final static String KEY_PASSPORT_NUMBER = "passportNumber";
     private final static String KEY_EXPIRATION_DATE = "expirationDate";
     private final static String KEY_BIRTH_DATE = "birthDate";
@@ -100,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 calendar.setTimeInMillis(new SimpleDateFormat("yyyy-MM-dd", Locale.US)
                         .parse(editText.getText().toString()).getTime());
             } catch (ParseException e) {
-                Log.w(MainActivity.class.getSimpleName(), e);
+                Log.w(ReadNfcActivity.class.getSimpleName(), e);
             }
         }
         return calendar;
@@ -195,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                PreferenceManager.getDefaultSharedPreferences(MainActivity.this)
+                PreferenceManager.getDefaultSharedPreferences(ReadNfcActivity.this)
                         .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
             }
         });
@@ -289,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
             return new SimpleDateFormat("yyMMdd", Locale.US)
                     .format(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(input));
         } catch (ParseException e) {
-            Log.w(MainActivity.class.getSimpleName(), e);
+            Log.w(ReadNfcActivity.class.getSimpleName(), e);
             return null;
         }
     }
@@ -442,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
                     InputStream inputStream = new ByteArrayInputStream(buffer, 0, imageLength);
 
                     bitmap = ImageUtil.decodeImage(
-                            MainActivity.this, faceImageInfo.getMimeType(), inputStream);
+                            ReadNfcActivity.this, faceImageInfo.getMimeType(), inputStream);
                     imageBase64 = Base64.encodeToString(buffer, Base64.DEFAULT);
                 }
 
@@ -459,31 +453,31 @@ public class MainActivity extends AppCompatActivity {
 
             if (result == null) {
 
-                Intent intent;
+                Intent resultActivityIntent;
                 if (getCallingActivity() != null) {
-                    intent = new Intent();
+                    resultActivityIntent = new Intent();
                 } else {
-                    intent = new Intent(getApplicationContext(), ResultActivity.class);
+                    resultActivityIntent = new Intent(getApplicationContext(), ReadNfcResultActivity.class);
                 }
 
                 MRZInfo mrzInfo = dg1File.getMRZInfo();
 
-                intent.putExtra(ResultActivity.KEY_FIRST_NAME, mrzInfo.getSecondaryIdentifier().replace("<", " "));
-                intent.putExtra(ResultActivity.KEY_LAST_NAME, mrzInfo.getPrimaryIdentifier().replace("<", " "));
-                intent.putExtra(ResultActivity.KEY_GENDER, mrzInfo.getGender().toString());
-                intent.putExtra(ResultActivity.KEY_STATE, mrzInfo.getIssuingState());
-                intent.putExtra(ResultActivity.KEY_NATIONALITY, mrzInfo.getNationality());
-                intent.putExtra(ResultActivity.KEY_CI, mrzInfo.getPersonalNumber());
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_FIRST_NAME, mrzInfo.getSecondaryIdentifier().replace("<", " "));
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_LAST_NAME, mrzInfo.getPrimaryIdentifier().replace("<", " "));
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_GENDER, mrzInfo.getGender().toString());
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_STATE, mrzInfo.getIssuingState());
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_NATIONALITY, mrzInfo.getNationality());
+                resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_CI, mrzInfo.getPersonalNumber());
 
                 if (bitmap != null) {
-                    intent.putExtra(ResultActivity.KEY_CI_PHOTO_BASE64, imageBase64);
+                    resultActivityIntent.putExtra(ReadNfcResultActivity.KEY_CI_PHOTO_BASE64, imageBase64);
                 }
 
                 if (getCallingActivity() != null) {
-                    setResult(Activity.RESULT_OK, intent);
+                    setResult(Activity.RESULT_OK, resultActivityIntent);
                     finish();
                 } else {
-                    startActivity(intent);
+                    startActivity(resultActivityIntent);
                     overridePendingTransition(0,0);
                 }
 

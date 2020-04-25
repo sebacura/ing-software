@@ -1,4 +1,4 @@
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.applicationForm;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +15,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -22,7 +24,6 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import pantallas.MainCompletarDatos;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -39,7 +40,6 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
@@ -112,13 +112,12 @@ public class PhotoActivity extends AppCompatActivity {
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-
                         // TO DO: add check logic if backend's answer is success: true or false,
                         // if false, show message to user that his photo wasn't good enough to comparison
                         // or the error that causes the success:false,
                         // if success:true, it means that the comparison of photos was ok.
 
-                        Intent intent = new Intent(getApplicationContext(), MainCompletarDatos.class);
+                        Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
                         startActivity(intent);
                         overridePendingTransition(0,0);
                     }
@@ -140,8 +139,8 @@ public class PhotoActivity extends AppCompatActivity {
 //                Log.d("cameraPicture", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
 //                Log.d("cameraPicture", KEY_CAMERA_PHOTO_BASE64);
 
-                params.put("cameraPicture", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
-                params.put("idCardPicture", KEY_CAMERA_PHOTO_BASE64);
+                params.put("idCardPicture", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
+                params.put("cameraPicture", KEY_CAMERA_PHOTO_BASE64);
                 return params;
             }
         };

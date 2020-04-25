@@ -134,7 +134,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
 
-    tools:context=".ResultActivity">
+    tools:context=".applicationForm.ReadNfcResultActivity">
 
     <TextView
         android:id="@+id/textView"

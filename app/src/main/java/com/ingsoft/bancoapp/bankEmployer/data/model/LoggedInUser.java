@@ -1,4 +1,4 @@
-package com.ingsoft.bancoapp.data.model;
+package com.ingsoft.bancoapp.bankEmployer.data.model;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

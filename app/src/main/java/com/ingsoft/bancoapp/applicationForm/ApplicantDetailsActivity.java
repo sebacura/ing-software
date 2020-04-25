@@ -1,4 +1,4 @@
-package pantallas;
+package com.ingsoft.bancoapp.applicationForm;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,21 +21,18 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
-import com.ingsoft.bancoapp.ResultActivity;
-import com.ingsoft.bancoapp.StatusActivity;
-import com.ingsoft.bancoapp.SuccessActivity;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class MainCompletarDatos extends AppCompatActivity implements LocationListener {
+public class ApplicantDetailsActivity extends AppCompatActivity implements LocationListener {
 
     private EditText et1;
     private EditText et2;
@@ -106,7 +103,7 @@ public class MainCompletarDatos extends AppCompatActivity implements LocationLis
         txtGPS.setText("Proveedor: " + provider);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mySwitch.setChecked(false);
-            ActivityCompat.requestPermissions(MainCompletarDatos.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120); //*** Agrega la petición!
+            ActivityCompat.requestPermissions(ApplicantDetailsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120); //*** Agrega la petición!
         } else {
             Toast.makeText(this, "Busqueda de ubicación activada", Toast.LENGTH_SHORT).show();
             muestraPosicionActual();

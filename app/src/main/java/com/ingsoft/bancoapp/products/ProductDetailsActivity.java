@@ -1,4 +1,4 @@
-package pantallas;
+package com.ingsoft.bancoapp.products;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,13 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.ingsoft.bancoapp.MainActivity;
 import com.ingsoft.bancoapp.R;
-import com.ingsoft.bancoapp.StatusActivity;
+import com.ingsoft.bancoapp.applicationForm.ReadNfcActivity;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
-import static pantallas.main_productos.obtenerTarjeta;
+import pantallas.Entidad;
 
-public class detalles_producto extends AppCompatActivity {
+import static com.ingsoft.bancoapp.products.ProductListActivity.obtenerTarjeta;
+
+public class ProductDetailsActivity extends AppCompatActivity {
 
     private TextView tituloTarjeta;
     private Entidad tarjeta = obtenerTarjeta();
@@ -59,7 +61,7 @@ public class detalles_producto extends AppCompatActivity {
     }
 
     public void irAFormulario(View v){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ReadNfcActivity.class);
         startActivity(intent);
         overridePendingTransition(0,0);
     }

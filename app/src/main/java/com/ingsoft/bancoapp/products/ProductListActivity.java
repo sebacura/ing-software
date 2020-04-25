@@ -1,4 +1,4 @@
-package pantallas;
+package com.ingsoft.bancoapp.products;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,14 +12,17 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.ingsoft.bancoapp.LoginActivity;
-import com.ingsoft.bancoapp.MainActivity;
+import com.ingsoft.bancoapp.bankEmployer.LoginActivity;
 import com.ingsoft.bancoapp.R;
-import com.ingsoft.bancoapp.StatusActivity;
+import com.ingsoft.bancoapp.applicationForm.ReadNfcActivity;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
 import java.util.ArrayList;
 
-public class main_productos extends AppCompatActivity {
+import pantallas.Adaptador;
+import pantallas.Entidad;
+
+public class ProductListActivity extends AppCompatActivity {
 
     private ListView lvItems;
     private Adaptador adaptador;
@@ -57,7 +60,7 @@ public class main_productos extends AppCompatActivity {
     }
 
     public void irAFormulario(View v){
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), ReadNfcActivity.class);
         startActivity(intent);
         overridePendingTransition(0,0);
     }
@@ -66,7 +69,7 @@ public class main_productos extends AppCompatActivity {
 
     public void verDetalles(View v){
         idBoton = v.getId();
-        Intent intent = new Intent(getApplicationContext(), detalles_producto.class);
+        Intent intent = new Intent(getApplicationContext(), ProductDetailsActivity.class);
         startActivity(intent);
         overridePendingTransition(0,0);
     }

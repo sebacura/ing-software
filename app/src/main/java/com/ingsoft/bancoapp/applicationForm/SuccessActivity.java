@@ -1,12 +1,13 @@
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.applicationForm;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import pantallas.MainCompletarDatos;
+
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
 public class SuccessActivity extends AppCompatActivity {
     View click;

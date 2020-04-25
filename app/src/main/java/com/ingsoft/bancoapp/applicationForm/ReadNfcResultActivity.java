@@ -13,42 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.applicationForm;
 
-import android.app.MediaRouteButton;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.myApplications.StatusActivity;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import pantallas.MainCompletarDatos;
-
-public class ResultActivity extends AppCompatActivity {
+public class ReadNfcResultActivity extends AppCompatActivity {
 
     public static final String KEY_FIRST_NAME = "firstName";
     public static final String KEY_LAST_NAME = "lastName";
@@ -57,7 +40,6 @@ public class ResultActivity extends AppCompatActivity {
     public static final String KEY_NATIONALITY = "nationality";
     public static final String KEY_CI = "ci";
     public static final String KEY_CI_PHOTO_BASE64="";
-    public String KEY_CAMERA_PHOTO_BASE64 = "";
 
     Button btnIrFormulario2;
     View btnTomarFoto;
@@ -105,12 +87,12 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
+                Log.d("ci base 64", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
+                intent.putExtra(PhotoActivity.KEY_CI_PHOTO_BASE64, getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
                 startActivity(intent);
                 overridePendingTransition(0,0);
             }
         });
         //Fin pasar a siguiente pantalla
-
-
     }
 }

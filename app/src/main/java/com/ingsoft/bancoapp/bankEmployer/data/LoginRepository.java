@@ -1,6 +1,6 @@
-package com.ingsoft.bancoapp.data;
+package com.ingsoft.bancoapp.bankEmployer.data;
 
-import com.ingsoft.bancoapp.data.model.LoggedInUser;
+import com.ingsoft.bancoapp.bankEmployer.data.model.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

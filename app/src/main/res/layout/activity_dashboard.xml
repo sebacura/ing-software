@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
     android:fitsSystemWindows="true"
-    tools:context=".DashboardActivity">
+    tools:context=".bankEmployer.DashboardActivity">
 
     <TextView
         android:id="@+id/textView"

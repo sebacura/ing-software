@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:onClick="verDetalles"
     android:orientation="horizontal"
-    tools:context="pantallas.main_productos">
+    tools:context=".products.ProductListActivity">
 
     <ImageView
         android:id="@+id/imgFoto"

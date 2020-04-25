@@ -1,4 +1,4 @@
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.myApplications;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ingsoft.bancoapp.products.ProductListActivity;
+import com.ingsoft.bancoapp.R;
 import com.kofigyan.stateprogressbar.StateProgressBar;
-
-import pantallas.main_productos;
 
 public class StatusActivity extends AppCompatActivity {
     String[] descriptionData = {"En\nproceso", "Aprobado", "En\nimpresión", "En\ncamino","Entregado"};
@@ -31,7 +31,7 @@ public class StatusActivity extends AppCompatActivity {
                     case R.id.action_status:
                         return true;
                     case R.id.action_main:
-                        Intent a = new Intent(getApplicationContext(), main_productos.class);
+                        Intent a = new Intent(getApplicationContext(), ProductListActivity.class);
                         startActivity(a);
                         overridePendingTransition(0,0);
                         return true;

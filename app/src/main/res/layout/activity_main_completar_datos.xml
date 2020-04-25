@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context="pantallas.MainCompletarDatos">
+    tools:context=".applicationForm.ApplicantDetailsActivity">
     <!--    <TextView-->
 <!--        android:id="@+id/Paso3"-->
 <!--        android:layout_width="357dp"-->

@@ -1,6 +1,5 @@
-package com.ingsoft.bancoapp;
+package com.ingsoft.bancoapp.bankEmployer;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +7,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -17,13 +15,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.products.ProductListActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
-import pantallas.main_productos;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
@@ -108,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_logout:
                 finish();
-                Intent intent = new Intent(getApplicationContext(), main_productos.class);
+                Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 return true;

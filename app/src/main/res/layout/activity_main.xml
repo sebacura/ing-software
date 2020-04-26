@@ -9,20 +9,22 @@
     android:background="@color/backgroundColor"
     tools:context=".applicationForm.ReadNfcActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Formulario de solicitud"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        app:fontFamily="@font/lato"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+    <com.otaliastudios.cameraview.CameraView
+        android:visibility="gone"
+        android:id="@+id/camera"
+        android:keepScreenOn="true"
+        android:layout_width="match_parent"
+        app:cameraExperimental="false"
+        app:cameraEngine="camera1"
+        app:cameraMode="picture"
+        app:cameraAudio="off"
+        app:cameraPlaySounds="false"
+        android:layout_height="match_parent">
+
+
+    </com.otaliastudios.cameraview.CameraView>
+
+
 
     <!--    <ScrollView-->
 <!--        android:id="@+id/main_layout"-->
@@ -78,7 +80,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.225">
-
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Formulario de solicitud"
+            android:textSize="20sp"
+            app:fontFamily="@font/lato"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.022" />
         <TextView
             android:id="@+id/textViewPaso1"
             android:layout_width="match_parent"
@@ -131,16 +146,24 @@
 <!--            android:layout_gravity="right"-->
 <!--            app:srcCompat="@drawable/ic_question_black" />-->
 
-        <TextView
-            android:id="@+id/textView3"
+
+        <ImageView
+            android:id="@+id/btnLeerMrz"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Complete los siguientes datos y apoye la cédula detrás de su celular."
-            android:textSize="18sp"
-            android:gravity="center"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="177dp" />
+            android:layout_height="58dp"
+            android:layout_marginTop="40dp"
+            app:srcCompat="@drawable/ic_foto" />
+
+        <!--        <TextView-->
+<!--            android:id="@+id/textView3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:text="Complete los siguientes datos y apoye la cédula detrás de su celular."-->
+<!--            android:textSize="18sp"-->
+<!--            android:gravity="center"-->
+<!--            tools:layout_editor_absoluteX="0dp"-->
+<!--            tools:layout_editor_absoluteY="177dp" />-->
 
         <LinearLayout
             android:id="@+id/campos"
@@ -156,36 +179,62 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.278">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_date_of_birth"
+            <TextView
+                android:id="@+id/date_of_birth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:hint="Fecha de nacimiento"
+                android:textSize="20dp"
+                android:layout_marginTop="10dp"
                 android:textAlignment="center"
-                android:inputType="date"
-                tools:layout_editor_absoluteX="19dp"
-                tools:layout_editor_absoluteY="343dp" />
+                tools:text="Fecha de nacimiento" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_expiration_date"
+            <TextView
+                android:id="@+id/expiry_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="false"
-                android:hint="Fecha de vencimiento"
-                android:inputType="date"
+                android:layout_marginTop="10dp"
+                android:textSize="20dp"
                 android:textAlignment="center"
-                tools:layout_editor_absoluteX="18dp"
-                tools:layout_editor_absoluteY="286dp" />
+                tools:text="Fecha de vencimiento" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_passport_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/ci_code"
+                android:textSize="20dp"
                 android:textAlignment="center"
-                android:hint="Código detrás de cedula (9 caracteres)"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="230dp" />
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                tools:text="Código" />
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/input_date_of_birth"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:focusableInTouchMode="false"-->
+<!--                android:hint="Fecha de nacimiento"-->
+<!--                android:textAlignment="center"-->
+<!--                android:inputType="date"-->
+<!--                tools:layout_editor_absoluteX="19dp"-->
+<!--                tools:layout_editor_absoluteY="343dp" />-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/input_expiration_date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:focusableInTouchMode="false"-->
+<!--                android:hint="Fecha de vencimiento"-->
+<!--                android:inputType="date"-->
+<!--                android:textAlignment="center"-->
+<!--                tools:layout_editor_absoluteX="18dp"-->
+<!--                tools:layout_editor_absoluteY="286dp" />-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/input_passport_number"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textAlignment="center"-->
+<!--                android:hint="Código detrás de cedula (9 caracteres)"-->
+<!--                tools:layout_editor_absoluteX="16dp"-->
+<!--                tools:layout_editor_absoluteY="230dp" />-->
         </LinearLayout>
 
         <LinearLayout

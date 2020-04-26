@@ -21,6 +21,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
 import android.nfc.Tag;
@@ -44,11 +49,19 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingsoft.bancoapp.ImageUtil;
 import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.FrameOverlay;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.TextRecognitionHelper;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
+import com.otaliastudios.cameraview.CameraListener;
+import com.otaliastudios.cameraview.CameraOptions;
+import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.frame.Frame;
+import com.otaliastudios.cameraview.frame.FrameProcessor;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import net.sf.scuba.smartcards.CardFileInputStream;
@@ -67,7 +80,9 @@ import org.jmrtd.lds.icao.MRZInfo;
 import org.jmrtd.lds.PACEInfo;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +92,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
 import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
@@ -86,6 +102,21 @@ public class ReadNfcActivity extends AppCompatActivity {
     private final static String KEY_PASSPORT_NUMBER = "passportNumber";
     private final static String KEY_EXPIRATION_DATE = "expirationDate";
     private final static String KEY_BIRTH_DATE = "birthDate";
+
+    private CameraView camera;
+
+    private FrameOverlay viewFinder;
+
+    private TextRecognitionHelper textRecognitionHelper;
+
+    private AtomicBoolean processing = new AtomicBoolean(false);
+
+    private ReadNfcActivity.ProcessOCR processOCR;
+
+    private Bitmap originalBitmap = null;
+    private Bitmap scannable = null;
+
+    private View main_layout;
 
     private Calendar loadDate(EditText editText) {
         Calendar calendar = Calendar.getInstance();
@@ -121,6 +152,9 @@ public class ReadNfcActivity extends AppCompatActivity {
 
     NfcAdapter adapter;
 
+    View btnLeerMrz;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +170,68 @@ public class ReadNfcActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
         }
 
+        //Abrir camara para leer mrz
+        btnLeerMrz = findViewById(R.id.btnLeerMrz);
+        btnLeerMrz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                camera = findViewById(R.id.camera);
+                camera.setVisibility(View.VISIBLE);
+                camera.setLifecycleOwner(ReadNfcActivity.this);
+                main_layout=findViewById(R.id.main_layout);
+                main_layout.setVisibility(View.GONE);
+
+
+                camera.addCameraListener(new CameraListener() {
+                    @Override
+                    public void onCameraOpened(@NonNull CameraOptions options) {
+                        viewFinder = new FrameOverlay(ReadNfcActivity.this);
+                        camera.addView(viewFinder);
+                        camera.addFrameProcessor(frameProcessor);
+                    }
+                });
+
+            }
+
+        });
+        //Fin abrir camara
+
+        //MZR READER
+        textRecognitionHelper = new TextRecognitionHelper(this, new TextRecognitionHelper.OnMRZScanned() {
+            @Override
+            public void onScanned(String mrzText) {
+                try {
+                    FileOutputStream fos = new FileOutputStream(getFilesDir().getAbsolutePath() + "/" + "mrzimage.png");
+                    originalBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(getFilesDir().getAbsolutePath() + "/" + "scannable.png");
+                    scannable.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.e("Found MRZ123", mrzText);
+                camera.removeFrameProcessor(frameProcessor);
+
+//                new AlertDialog.Builder(MrzReaderActivity.this)
+//                        .setTitle("Scanned MRZ")
+//                        .setMessage(mrzText)
+//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                processing.set(false);
+//                                camera.addFrameProcessor(frameProcessor);
+//                            }
+//                        })
+//                        .show();
+            }
+        });
+
         //Pasar a siguiente pantalla
         btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
         btnIrFormulario2.setOnClickListener(new View.OnClickListener() {
@@ -149,9 +245,9 @@ public class ReadNfcActivity extends AppCompatActivity {
         //Fin pasar a siguiente pantalla
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String dateOfBirth = getIntent().getStringExtra("dateOfBirth");
-        String dateOfExpiry = getIntent().getStringExtra("dateOfExpiry");
-        String passportNumber = getIntent().getStringExtra("passportNumber");
+        String dateOfBirth = getIntent().getStringExtra("date_of_birth");
+        String dateOfExpiry = getIntent().getStringExtra("expiry_date");
+        String passportNumber = getIntent().getStringExtra("ci_code");
 
         if (dateOfBirth != null) {
             PreferenceManager.getDefaultSharedPreferences(this)
@@ -167,60 +263,60 @@ public class ReadNfcActivity extends AppCompatActivity {
             passportNumberFromIntent = true;
         }
 
-        passportNumberView = findViewById(R.id.input_passport_number);
-        expirationDateView = findViewById(R.id.input_expiration_date);
-        birthDateView = findViewById(R.id.input_date_of_birth);
+//        passportNumberView = findViewById(R.id.input_passport_number);
+//        expirationDateView = findViewById(R.id.input_expiration_date);
+//        birthDateView = findViewById(R.id.input_date_of_birth);
 
         camposLayout = findViewById(R.id.campos);
         loadingLayout = findViewById(R.id.loading_layout);
 
-        passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
-        expirationDateView.setText(preferences.getString(KEY_EXPIRATION_DATE, null));
-        birthDateView.setText(preferences.getString(KEY_BIRTH_DATE, null));
+//        passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
+//        expirationDateView.setText(preferences.getString(KEY_EXPIRATION_DATE, null));
+//        birthDateView.setText(preferences.getString(KEY_BIRTH_DATE, null));
 
-        passportNumberView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+//        passportNumberView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                PreferenceManager.getDefaultSharedPreferences(ReadNfcActivity.this)
+//                        .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
+//            }
+//        });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+//        expirationDateView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar c = loadDate(expirationDateView);
+//                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//                        saveDate(expirationDateView, year, monthOfYear, dayOfMonth, KEY_EXPIRATION_DATE);
+//                    }
+//                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+//                getFragmentManager().beginTransaction().add(dialog, null).commit();
+//            }
+//        });
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                PreferenceManager.getDefaultSharedPreferences(ReadNfcActivity.this)
-                        .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
-            }
-        });
-
-        expirationDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar c = loadDate(expirationDateView);
-                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        saveDate(expirationDateView, year, monthOfYear, dayOfMonth, KEY_EXPIRATION_DATE);
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                getFragmentManager().beginTransaction().add(dialog, null).commit();
-            }
-        });
-
-        birthDateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar c = loadDate(birthDateView);
-                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                        saveDate(birthDateView, year, monthOfYear, dayOfMonth, KEY_BIRTH_DATE);
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-                getFragmentManager().beginTransaction().add(dialog, null).commit();
-            }
-        });
+//        birthDateView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Calendar c = loadDate(birthDateView);
+//                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+//                    @Override
+//                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//                        saveDate(birthDateView, year, monthOfYear, dayOfMonth, KEY_BIRTH_DATE);
+//                    }
+//                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+//                getFragmentManager().beginTransaction().add(dialog, null).commit();
+//            }
+//        });
 
         // bottom nav bar
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -499,4 +595,151 @@ public class ReadNfcActivity extends AppCompatActivity {
 
 
     }
+
+    //PARA LEER EL MRZ CON LA CAMARA
+    private FrameProcessor frameProcessor = new FrameProcessor() {
+        @Override
+        public void process(@NonNull Frame frame) {
+            if (frame.getData() != null && !processing.get()) {
+                processing.set(true);
+
+                YuvImage yuvImage = new YuvImage(frame.getData(), ImageFormat.NV21, frame.getSize().getWidth(), frame.getSize().getHeight(), null);
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                yuvImage.compressToJpeg(new Rect(0, 0, frame.getSize().getWidth(), frame.getSize().getHeight()), 100, os);
+                byte[] jpegByteArray = os.toByteArray();
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(jpegByteArray, 0, jpegByteArray.length);
+
+                if(bitmap != null) {
+                    bitmap = rotateImage(bitmap, frame.getRotation());
+
+                    bitmap = getViewFinderArea(bitmap);
+
+                    originalBitmap = bitmap;
+
+                    scannable = getScannableArea(bitmap);
+
+                    processOCR = new ReadNfcActivity.ProcessOCR();
+                    processOCR.setBitmap(scannable);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            processOCR.execute();
+                            if (textRecognitionHelper.code!=null){
+                                Log.d("aaaaaaa", textRecognitionHelper.code);
+                            }
+                            if (textRecognitionHelper.code!= null && textRecognitionHelper.date_of_birth!=null && textRecognitionHelper.expiry_date!=null) {
+                                ((TextView) findViewById(R.id.date_of_birth)).setText(textRecognitionHelper.date_of_birth);
+                                ((TextView) findViewById(R.id.expiry_date)).setText(textRecognitionHelper.expiry_date);
+                                ((TextView) findViewById(R.id.ci_code)).setText(textRecognitionHelper.code);
+                                camera.setVisibility(View.GONE);
+                                main_layout.setVisibility(View.VISIBLE);
+                                camera.removeFrameProcessor(frameProcessor);
+                                return;
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    };
+
+    private Bitmap getViewFinderArea(Bitmap bitmap) {
+        int sizeInPixel = getResources().getDimensionPixelSize(R.dimen.frame_margin);
+        int center = bitmap.getHeight() / 2;
+
+        int left = sizeInPixel;
+        int right = bitmap.getWidth() - sizeInPixel;
+        int width = right - left;
+        int frameHeight = (int) (width / 1.42f); // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
+
+        int top = center - (frameHeight / 2);
+
+        bitmap = Bitmap.createBitmap(bitmap, left, top,
+                width, frameHeight);
+
+        return bitmap;
+    }
+
+    private Bitmap getScannableArea(Bitmap bitmap){
+        int top = bitmap.getHeight() * 4 / 10;
+
+        bitmap = Bitmap.createBitmap(bitmap, 0, top,
+                bitmap.getWidth(), bitmap.getHeight() - top);
+
+        return bitmap;
+    }
+
+    private Bitmap rotateImage(Bitmap bitmap, int rotate){
+        Log.v(TAG, "Rotation: " + rotate);
+
+        if (rotate != 0) {
+
+            // Getting width & height of the given image.
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+
+            // Setting pre rotate
+            Matrix mtx = new Matrix();
+            mtx.preRotate(rotate);
+
+            // Rotating Bitmap
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+        }
+
+        // Convert to ARGB_8888, required by tess
+        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        return bitmap;
+    }
+
+    /**
+     * reduces the size of the image
+     * @param image
+     * @param maxSize
+     * @return
+     */
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private class ProcessOCR extends AsyncTask {
+
+        Bitmap bitmap = null;
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            if (bitmap != null) {
+
+                textRecognitionHelper.setBitmap(bitmap);
+
+                textRecognitionHelper.doOCR();
+
+                textRecognitionHelper.stop();
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            processing.set(false);
+        }
+
+        public void setBitmap(Bitmap bitmap) {
+            this.bitmap = bitmap;
+        }
+    }
+
+
 }

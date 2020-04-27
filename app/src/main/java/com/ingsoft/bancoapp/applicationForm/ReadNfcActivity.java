@@ -111,32 +111,7 @@ public class ReadNfcActivity extends AppCompatActivity {
     private View main_layout;
     private View footer;
 
-    private Calendar loadDate(EditText editText) {
-        Calendar calendar = Calendar.getInstance();
-        if (!editText.getText().toString().isEmpty()) {
-            try {
-                calendar.setTimeInMillis(new SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                        .parse(editText.getText().toString()).getTime());
-            } catch (ParseException e) {
-                Log.w(ReadNfcActivity.class.getSimpleName(), e);
-            }
-        }
-        return calendar;
-    }
-
-    private void saveDate(EditText editText, int year, int monthOfYear, int dayOfMonth, String preferenceKey) {
-        String value = String.format(Locale.US, "%d-%02d-%02d", year, monthOfYear + 1, dayOfMonth);
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit().putString(preferenceKey, value).apply();
-        editText.setText(value);
-    }
-
-    private EditText passportNumberView;
-    private EditText expirationDateView;
-    private EditText birthDateView;
     private boolean passportNumberFromIntent = false;
-
-    private boolean encodePhotoToBase64 = true;
 
     private View camposLayout;
     private View loadingLayout;
@@ -223,19 +198,9 @@ public class ReadNfcActivity extends AppCompatActivity {
                     camera.removeFrameProcessor(frameProcessor);
                     return;
                 }
-
-//                new AlertDialog.Builder(MrzReaderActivity.this)
-//                        .setTitle("Scanned MRZ")
-//                        .setMessage(mrzText)
-//                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                processing.set(false);
-//                                camera.addFrameProcessor(frameProcessor);
-//                            }
-//                        })
-//                        .show();
             }
         });
+        //FIN LEER MRZ
 
         //Pasar a siguiente pantalla
         btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
@@ -249,63 +214,9 @@ public class ReadNfcActivity extends AppCompatActivity {
         });
         //Fin pasar a siguiente pantalla
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-
-//        passportNumberView = findViewById(R.id.input_passport_number);
-//        expirationDateView = findViewById(R.id.input_expiration_date);
-//        birthDateView = findViewById(R.id.input_date_of_birth);
 
         camposLayout = findViewById(R.id.campos);
         loadingLayout = findViewById(R.id.loading_layout);
-
-//        passportNumberView.setText(preferences.getString(KEY_PASSPORT_NUMBER, null));
-//        expirationDateView.setText(preferences.getString(KEY_EXPIRATION_DATE, null));
-//        birthDateView.setText(preferences.getString(KEY_BIRTH_DATE, null));
-
-//        passportNumberView.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                PreferenceManager.getDefaultSharedPreferences(ReadNfcActivity.this)
-//                        .edit().putString(KEY_PASSPORT_NUMBER, s.toString()).apply();
-//            }
-//        });
-
-//        expirationDateView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar c = loadDate(expirationDateView);
-//                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-//                        saveDate(expirationDateView, year, monthOfYear, dayOfMonth, KEY_EXPIRATION_DATE);
-//                    }
-//                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-//                getFragmentManager().beginTransaction().add(dialog, null).commit();
-//            }
-//        });
-
-//        birthDateView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Calendar c = loadDate(birthDateView);
-//                DatePickerDialog dialog = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-//                        saveDate(birthDateView, year, monthOfYear, dayOfMonth, KEY_BIRTH_DATE);
-//                    }
-//                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-//                getFragmentManager().beginTransaction().add(dialog, null).commit();
-//            }
-//        });
 
         // bottom nav bar
         BottomNavigationView navigation = findViewById(R.id.navigation);

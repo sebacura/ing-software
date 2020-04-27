@@ -1,17 +1,11 @@
 package com.ingsoft.bancoapp.applicationForm.mrzscanner;
 
-import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
-
-import com.googlecode.tesseract.android.TessBaseAPI;
-import com.ingsoft.bancoapp.R;
-import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.MrzParser;
-import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.MrzRecord;
-import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.types.MrzFormat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,8 +13,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import android.content.Context;
+
+import com.googlecode.leptonica.android.Pixa;
+import com.googlecode.tesseract.android.TessBaseAPI;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.MrzParser;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.MrzRecord;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.types.MrzFormat;
 
 /**
  * Created by jsjem on 17.11.2016.
@@ -44,16 +48,13 @@ public class TextRecognitionHelper {
 
 	private OnMRZScanned listener;
 
-	public String code;
-	public String expiry_date;
-	public String date_of_birth;
-
 	/**
 	 * Constructor.
 	 *
 	 * @param context Application context.
 	 */
 	public TextRecognitionHelper(final Context context, final OnMRZScanned listener) {
+
 		this.applicationContext = context.getApplicationContext();
 		this.listener = listener;
 		this.tessBaseApi = new TessBaseAPI();
@@ -147,21 +148,15 @@ public class TextRecognitionHelper {
 			try {
 				final MrzRecord mrzRecord = MrzParser.parse(mrzText);
 				Log.i("Mrz", mrzRecord.toString());
-
 				if(mrzRecord != null) {
 					if(supportedFormats.contains(mrzRecord.format)) {
 						boolean additionalPassportCheckOK = true;
-						if (mrzRecord.validDocumentNumber && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
-							this.code = mrzRecord.documentNumber;
-							this.expiry_date = mrzRecord.expirationDate.toString();
-							this.date_of_birth = mrzRecord.dateOfBirth.toString();
-							return;
-						}
+
 						if(additionalPassportCheckOK) {
 							new Handler(Looper.getMainLooper()).post(new Runnable() {
 								@Override
 								public void run() {
-									listener.onScanned(mrzRecord.toString());
+									listener.onScanned(mrzRecord);
 								}
 							});
 							return;
@@ -179,18 +174,15 @@ public class TextRecognitionHelper {
 		if(lines == null || lines.length < 1)
 			return null;
 		for(MrzFormat mrzFormat : mrzFormats) {
-			for (int i = lines.length - 1; i >= 0; i--) {
+			for (int i = lines.length - 1; i > 1; i--) {
 				String line2 = lines[i].replace(" ", "");
 				if(line2.length() >= mrzFormat.columns){
 					if(i == 0)
 						break;
 					String line1 = lines[i - 1].replace(" ", "");
 					if(line1.length() >= mrzFormat.columns)
-						if(mrzFormat.rows == 2)
-							return line1.substring(0, mrzFormat.columns) + "\n" +
-									line2.substring(0, mrzFormat.columns);
-						else if(mrzFormat.rows == 3){
-							if(lines.length < 2 || i < 1)
+						if(mrzFormat.rows == 3){
+							if(lines.length < 2 )
 								break;
 							String line0 = lines[i - 2].replace(" ", "");
 							if(line0.length() >= mrzFormat.columns)
@@ -200,8 +192,8 @@ public class TextRecognitionHelper {
 							else
 								break;
 						}
-					else
-						break;
+						else
+							break;
 				}
 			}
 		}
@@ -216,6 +208,6 @@ public class TextRecognitionHelper {
 	}
 
 	public interface OnMRZScanned{
-		void onScanned(String mrzText);
+		void onScanned(MrzRecord mrzText);
 	}
 }

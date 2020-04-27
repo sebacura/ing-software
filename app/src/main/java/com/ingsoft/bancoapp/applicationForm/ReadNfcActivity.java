@@ -56,6 +56,7 @@ import com.ingsoft.bancoapp.ImageUtil;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.applicationForm.mrzscanner.FrameOverlay;
 import com.ingsoft.bancoapp.applicationForm.mrzscanner.TextRecognitionHelper;
+import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.MrzRecord;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraOptions;
@@ -99,24 +100,16 @@ import static org.jmrtd.PassportService.NORMAL_MAX_TRANCEIVE_LENGTH;
 
 public class ReadNfcActivity extends AppCompatActivity {
     private static final String TAG = ReadNfcActivity.class.getSimpleName();
-    private final static String KEY_PASSPORT_NUMBER = "passportNumber";
-    private final static String KEY_EXPIRATION_DATE = "expirationDate";
-    private final static String KEY_BIRTH_DATE = "birthDate";
 
     private CameraView camera;
-
     private FrameOverlay viewFinder;
-
     private TextRecognitionHelper textRecognitionHelper;
-
     private AtomicBoolean processing = new AtomicBoolean(false);
-
     private ReadNfcActivity.ProcessOCR processOCR;
-
     private Bitmap originalBitmap = null;
     private Bitmap scannable = null;
-
     private View main_layout;
+    private View footer;
 
     private Calendar loadDate(EditText editText) {
         Calendar calendar = Calendar.getInstance();
@@ -180,7 +173,8 @@ public class ReadNfcActivity extends AppCompatActivity {
                 camera.setLifecycleOwner(ReadNfcActivity.this);
                 main_layout=findViewById(R.id.main_layout);
                 main_layout.setVisibility(View.GONE);
-
+                footer = findViewById(R.id.footer);
+                footer.setVisibility(View.GONE);
 
                 camera.addCameraListener(new CameraListener() {
                     @Override
@@ -199,7 +193,7 @@ public class ReadNfcActivity extends AppCompatActivity {
         //MZR READER
         textRecognitionHelper = new TextRecognitionHelper(this, new TextRecognitionHelper.OnMRZScanned() {
             @Override
-            public void onScanned(String mrzText) {
+            public void onScanned(MrzRecord mrzRecord) {
                 try {
                     FileOutputStream fos = new FileOutputStream(getFilesDir().getAbsolutePath() + "/" + "mrzimage.png");
                     originalBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -216,8 +210,19 @@ public class ReadNfcActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.e("Found MRZ123", mrzText);
-                camera.removeFrameProcessor(frameProcessor);
+                //Si tiene los valores correctos del MRZ, cierra la camara y prosigue al NFC
+                if (mrzRecord.documentNumber!= null && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
+                    ((TextView) findViewById(R.id.date_of_birth)).setText(mrzRecord.dateOfBirth.toString());
+                    ((TextView) findViewById(R.id.expiry_date)).setText(mrzRecord.expirationDate.toString());
+                    ((TextView) findViewById(R.id.ci_code)).setText(mrzRecord.documentNumber);
+                    camera.setVisibility(View.GONE);
+                    main_layout.setVisibility(View.VISIBLE);
+                    footer.setVisibility(View.VISIBLE);
+
+                    processing.set(false);
+                    camera.removeFrameProcessor(frameProcessor);
+                    return;
+                }
 
 //                new AlertDialog.Builder(MrzReaderActivity.this)
 //                        .setTitle("Scanned MRZ")
@@ -245,23 +250,7 @@ public class ReadNfcActivity extends AppCompatActivity {
         //Fin pasar a siguiente pantalla
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String dateOfBirth = getIntent().getStringExtra("date_of_birth");
-        String dateOfExpiry = getIntent().getStringExtra("expiry_date");
-        String passportNumber = getIntent().getStringExtra("ci_code");
 
-        if (dateOfBirth != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .edit().putString(KEY_BIRTH_DATE, dateOfBirth).apply();
-        }
-        if (dateOfExpiry != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit().putString(KEY_EXPIRATION_DATE, dateOfExpiry).apply();
-        }
-        if (passportNumber != null) {
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit().putString(KEY_PASSPORT_NUMBER, passportNumber).apply();
-            passportNumberFromIntent = true;
-        }
 
 //        passportNumberView = findViewById(R.id.input_passport_number);
 //        expirationDateView = findViewById(R.id.input_expiration_date);
@@ -391,9 +380,13 @@ public class ReadNfcActivity extends AppCompatActivity {
             Tag tag = intent.getExtras().getParcelable(NfcAdapter.EXTRA_TAG);
             if (Arrays.asList(tag.getTechList()).contains("android.nfc.tech.IsoDep")) {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-                String passportNumber = preferences.getString(KEY_PASSPORT_NUMBER, null);
-                String expirationDate = convertDate(preferences.getString(KEY_EXPIRATION_DATE, null));
-                String birthDate = convertDate(preferences.getString(KEY_BIRTH_DATE, null));
+                TextView ci_code   =  findViewById(R.id.ci_code);
+                TextView expiry_date   = findViewById(R.id.expiry_date);
+                TextView date_of_birth   =  findViewById(R.id.date_of_birth);
+
+                String passportNumber = ci_code.getText().toString();
+                String expirationDate = convertDate(expiry_date.getText().toString());
+                String birthDate = convertDate(date_of_birth.getText().toString());
                 if (passportNumber != null && !passportNumber.isEmpty()
                         && expirationDate != null && !expirationDate.isEmpty()
                         && birthDate != null && !birthDate.isEmpty()) {
@@ -402,7 +395,7 @@ public class ReadNfcActivity extends AppCompatActivity {
                     camposLayout.setVisibility(View.GONE);
                     loadingLayout.setVisibility(View.VISIBLE);
                 } else {
-                    Snackbar.make(passportNumberView, R.string.error_input, Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Primero debe leer la parte posterior de su cédula", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -578,7 +571,9 @@ public class ReadNfcActivity extends AppCompatActivity {
                 }
 
             } else {
-                Snackbar.make(passportNumberView, exceptionStack(result), Snackbar.LENGTH_LONG).show();
+                //agregar excepcion
+//                Toast.makeText(this, "No se puedo leer correctamente", Toast.LENGTH_LONG).show();
+
             }
             //Pasar a siguiente pantalla
             btnIrFormulario2 = (Button) findViewById(R.id.irFormulario2);
@@ -625,18 +620,7 @@ public class ReadNfcActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             processOCR.execute();
-                            if (textRecognitionHelper.code!=null){
-                                Log.d("aaaaaaa", textRecognitionHelper.code);
-                            }
-                            if (textRecognitionHelper.code!= null && textRecognitionHelper.date_of_birth!=null && textRecognitionHelper.expiry_date!=null) {
-                                ((TextView) findViewById(R.id.date_of_birth)).setText(textRecognitionHelper.date_of_birth);
-                                ((TextView) findViewById(R.id.expiry_date)).setText(textRecognitionHelper.expiry_date);
-                                ((TextView) findViewById(R.id.ci_code)).setText(textRecognitionHelper.code);
-                                camera.setVisibility(View.GONE);
-                                main_layout.setVisibility(View.VISIBLE);
-                                camera.removeFrameProcessor(frameProcessor);
-                                return;
-                            }
+
                         }
                     });
                 }

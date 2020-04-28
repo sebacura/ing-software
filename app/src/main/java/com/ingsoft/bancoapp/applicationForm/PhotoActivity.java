@@ -18,6 +18,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
+import com.ingsoft.bancoapp.tools.Tools;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -54,7 +55,13 @@ public class PhotoActivity extends AppCompatActivity {
         btnIrFormulario3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestPhotoComparison();
+                try {
+                    requestPhotoComparison();
+                } catch (Exception e) {
+                    // This will catch any exception, because they are all descended from Exception
+                    Log.d("Error", e.getMessage());
+                    Tools.exceptionToast(getApplicationContext(), "Service unavailable");
+                }
             }
         });
 

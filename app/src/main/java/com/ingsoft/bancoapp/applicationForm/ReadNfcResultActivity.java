@@ -87,8 +87,9 @@ public class ReadNfcResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-                Log.d("ci base 64", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
-                intent.putExtra(PhotoActivity.KEY_CI_PHOTO_BASE64, getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
+//                Log.d("1", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
+                intent.putExtra("CI_PHOTO_BASE_64", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
+                intent.putExtra("KEY_CI", getIntent().getStringExtra(KEY_CI));
                 startActivity(intent);
                 overridePendingTransition(0,0);
             }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,6 @@ public class PhotoActivity extends AppCompatActivity {
     View btnTomarFoto;
     Button btnIrFormulario3;
 
-    public static final String KEY_CI_PHOTO_BASE64="";
     public String KEY_CAMERA_PHOTO_BASE64 = "";
 
     View loadingLayout;
@@ -40,7 +40,6 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
         btnTomarFoto.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +106,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     public void requestPhotoComparison() {
-        String url = "https://ingsoft-backend.herokuapp.com/assets";
+        String url = "https://ingsoft-backend.herokuapp.com/applications/assets";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String >() {
                     @Override
@@ -116,7 +115,6 @@ public class PhotoActivity extends AppCompatActivity {
                         // if false, show message to user that his photo wasn't good enough to comparison
                         // or the error that causes the success:false,
                         // if success:true, it means that the comparison of photos was ok.
-
                         Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
                         startActivity(intent);
                         overridePendingTransition(0,0);
@@ -135,12 +133,13 @@ public class PhotoActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<>();
-                // the POST parameters:
-//                Log.d("cameraPicture", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
-//                Log.d("cameraPicture", KEY_CAMERA_PHOTO_BASE64);
+//                Log.d("a",getIntent().getStringExtra(KEY_CI));
+//                Log.d("b",getIntent().getStringExtra("CI_PHOTO_BASE_64"));
+                params.put("userIdCardNumber", getIntent().getStringExtra("KEY_CI"));
+                params.put("fotoCedula",  "data:image/jpg;base64,".concat(getIntent().getStringExtra("CI_PHOTO_BASE_64")));
+                params.put("fotoSelfie", "data:image/jpg;base64,".concat(KEY_CAMERA_PHOTO_BASE64));
+//                Log.d("C",params.toString());
 
-                params.put("idCardPicture", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
-                params.put("cameraPicture", KEY_CAMERA_PHOTO_BASE64);
                 return params;
             }
         };

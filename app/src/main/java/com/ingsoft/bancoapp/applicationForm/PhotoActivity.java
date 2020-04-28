@@ -63,7 +63,6 @@ public class PhotoActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     // This will catch any exception, because they are all descended from Exception
                     Log.d("Error", e.getMessage());
-                    Tools.exceptionToast(getApplicationContext(), "Service unavailable");
                 }
             }
         });
@@ -133,9 +132,7 @@ public class PhotoActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        loadingLayout.setVisibility(View.GONE);
-                        errorMessage.setVisibility(View.VISIBLE);
-                        error.printStackTrace();
+                        Tools.exceptionToast(getApplicationContext(), "Service unavailable");
                     }
                 }
         ) {

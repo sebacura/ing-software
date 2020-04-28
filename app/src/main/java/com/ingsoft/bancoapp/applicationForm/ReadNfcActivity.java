@@ -35,20 +35,17 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,9 +58,9 @@ import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.otaliastudios.cameraview.CameraListener;
 import com.otaliastudios.cameraview.CameraOptions;
 import com.otaliastudios.cameraview.CameraView;
+import com.otaliastudios.cameraview.controls.Flash;
 import com.otaliastudios.cameraview.frame.Frame;
 import com.otaliastudios.cameraview.frame.FrameProcessor;
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import net.sf.scuba.smartcards.CardFileInputStream;
 import net.sf.scuba.smartcards.CardService;
@@ -89,7 +86,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -111,6 +107,8 @@ public class ReadNfcActivity extends AppCompatActivity {
     private View main_layout;
     private View footer;
 
+    private boolean mrzOk=false;
+
     private boolean passportNumberFromIntent = false;
 
     private View camposLayout;
@@ -121,7 +119,7 @@ public class ReadNfcActivity extends AppCompatActivity {
     NfcAdapter adapter;
 
     View btnLeerMrz;
-
+    private  Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +148,7 @@ public class ReadNfcActivity extends AppCompatActivity {
                 main_layout.setVisibility(View.GONE);
                 footer = findViewById(R.id.footer);
                 footer.setVisibility(View.GONE);
+                menu.findItem(R.id.flash_menu).setVisible(true);
 
                 camera.addCameraListener(new CameraListener() {
                     @Override
@@ -193,6 +192,9 @@ public class ReadNfcActivity extends AppCompatActivity {
                     camera.setVisibility(View.GONE);
                     main_layout.setVisibility(View.VISIBLE);
                     footer.setVisibility(View.VISIBLE);
+                    menu.findItem(R.id.flash_menu).setVisible(false);
+                    camera.setFlash(Flash.OFF);
+                    mrzOk = false;
 
                     processing.set(false);
                     camera.removeFrameProcessor(frameProcessor);
@@ -237,9 +239,6 @@ public class ReadNfcActivity extends AppCompatActivity {
             }
         });
     }
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
 
     @Override
     protected void onResume() {
@@ -483,6 +482,8 @@ public class ReadNfcActivity extends AppCompatActivity {
 
             } else {
                 //agregar excepcion
+                Log.d("error","error");
+                return;
 //                Toast.makeText(this, "No se puedo leer correctamente", Toast.LENGTH_LONG).show();
 
             }
@@ -506,7 +507,7 @@ public class ReadNfcActivity extends AppCompatActivity {
     private FrameProcessor frameProcessor = new FrameProcessor() {
         @Override
         public void process(@NonNull Frame frame) {
-            if (frame.getData() != null && !processing.get()) {
+            if (!mrzOk && frame.getData() != null && !processing.get()) {
                 processing.set(true);
 
                 YuvImage yuvImage = new YuvImage(frame.getData(), ImageFormat.NV21, frame.getSize().getWidth(), frame.getSize().getHeight(), null);
@@ -636,5 +637,28 @@ public class ReadNfcActivity extends AppCompatActivity {
         }
     }
 
+    // Agrega boton de flash solo con la cámara abierta
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mrz_scanner, menu);
+        this.menu = menu;
+        menu.findItem(R.id.flash_menu).setVisible(false);
+        return true;
+    }
+
+    //Prender flash
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.flash_menu:
+                if(camera.getFlash() == Flash.OFF){
+                    camera.setFlash(Flash.TORCH);
+                    item.setIcon(R.drawable.ic_flash_off_black_24dp);
+                } else{
+                    camera.setFlash(Flash.OFF);
+                    item.setIcon(R.drawable.ic_flash_on_black_24dp);
+                }
+                return true;
+        }
+        return false;
+    }
 
 }

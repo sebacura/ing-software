@@ -41,6 +41,8 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+
+        loadingLayout = findViewById(R.id.loading_layout);
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
         btnTomarFoto.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,7 @@ public class PhotoActivity extends AppCompatActivity {
         btnIrFormulario3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingLayout.setVisibility(View.VISIBLE);
                 try {
                     requestPhotoComparison();
                 } catch (Exception e) {

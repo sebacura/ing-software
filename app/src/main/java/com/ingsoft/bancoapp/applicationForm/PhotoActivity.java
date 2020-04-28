@@ -132,6 +132,7 @@ public class PhotoActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        loadingLayout.setVisibility(View.GONE);
                         Tools.exceptionToast(getApplicationContext(), "Service unavailable");
                     }
                 }

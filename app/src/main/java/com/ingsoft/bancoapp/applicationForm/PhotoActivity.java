@@ -143,7 +143,7 @@ public class PhotoActivity extends AppCompatActivity {
 //                Log.d("a",getIntent().getStringExtra(KEY_CI));
 //                Log.d("b",getIntent().getStringExtra("CI_PHOTO_BASE_64"));
                 params.put("userIdCardNumber", getIntent().getStringExtra("KEY_CI"));
-                params.put("fotoCedula",  getIntent().getStringExtra("CI_PHOTO_BASE_64")));
+                params.put("fotoCedula", getIntent().getStringExtra("CI_PHOTO_BASE_64"));
                 params.put("fotoSelfie", KEY_CAMERA_PHOTO_BASE64);
 //                Log.d("C",params.toString());
 

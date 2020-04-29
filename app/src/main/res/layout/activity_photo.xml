@@ -6,8 +6,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    tools:context=".applicationForm.ReadNfcActivity">
+    tools:context=".applicationForm.ReadNfcActivity"
+    android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
 
 
     <LinearLayout
@@ -22,7 +22,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:background="@color/transparent_white_hex_7">
 
 
         <TextView

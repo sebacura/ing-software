@@ -6,8 +6,8 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    tools:context=".applicationForm.ReadNfcActivity">
+    tools:context=".applicationForm.ReadNfcActivity"
+    android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
 
     <com.otaliastudios.cameraview.CameraView
         android:visibility="gone"
@@ -36,7 +36,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="visible"
-        app:layout_constraintVertical_bias="0.225">
+        app:layout_constraintVertical_bias="0.225"
+        android:background="@color/transparent_white_hex_7">
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"

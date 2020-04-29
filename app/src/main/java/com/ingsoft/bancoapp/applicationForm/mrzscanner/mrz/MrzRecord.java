@@ -111,7 +111,8 @@ public abstract class MrzRecord implements Serializable {
     public boolean validDateOfBirth = true;
     public boolean validExpirationDate = true;
     public boolean validComposite = true;
-    public boolean validCode0 = true;
+    public boolean validCodeNumber = true;
+    public boolean validCodeString = true;
 
 
     protected MrzRecord(MrzFormat format) {
@@ -139,7 +140,13 @@ public abstract class MrzRecord implements Serializable {
         for (int i = 5; i < 10; i++) {
             code0 = mrz.charAt(i);
             if (!Character.isDigit(code0)) {
-                validCode0 = false;
+                validCodeNumber = false;
+            }
+        }
+        for (int i = 5; i < 10; i++) {
+            code0 = mrz.charAt(i);
+            if (!Character.isDigit(code0)) {
+                validCodeNumber = false;
             }
         }
 

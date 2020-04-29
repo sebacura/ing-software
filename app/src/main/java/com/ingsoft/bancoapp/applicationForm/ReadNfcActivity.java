@@ -185,7 +185,7 @@ public class ReadNfcActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //Si tiene los valores correctos del MRZ, cierra la camara y prosigue al NFC
-                if (mrzRecord.validCode0 && mrzRecord.documentNumber!= null && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
+                if (mrzRecord.validCodeNumber && mrzRecord.documentNumber!= null && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
                     ((TextView) findViewById(R.id.date_of_birth)).setText(mrzRecord.dateOfBirth.toString());
                     ((TextView) findViewById(R.id.expiry_date)).setText(mrzRecord.expirationDate.toString());
                     ((TextView) findViewById(R.id.ci_code)).setText(mrzRecord.documentNumber);

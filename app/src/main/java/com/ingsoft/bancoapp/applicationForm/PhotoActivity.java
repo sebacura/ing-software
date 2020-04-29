@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,6 +25,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.ingsoft.bancoapp.tools.Tools;
+
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -181,13 +184,20 @@ public class PhotoActivity extends AppCompatActivity {
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-                        // TO DO: add check logic if backend's answer is success: true or false,
-                        // if false, show message to user that his photo wasn't good enough to comparison
-                        // or the error that causes the success:false,
-                        // if success:true, it means that the comparison of photos was ok.
-                        Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(0,0);
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (obj.getString("result").equals("true")){
+                                Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(0,0);
+                            } else {
+                                findViewById(R.id.loading_layout).setVisibility(View.GONE);
+                                findViewById(R.id.irFormulario3).setVisibility(View.GONE);
+                                Tools.exceptionToast(getApplicationContext(), "Denegado");
+                            }
+                        } catch (Throwable tx) {
+                            Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -212,6 +222,10 @@ public class PhotoActivity extends AppCompatActivity {
                 return params;
             }
         };
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(this).add(postRequest);
     }
 }

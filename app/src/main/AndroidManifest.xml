@@ -19,9 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".products.ProductDetailsActivity"
-            android:parentActivityName=".products.ProductListActivity"/>
-
         <activity
             android:name=".applicationForm.ReadNfcActivity"
             android:parentActivityName=".products.ProductListActivity">

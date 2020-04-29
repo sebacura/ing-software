@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="verDetalles"
-    android:orientation="horizontal"
-    tools:context=".products.ProductListActivity">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/imgFoto"
@@ -22,7 +20,8 @@
             android:id="@+id/tituloTarjeta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/contenidoTarjeta"
@@ -42,19 +41,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="irAFormulario"
+                android:background="@drawable/btn"
                 android:text="Solicitar"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_margin="8dp"/>
 
             <Button
                 android:id="@+id/btnVerDetalles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="verDetalles"
+                android:background="@drawable/btn"
                 android:text="Ver más"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:layout_margin="8dp"/>
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>

@@ -113,8 +113,19 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         seeDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isExpanded) ((ExpandableListView) parent).collapseGroup(groupPosition);
-                else ((ExpandableListView) parent).expandGroup(groupPosition, true);
+                if(isExpanded){
+                    ((ExpandableListView) parent).collapseGroup(groupPosition);
+                    seeDetails.setText("Ver Más");
+                }
+                else {
+                    for (int i = 0; i < getGroupCount(); i++) {
+                        if (i != groupPosition) {
+                            ((ExpandableListView) parent).collapseGroup(i);
+                        }
+                    }
+                    ((ExpandableListView) parent).expandGroup(groupPosition, true);
+                        seeDetails.setText("Ver Menos");
+                }
             }
         });
 

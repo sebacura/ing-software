@@ -42,13 +42,6 @@ public class ReadNfcResultActivity extends AppCompatActivity {
     public static final String KEY_CI_PHOTO_BASE64="";
 
     Button btnIrFormulario2;
-    View btnTomarFoto;
-
-    private boolean encodePhotoToBase64 = true;
-
-
-    View loadingLayout;
-    View errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +80,6 @@ public class ReadNfcResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
-//                Log.d("1", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
                 intent.putExtra("CI_PHOTO_BASE_64", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
                 intent.putExtra("KEY_CI", getIntent().getStringExtra(KEY_CI));
                 startActivity(intent);

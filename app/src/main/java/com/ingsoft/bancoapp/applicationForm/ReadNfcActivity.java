@@ -185,7 +185,7 @@ public class ReadNfcActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 //Si tiene los valores correctos del MRZ, cierra la camara y prosigue al NFC
-                if (mrzRecord.documentNumber!= null && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
+                if (mrzRecord.validCode0 && mrzRecord.documentNumber!= null && mrzRecord.validExpirationDate && mrzRecord.validDateOfBirth) {
                     ((TextView) findViewById(R.id.date_of_birth)).setText(mrzRecord.dateOfBirth.toString());
                     ((TextView) findViewById(R.id.expiry_date)).setText(mrzRecord.expirationDate.toString());
                     ((TextView) findViewById(R.id.ci_code)).setText(mrzRecord.documentNumber);
@@ -432,11 +432,17 @@ public class ReadNfcActivity extends AppCompatActivity {
                     DataInputStream dataInputStream = new DataInputStream(faceImageInfo.getImageInputStream());
                     byte[] buffer = new byte[imageLength];
                     dataInputStream.readFully(buffer, 0, imageLength);
+
                     InputStream inputStream = new ByteArrayInputStream(buffer, 0, imageLength);
 
+                    //Para imprimirla en la app
                     bitmap = ImageUtil.decodeImage(
                             ReadNfcActivity.this, faceImageInfo.getMimeType(), inputStream);
+
                     imageBase64 = Base64.encodeToString(buffer, Base64.DEFAULT);
+
+                    Log.d("imageBase64", imageBase64);
+
                 }
 
             } catch (Exception e) {
@@ -607,7 +613,7 @@ public class ReadNfcActivity extends AppCompatActivity {
             width = (int) (height * bitmapRatio);
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
-    }
+}
 
     private class ProcessOCR extends AsyncTask {
 

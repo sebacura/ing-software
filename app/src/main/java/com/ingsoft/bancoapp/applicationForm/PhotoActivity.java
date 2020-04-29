@@ -1,7 +1,11 @@
 package com.ingsoft.bancoapp.applicationForm;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -9,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -36,11 +41,14 @@ public class PhotoActivity extends AppCompatActivity {
 
     View loadingLayout;
     View errorMessage;
+    private ImageView imageView;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        this.imageView = (ImageView)this.findViewById(R.id.imageView1);
 
         loadingLayout = findViewById(R.id.loading_layout);
         //Tomar foto desde app
@@ -93,11 +101,58 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), imageUri);
+                imageBitmap = rotateImage(imageBitmap, 90);
+                imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
+                //Para imprimir la foto en pantalla (para probar)
+//                imageView.setImageBitmap(imageBitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
         }
     }
+
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private Bitmap rotateImage(Bitmap bitmap, int rotate){
+
+        if (rotate != 0) {
+
+            // Getting width & height of the given image.
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+
+            // Setting pre rotate
+            Matrix mtx = new Matrix();
+            mtx.preRotate(rotate);
+
+            // Rotating Bitmap
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+        }
+
+        // Convert to ARGB_8888, required by tess
+        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        return bitmap;
+    }
+
     private String encodeImage(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
@@ -108,7 +163,11 @@ public class PhotoActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private void dispatchTakePictureIntent() {
+        ContentValues values = new ContentValues();
+        imageUri = getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }

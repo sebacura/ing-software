@@ -18,6 +18,8 @@
  */
 package com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz;
 
+import android.util.Log;
+
 import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.types.MrzDate;
 import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.types.MrzDocumentCode;
 import com.ingsoft.bancoapp.applicationForm.mrzscanner.mrz.types.MrzFormat;
@@ -39,6 +41,7 @@ public abstract class MrzRecord implements Serializable {
     /**
      * Document code, see {@link MrzDocumentCode} for details on allowed values.
      */
+    public char code0;
     public char code1;
     /**
      * For MRTD: Type, at discretion of states, but 1-2 should be IP for passport card, AC for crew member and IV is not allowed.
@@ -108,6 +111,7 @@ public abstract class MrzRecord implements Serializable {
     public boolean validDateOfBirth = true;
     public boolean validExpirationDate = true;
     public boolean validComposite = true;
+    public boolean validCode0 = true;
 
 
     protected MrzRecord(MrzFormat format) {
@@ -131,6 +135,14 @@ public abstract class MrzRecord implements Serializable {
             throw new MrzParseException("invalid format: " + MrzFormat.get(mrz), mrz, new MrzRange(0, 0, 0), format);
         }
         code = MrzDocumentCode.parse(mrz);
+
+        for (int i = 5; i < 10; i++) {
+            code0 = mrz.charAt(i);
+            if (!Character.isDigit(code0)) {
+                validCode0 = false;
+            }
+        }
+
         code1 = mrz.charAt(0);
         code2 = mrz.charAt(1);
         issuingCountry = new MrzParser(mrz).parseString(new MrzRange(2, 5, 0));

@@ -41,20 +41,20 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="irAFormulario"
-                android:background="@drawable/btn"
                 android:text="Solicitar"
                 android:textColor="@color/white"
                 android:layout_margin="8dp"/>
+<!--            android:background="@drawable/btn"-->
 
             <Button
                 android:id="@+id/btnVerDetalles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/btn"
                 android:text="Ver más"
                 android:textColor="@color/white"
                 android:layout_margin="8dp"/>
+<!--            android:background="@drawable/btn"-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

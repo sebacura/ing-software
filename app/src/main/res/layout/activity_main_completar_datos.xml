@@ -6,8 +6,8 @@
     android:id="@+id/switchubic"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
-    tools:context=".applicationForm.ApplicantDetailsActivity">
+    tools:context=".applicationForm.ApplicantDetailsActivity"
+    android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
     <!--    <TextView-->
 <!--        android:id="@+id/Paso3"-->
 <!--        android:layout_width="357dp"-->
@@ -27,7 +27,8 @@
     <LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_white_hex_7"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -42,9 +43,9 @@
             android:id="@+id/textViewPaso1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/lato"
             android:gravity="center"
-            android:layout_marginTop="10dp"
             android:text="Paso 3"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -53,13 +54,14 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="italic"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="Para finalizar, le solicitamos que ingrese su salario para verificar que aplica para este producto."
             android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
+            android:textStyle="italic"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
+
         <EditText
             android:id="@+id/txt_sueldo"
             android:layout_width="380dp"
@@ -69,7 +71,7 @@
             android:inputType="number"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/etxtDirec"
@@ -78,7 +80,7 @@
             android:layout_marginTop="10dp"
             android:hint="Ingrese su dirección"
             android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <CheckBox
             android:id="@+id/chubic"
@@ -103,24 +105,24 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.722">
 
-<!--            <Button-->
-<!--                android:id="@+id/button2"-->
-<!--                android:layout_width="345dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:onClick="agregarUbicActual"-->
-<!--                android:text="Seleccionar como ubicación de entrega"-->
-<!--                android:textColor="@color/white"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
+            <!--            <Button-->
+            <!--                android:id="@+id/button2"-->
+            <!--                android:layout_width="345dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:onClick="agregarUbicActual"-->
+            <!--                android:text="Seleccionar como ubicación de entrega"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
 
 
             <CheckBox
                 android:id="@+id/checkbox"
-                android:text="Utilizar esta dirección como la de entrega"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="agregarUbicActual"/>
+                android:onClick="agregarUbicActual"
+                android:text="Utilizar esta dirección como la de entrega" />
 
             <EditText
                 android:id="@+id/txt_direcc"
@@ -130,24 +132,24 @@
                 android:hint="Ingrese la dirección de entrega"
                 android:inputType="textPostalAddress"
                 android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/txtGPS"
                 android:layout_width="289dp"
                 android:layout_height="10dp"
-                android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:text="Proveedor"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="112dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:text="Ubicación actual"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
 

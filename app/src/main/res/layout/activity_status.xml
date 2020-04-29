@@ -6,7 +6,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853"
     tools:context=".myApplications.StatusActivity">
 
     <TextView

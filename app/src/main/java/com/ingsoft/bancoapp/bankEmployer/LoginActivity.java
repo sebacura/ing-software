@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void RealizarPost() {
 
-        String url = "https://ingsoft-backend.herokuapp.com/login";
+        String url = "https://ingsoft-backend.herokuapp.com/bank/login";
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String >() {

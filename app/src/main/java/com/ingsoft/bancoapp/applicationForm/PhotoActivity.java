@@ -109,6 +109,8 @@ public class PhotoActivity extends AppCompatActivity {
                 imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
                 //Para imprimir la foto en pantalla (para probar)
 //                imageView.setImageBitmap(imageBitmap);
+                findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
+                findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }

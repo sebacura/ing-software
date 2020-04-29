@@ -21,50 +21,8 @@
         app:cameraPlaySounds="false"
         android:layout_height="match_parent">
 
-
     </com.otaliastudios.cameraview.CameraView>
 
-
-
-    <!--    <ScrollView-->
-<!--        android:id="@+id/main_layout"-->
-<!--        android:layout_width="395dp"-->
-<!--        android:layout_height="449dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.152">-->
-
-
-    <!--    </ScrollView>-->
-
-<!--    <LinearLayout-->
-<!--        android:id="@+id/loading_layout"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:orientation="vertical"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintVertical_bias="0.278"-->
-<!--                android:visibility="gone">-->
-
-
-<!--        <ProgressBar-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center_horizontal" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/info_loading" />-->
-
-<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -74,11 +32,10 @@
         android:layout_marginTop="0dp"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
         app:layout_constraintVertical_bias="0.225">
         <TextView
             android:id="@+id/textView"
@@ -88,6 +45,7 @@
             android:textSize="20sp"
             app:fontFamily="@font/lato"
             android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -112,39 +70,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="italic"
-            android:text="Para comenzar, escanearemos su cédula mediante NFC para poder extraer sus datos personales."
+            android:text="Para comenzar, se necesita que abra la cámara y escanee la parte postarior de su cedula."
             android:textSize="14sp"
             android:gravity="center"
             android:layout_marginTop="20dp"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
-
-        <ImageView
-            android:id="@+id/imgPhone"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="13dp"
-            android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_telefono_celular" />
-
-        <ImageView
-            android:id="@+id/imgCreditCard"
-            android:layout_marginTop="-38dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="13dp"
-            app:srcCompat="@drawable/ic_tarjeta_de_credito" />
-
-
-<!--        <ImageView-->
-<!--            android:id="@+id/help"-->
-<!--            android:layout_marginTop="-20dp"-->
-<!--            android:layout_width="18dp"-->
-<!--            android:layout_height="18dp"-->
-<!--            android:layout_gravity="right"-->
-<!--            app:srcCompat="@drawable/ic_question_black" />-->
 
 
         <ImageView
@@ -154,16 +85,6 @@
             android:layout_marginTop="40dp"
             app:srcCompat="@drawable/ic_foto" />
 
-        <!--        <TextView-->
-<!--            android:id="@+id/textView3"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:text="Complete los siguientes datos y apoye la cédula detrás de su celular."-->
-<!--            android:textSize="18sp"-->
-<!--            android:gravity="center"-->
-<!--            tools:layout_editor_absoluteX="0dp"-->
-<!--            tools:layout_editor_absoluteY="177dp" />-->
 
         <LinearLayout
             android:id="@+id/campos"
@@ -205,37 +126,116 @@
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
                 tools:text="Código" />
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/input_date_of_birth"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:focusableInTouchMode="false"-->
-<!--                android:hint="Fecha de nacimiento"-->
-<!--                android:textAlignment="center"-->
-<!--                android:inputType="date"-->
-<!--                tools:layout_editor_absoluteX="19dp"-->
-<!--                tools:layout_editor_absoluteY="343dp" />-->
 
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/input_expiration_date"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:focusableInTouchMode="false"-->
-<!--                android:hint="Fecha de vencimiento"-->
-<!--                android:inputType="date"-->
-<!--                android:textAlignment="center"-->
-<!--                tools:layout_editor_absoluteX="18dp"-->
-<!--                tools:layout_editor_absoluteY="286dp" />-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:id="@+id/input_passport_number"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:textAlignment="center"-->
-<!--                android:hint="Código detrás de cedula (9 caracteres)"-->
-<!--                tools:layout_editor_absoluteX="16dp"-->
-<!--                tools:layout_editor_absoluteY="230dp" />-->
         </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/paso2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="0dp"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="gone"
+        app:layout_constraintVertical_bias="0.225">
+
+        <TextView
+            android:id="@+id/textViewPaso2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Paso 2"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/lato"
+            tools:layout_editor_absoluteX="0dp"/>
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:text="Para proseguir, escanearemos su cédula mediante NFC para poder extraer sus datos personales."
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="73dp" />
+
+
+        <ImageView
+            android:id="@+id/imgPhone"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="13dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_telefono_celular" />
+
+        <ImageView
+            android:id="@+id/imgCreditCard"
+            android:layout_marginTop="-38dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="13dp"
+            app:srcCompat="@drawable/ic_tarjeta_de_credito" />
+
+        <TextView
+            android:id="@+id/instruccion1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Coloque su cédula detrás del celular"
+            android:textSize="15sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="413dp" />
+<!--        <ImageView-->
+<!--            android:id="@+id/help"-->
+<!--            android:layout_marginTop="-20dp"-->
+<!--            android:layout_width="18dp"-->
+<!--            android:layout_height="18dp"-->
+<!--            android:layout_gravity="right"-->
+<!--            app:srcCompat="@drawable/ic_question_black" />-->
+
+<!--        LOADING LAYOUT-->
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.278"
+            android:visibility="gone">
+
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Leyendo cédula" />
+
+        </LinearLayout>
+<!--        FIN LOADING LAYOUT-->
 
         <LinearLayout
             android:id="@+id/resultados"
@@ -281,34 +281,21 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/loading_layout"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/irFormulario2"
+            android:layout_width="229dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:text="Siguiente"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.278"
-            android:visibility="gone">
-
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Leyendo cédula" />
-
-        </LinearLayout>
-
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintTop_toTopOf="@id/footer"
+            app:layout_constraintVertical_bias="0.876" />
 
     </LinearLayout>
+<!--    FIN PASO 2 LAYOUT-->
 
 
     <LinearLayout
@@ -323,20 +310,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintVertical_bias="0.278">
-
-    <Button
-        android:id="@+id/irFormulario2"
-        android:layout_width="229dp"
-        android:layout_height="wrap_content"
-        android:text="Siguiente"
-        android:textColor="@color/white"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.538"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.876" />
 
     <include
         layout="@layout/item_bottom_navigation"

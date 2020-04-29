@@ -32,7 +32,7 @@
             android:fontFamily="@font/lato"
             android:gravity="center"
             android:layout_marginTop="10dp"
-            android:text="Paso 2"
+            android:text="Paso 3"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
 
 
         <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/instruccionfoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -68,6 +68,20 @@
         android:textSize="15sp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="413dp" />
+
+        <TextView
+            android:id="@+id/avisofoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Foto capturada con éxito!"
+            android:textSize="15sp"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="413dp" />
+
+
 
     </LinearLayout>
     <LinearLayout

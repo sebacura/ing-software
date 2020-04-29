@@ -190,7 +190,8 @@ public class ReadNfcActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.expiry_date)).setText(mrzRecord.expirationDate.toString());
                     ((TextView) findViewById(R.id.ci_code)).setText(mrzRecord.documentNumber);
                     camera.setVisibility(View.GONE);
-                    main_layout.setVisibility(View.VISIBLE);
+                    findViewById(R.id.paso2).setVisibility(View.VISIBLE);
+//                    main_layout.setVisibility(View.VISIBLE);
                     footer.setVisibility(View.VISIBLE);
                     menu.findItem(R.id.flash_menu).setVisible(false);
                     camera.setFlash(Flash.OFF);

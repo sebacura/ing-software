@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,21 +111,33 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         Button seeDetails = (Button) convertView
                 .findViewById(R.id.btnVerDetalles);
 
+
+        View finalConvertView = convertView;
+        convertView.setId(groupPosition);
         seeDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isExpanded){
                     ((ExpandableListView) parent).collapseGroup(groupPosition);
-                    seeDetails.setText("Ver Más");
+//                    if(Integer.parseInt(finalConvertView.findViewById(R.id.btnVerDetalles).getTag().toString()) == groupPosition){
+//                        seeDetails.setText("Ver Más");
+//                    }
+
                 }
                 else {
                     for (int i = 0; i < getGroupCount(); i++) {
                         if (i != groupPosition) {
                             ((ExpandableListView) parent).collapseGroup(i);
+//                            if(finalConvertView.getId() == i){
+//                                seeDetails.setText("Ver Más");
+//                            }
                         }
                     }
                     ((ExpandableListView) parent).expandGroup(groupPosition, true);
-                        seeDetails.setText("Ver Menos");
+//                    if(Integer.parseInt(finalConvertView.findViewById(R.id.btnVerDetalles).getTag().toString()) == groupPosition) {
+//                        seeDetails.setText("Ver Menos");
+//                    }
+
                 }
             }
         });

@@ -20,7 +20,8 @@
             android:id="@+id/tituloTarjeta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/contenidoTarjeta"

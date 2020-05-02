@@ -137,24 +137,13 @@ public abstract class MrzRecord implements Serializable {
         }
         code = MrzDocumentCode.parse(mrz);
 
-        for (int i = 5; i < 10; i++) {
-            code0 = mrz.charAt(i);
-            if (!Character.isDigit(code0)) {
-                validCodeNumber = false;
-            }
-        }
-        for (int i = 5; i < 10; i++) {
-            code0 = mrz.charAt(i);
-            if (!Character.isDigit(code0)) {
-                validCodeNumber = false;
-            }
-        }
-
         code1 = mrz.charAt(0);
         code2 = mrz.charAt(1);
         issuingCountry = new MrzParser(mrz).parseString(new MrzRange(2, 5, 0));
     }
-    
+
+
+
     /**
      * Helper method to set the full name. Changes both {@link #surname} and {@link #givenNames}.
      * @param name expected array of length 2, in the form of [surname, first_name]. Must not be null.

@@ -151,7 +151,7 @@ public class TextRecognitionHelper {
 				if(mrzRecord != null) {
 					if(supportedFormats.contains(mrzRecord.format)) {
 						boolean additionalPassportCheckOK = true;
-
+						mrzRecord.documentNumber = mrzRecord.documentNumber.replace("O", "0"); //Fuerzo que las "O" sean cero en el codigo de la ci
 						if(additionalPassportCheckOK) {
 							new Handler(Looper.getMainLooper()).post(new Runnable() {
 								@Override

@@ -130,6 +130,20 @@
 
         </LinearLayout>
 
+<!--        BOTON PROVISORIO PARA PODER SEGUIR-->
+        <Button
+            android:id="@+id/provisorio"
+            android:layout_width="229dp"
+            android:layout_height="wrap_content"
+            android:text="Seguir sin MRZ"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintTop_toTopOf="@id/footer"
+            app:layout_constraintVertical_bias="0.876" />
+
+
     </LinearLayout>
 
 

@@ -131,10 +131,24 @@ public class ReadNfcActivity extends AppCompatActivity {
         adapter = manager.getDefaultAdapter();
 
         if (adapter != null && !adapter.isEnabled()) {
+            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), "Debe encender el NFC de su celular!", Toast.LENGTH_LONG).show();
+
         }else if (adapter==null) {
+            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
         }
+
+        //Seguir sin mrz
+        findViewById(R.id.provisorio).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
+            }
+        });
+        //Fin seguir sin mrz
 
         //Abrir camara para leer mrz
         btnLeerMrz = findViewById(R.id.btnLeerMrz);

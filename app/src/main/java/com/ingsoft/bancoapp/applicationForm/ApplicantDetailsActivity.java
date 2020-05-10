@@ -1,6 +1,7 @@
 package com.ingsoft.bancoapp.applicationForm;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -16,19 +17,31 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
+import com.ingsoft.bancoapp.applicationForm.PlaceAutoSuggestAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +57,10 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private EditText etxtLatitud;
     private EditText etxtLongitud;
     private EditText etxtDirec;
+    EditText edtextDirecc;
+
+  //  private AutoCompleteTextView autoCompleteTextView;
+    //import com.google.android.gms.maps.model.LatLng;
 
 
     @SuppressLint({"WrongConstant", "WrongViewCast"})
@@ -59,7 +76,47 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
        // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
        // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
         etxtDirec = (EditText) findViewById(R.id.etxtDirec);
+        edtextDirecc= findViewById(R.id.editTextDirecc);
+        Places.initialize(getApplicationContext(), "AIzaSyCYd9DNtP8fAnic_H5XwgCef7dmqj_7vB0");
+        edtextDirecc.setFocusable(false);
+        edtextDirecc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(ApplicantDetailsActivity.this);
+                startActivityForResult(intent, 100);
+
+            }
+        });
        // IniciarServicio();
+        //autoCompleteTextView= findViewById(R.id.autoComplete);
+       // autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(ApplicantDetailsActivity.this,android.R.layout.simple_list_item_1));
+       /* autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Address : ",autoCompleteTextView.getText().toString());
+                LatLng latLng=getLatLngFromAddress(autoCompleteTextView.getText().toString());
+                if(latLng!=null) {
+                    Log.d("Lat Lng : ", " " + latLng.latitude + " " + latLng.longitude);
+                    Address address=getAddressFromLatLng(latLng);
+                    if(address!=null) {
+                        Log.d("Address : ", "" + address.toString());
+                        Log.d("Address Line : ",""+address.getAddressLine(0));
+                        Log.d("Phone : ",""+address.getPhone());
+                        Log.d("Pin Code : ",""+address.getPostalCode());
+                        Log.d("Feature : ",""+address.getFeatureName());
+                        Log.d("More : ",""+address.getLocality());
+                    }
+                    else {
+                        Log.d("Adddress","Address Not Found");
+                    }
+                }
+                else {
+                    Log.d("Lat Lng","Lat Lng Not Found");
+                }
+
+            }
+        });*/
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -223,5 +280,18 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     public void onProviderDisabled(String provider) {
 
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==100 && requestCode== RESULT_OK){
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            edtextDirecc.setText(place.getAddress());
+        }else if (resultCode== AutocompleteActivity.RESULT_ERROR){
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(getApplicationContext(),status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
 }
 

@@ -1,6 +1,8 @@
 package com.ingsoft.bancoapp.products;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ingsoft.bancoapp.R;
+
+import java.util.ArrayList;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private final SparseArray<GroupProducts> groups;
@@ -88,12 +92,14 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         return 0;
     }
 
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item, null);
         }
+
         GroupProducts group = (GroupProducts) getGroup(groupPosition);
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.tituloTarjeta);
@@ -106,42 +112,30 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView imgFoto = (ImageView) convertView.findViewById(R.id.imgFoto);
         imgFoto.setImageResource(group.image);
 
-
-//        ((CheckedTextView) convertView).setChecked(isExpanded);
-        Button seeDetails = (Button) convertView
-                .findViewById(R.id.btnVerDetalles);
-
+        Button seeDetails = (Button) convertView.findViewById(R.id.btnVerDetalles);
+        String text = seeDetails.getText().toString();
 
         View finalConvertView = convertView;
-        convertView.setId(groupPosition);
+
+        if(isExpanded){
+            seeDetails.setText("Ver menos");
+            finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#1A000000"));
+        }else{
+            finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#00000000"));
+            seeDetails.setText("Ver más");
+        }
+
         seeDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isExpanded){
                     ((ExpandableListView) parent).collapseGroup(groupPosition);
-//                    if(Integer.parseInt(finalConvertView.findViewById(R.id.btnVerDetalles).getTag().toString()) == groupPosition){
-//                        seeDetails.setText("Ver Más");
-//                    }
-
                 }
                 else {
-                    for (int i = 0; i < getGroupCount(); i++) {
-                        if (i != groupPosition) {
-                            ((ExpandableListView) parent).collapseGroup(i);
-//                            if(finalConvertView.getId() == i){
-//                                seeDetails.setText("Ver Más");
-//                            }
-                        }
-                    }
                     ((ExpandableListView) parent).expandGroup(groupPosition, true);
-//                    if(Integer.parseInt(finalConvertView.findViewById(R.id.btnVerDetalles).getTag().toString()) == groupPosition) {
-//                        seeDetails.setText("Ver Menos");
-//                    }
-
                 }
             }
         });
-
         return convertView;
     }
 

@@ -4,166 +4,165 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/transparent"
+    android:background="#1A000000"
     android:layout_height="wrap_content"
     android:id="@+id/detalles_producto"
     tools:context=".products.ProductListActivity">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    tools:ignore="MissingConstraints">
-
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_margin="0dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="10dp">
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true">
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:stretchColumns="1">
-
-                <TextView
-                android:id="@+id/contenidoTarjetaD"
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="left"
-                android:text="Descripcion"
-                android:textSize="16dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp" />
+                android:fillViewport="true">
 
-                <TextView
-                    android:id="@+id/creditominimo"
+                <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:gravity="left"
-                    android:text="Crédito mínimo"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="191dp" />
+                    android:layout_height="match_parent"
+                    android:stretchColumns="1">
 
-                <TextView
-                android:id="@+id/creditonumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="left"
-                android:text="25.000"
-                android:textSize="32dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp"
-                android:drawableLeft="@drawable/ic_dollar"/>
+                    <TextView
+                        android:id="@+id/contenidoTarjetaD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="left"
+                        android:text="Descripcion"
+                        android:textSize="16dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
 
+                    <TextView
+                        android:id="@+id/creditominimo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        android:gravity="left"
+                        android:text="Crédito mínimo"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
 
-            <TextView
-                android:id="@+id/ingreso"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:gravity="left"
-                android:text=" Ingreso mínimo"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:drawableLeft="@drawable/ic_salary"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp" />
-
-            <TextView
-                android:id="@+id/ingresonumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-44dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="150dp"
-                android:gravity="left"
-                android:text="$23.000"
-                android:textSize="16dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp"/>
-
-                <TextView
-                    android:id="@+id/costo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="left"
-                    android:text=" Costo"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
-                    android:drawableLeft="@drawable/ic_dollar_blue"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="191dp" />
-
-                <TextView
-                    android:id="@+id/costovalor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-44dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="80dp"
-                    android:gravity="left"
-                    android:text="UI 720"
-                    android:textSize="16dp"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="191dp"/>
-
-                <TextView
-                android:id="@+id/millas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="00dp"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:text=" Millas"
-                android:drawableLeft="@drawable/ic_aeroplane"
-                android:textSize="16dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp" />
-
-            <TextView
-                android:id="@+id/millasvalue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:gravity="left"
-                android:layout_marginLeft="30dp"
-                android:text="1 dólar = 1 milla"
-                android:textSize="16dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp"/>
+                    <TextView
+                        android:id="@+id/creditonumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:drawableLeft="@drawable/ic_dollar"
+                        android:gravity="left"
+                        android:text="25.000"
+                        android:textSize="32dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
 
 
-            <TextView
-                android:id="@+id/millasvalue2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="left"
-                android:layout_marginLeft="30dp"
-                android:text="Bono de bienvenida: 5.000"
-                android:textSize="16dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="191dp"/>
+                    <TextView
+                        android:id="@+id/ingreso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:drawableLeft="@drawable/ic_salary"
+                        android:gravity="left"
+                        android:text=" Ingreso mínimo"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
 
-            </TableLayout>
-        </ScrollView>
+                    <TextView
+                        android:id="@+id/ingresonumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="150dp"
+                        android:layout_marginTop="-44dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="left"
+                        android:text="$23.000"
+                        android:textSize="16dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
+
+                    <TextView
+                        android:id="@+id/costo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:drawableLeft="@drawable/ic_dollar_blue"
+                        android:gravity="left"
+                        android:text=" Costo"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
+
+                    <TextView
+                        android:id="@+id/costovalor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginTop="-44dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="left"
+                        android:text="UI 720"
+                        android:textSize="16dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
+
+                    <TextView
+                        android:id="@+id/millas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="00dp"
+                        android:drawableLeft="@drawable/ic_aeroplane"
+                        android:gravity="left"
+                        android:text=" Millas"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
+
+                    <TextView
+                        android:id="@+id/millasvalue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginBottom="0dp"
+                        android:gravity="left"
+                        android:text="1 dólar = 1 milla"
+                        android:textSize="16dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
 
 
-    </LinearLayout>
-</RelativeLayout>
+                    <TextView
+                        android:id="@+id/millasvalue2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="left"
+                        android:text="Bono de bienvenida: 5.000"
+                        android:textSize="16dp"
+                        tools:layout_editor_absoluteX="0dp"
+                        tools:layout_editor_absoluteY="191dp" />
+
+                </TableLayout>
+            </ScrollView>
+
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

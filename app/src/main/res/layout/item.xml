@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:clickable="false"
+    android:orientation="horizontal"
+    android:id="@+id/itemLayout"
+    tools:context=".products.ProductListActivity">
 
     <ImageView
         android:id="@+id/imgFoto"
@@ -38,22 +41,22 @@
                 android:id="@+id/btnSolicitar"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:onClick="irAFormulario"
                 android:text="Solicitar"
-                android:textColor="@color/white"
-                android:layout_margin="8dp"/>
-<!--            android:background="@drawable/btn"-->
+                android:textColor="@color/white" />
+            <!--            android:background="@drawable/btn"-->
 
             <Button
                 android:id="@+id/btnVerDetalles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:text="Ver más"
-                android:textColor="@color/white"
-                android:layout_margin="8dp"/>
-<!--            android:background="@drawable/btn"-->
+                android:textColor="@color/white" />
+            <!--            android:background="@drawable/btn"-->
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

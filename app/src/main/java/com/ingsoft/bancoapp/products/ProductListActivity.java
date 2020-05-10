@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -24,18 +26,34 @@ public class ProductListActivity extends AppCompatActivity {
 
     private int navBarItemId;
     private BottomNavigationView navBarItemView;
-
+    private MyExpandableListAdapter adapter;
+    private ExpandableListView listView;
     SparseArray<GroupProducts> groups = new SparseArray<GroupProducts>();
+    private int lastExpandedPosition = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_productos);
 
         createData();
-        ExpandableListView listView = (ExpandableListView) findViewById(R.id.lvItems);
+
+        listView = (ExpandableListView) findViewById(R.id.lvItems);
         listView.setGroupIndicator(null);
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(this,
-                groups);
+
+        adapter = new MyExpandableListAdapter(this, groups);
+
+
+        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (lastExpandedPosition != -1 && groupPosition != lastExpandedPosition) {
+                    listView.collapseGroup(lastExpandedPosition);
+                }
+                lastExpandedPosition = groupPosition;
+            }
+        });
+
         listView.setAdapter(adapter);
 
         // bottom nav bar

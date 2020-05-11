@@ -1,62 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
     android:orientation="horizontal"
-    android:id="@+id/itemLayout"
     tools:context=".products.ProductListActivity">
 
-    <ImageView
-        android:id="@+id/imgFoto"
-        android:layout_width="100dp"
-        android:layout_height="70dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgFoto"
+            android:layout_width="90dp"
+            android:layout_height="70dp" />
+
+        <Button
+            android:id="@+id/btnVerDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginTop="8dp"
+            android:text="Ver más"
+            android:background="@drawable/btn2"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="17dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tituloTarjeta"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/contenidoTarjeta"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16dp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal">-->
 
-            <Button
-                android:id="@+id/btnSolicitar"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:onClick="irAFormulario"
-                android:text="Solicitar"
-                android:textColor="@color/white" />
-            <!--            android:background="@drawable/btn"-->
+        <Button
+            android:id="@+id/btnSolicitar"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn"
+            android:onClick="irAFormulario"
+            android:text="Solicitar"
+            android:textColor="@color/white" />
+        <!--            android:background="@drawable/btn"-->
 
-            <Button
-                android:id="@+id/btnVerDetalles"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:text="Ver más"
-                android:textColor="@color/white" />
-            <!--            android:background="@drawable/btn"-->
-        </LinearLayout>
+
+        <!--        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

@@ -40,8 +40,9 @@
                 android:includeFontPadding="true"
                 android:text="Nuestros Productos"
                 android:textAlignment="center"
-                android:textSize="20dp"
-                app:fontFamily="@font/lato" />
+                android:textSize="23dp"
+                android:textStyle="bold"
+                app:fontFamily="@font/open_sans" />
 
             <ExpandableListView
                 android:id="@+id/lvItems"

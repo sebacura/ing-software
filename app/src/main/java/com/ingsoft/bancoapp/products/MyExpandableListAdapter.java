@@ -2,6 +2,7 @@ package com.ingsoft.bancoapp.products;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -105,6 +106,8 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.tituloTarjeta);
         lblListHeader.setText(group.title);
 
+        lblListHeader.setTypeface(lblListHeader.getTypeface(),Typeface.BOLD);
+
         TextView lblListHeaderDescription = (TextView) convertView
                 .findViewById(R.id.contenidoTarjeta);
         lblListHeaderDescription.setText(group.description);
@@ -113,7 +116,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         imgFoto.setImageResource(group.image);
 
         Button seeDetails = (Button) convertView.findViewById(R.id.btnVerDetalles);
-        String text = seeDetails.getText().toString();
 
         View finalConvertView = convertView;
 
@@ -133,6 +135,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
                 }
                 else {
                     ((ExpandableListView) parent).expandGroup(groupPosition, true);
+                    ((ExpandableListView) parent).setSelection(groupPosition);
                 }
             }
         });

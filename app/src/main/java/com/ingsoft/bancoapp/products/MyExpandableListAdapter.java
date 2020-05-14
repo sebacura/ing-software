@@ -121,7 +121,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
         if(isExpanded){
             seeDetails.setText("Ver menos");
-            finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#1A000000"));
+            finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#72FFFFFF"));
         }else{
             finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#00000000"));
             seeDetails.setText("Ver más");

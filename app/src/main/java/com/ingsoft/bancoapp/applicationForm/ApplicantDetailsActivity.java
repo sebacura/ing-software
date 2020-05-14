@@ -28,11 +28,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
@@ -56,12 +68,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private TextView txtGPS;
     private EditText etxtLatitud;
     private EditText etxtLongitud;
-    private EditText etxtDirec;
+   // private EditText etxtDirec;
     EditText edtextDirecc;
-
-  //  private AutoCompleteTextView autoCompleteTextView;
-    //import com.google.android.gms.maps.model.LatLng;
-
 
     @SuppressLint({"WrongConstant", "WrongViewCast"})
     @Override
@@ -73,50 +81,30 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         et2 = findViewById(R.id.txt_direcc);
         mySwitch = (CheckBox) findViewById(R.id.chubic);
         txtGPS = (TextView) findViewById(R.id.txtGPS);
-       // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
-       // etxtLatitud = (EditText) findViewById(R.id.etxtLatitud);
-        etxtDirec = (EditText) findViewById(R.id.etxtDirec);
+        //etxtDirec = (EditText) findViewById(R.id.etxtDirec);
         edtextDirecc= findViewById(R.id.editTextDirecc);
-        Places.initialize(getApplicationContext(), "AIzaSyCYd9DNtP8fAnic_H5XwgCef7dmqj_7vB0");
+        Places.initialize(getApplicationContext(), "AIzaSyA6gncDZEiQj54ZBDNn9z2nnMDpyfgw5ic");
+        PlacesClient placesClient = Places.createClient(this);
         edtextDirecc.setFocusable(false);
         edtextDirecc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(ApplicantDetailsActivity.this);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
                 startActivityForResult(intent, 100);
-
+                edtextDirecc.getText().clear();
+            }
+            });
+        et2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
+                startActivityForResult(intent, 101);
+                et2.getText().clear();
             }
         });
-       // IniciarServicio();
-        //autoCompleteTextView= findViewById(R.id.autoComplete);
-       // autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(ApplicantDetailsActivity.this,android.R.layout.simple_list_item_1));
-       /* autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("Address : ",autoCompleteTextView.getText().toString());
-                LatLng latLng=getLatLngFromAddress(autoCompleteTextView.getText().toString());
-                if(latLng!=null) {
-                    Log.d("Lat Lng : ", " " + latLng.latitude + " " + latLng.longitude);
-                    Address address=getAddressFromLatLng(latLng);
-                    if(address!=null) {
-                        Log.d("Address : ", "" + address.toString());
-                        Log.d("Address Line : ",""+address.getAddressLine(0));
-                        Log.d("Phone : ",""+address.getPhone());
-                        Log.d("Pin Code : ",""+address.getPostalCode());
-                        Log.d("Feature : ",""+address.getFeatureName());
-                        Log.d("More : ",""+address.getLocality());
-                    }
-                    else {
-                        Log.d("Adddress","Address Not Found");
-                    }
-                }
-                else {
-                    Log.d("Lat Lng","Lat Lng Not Found");
-                }
 
-            }
-        });*/
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -143,6 +131,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             }
         });
     }
+
+
 
     void setEstadoSwitch(boolean x){
         if(x){
@@ -200,10 +190,10 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                         List<Address> list= geocoder.getFromLocation(loc.getLatitude(),loc.getLongitude(),1);
                         if(!list.isEmpty()){
                             Address direccion = list.get(0);
-                            etxtDirec.setText(direccion.getAddressLine(0));
+                            edtextDirecc.setText(direccion.getAddressLine(0));
                         }
                     } catch (IOException e) {
-                        etxtDirec.setText("" +e);
+                        edtextDirecc.setText("" +e);
                         e.printStackTrace();
                     }
                 }
@@ -216,7 +206,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
 //            handle.removeUpdates(this);
 //            etxtLatitud.setText(null);
 //            etxtLongitud.setText(null);
-            etxtDirec.setText(null);
+            edtextDirecc.setText(null);
             Toast.makeText(this, "Busqueda de ubicación desactivada", Toast.LENGTH_SHORT).show();
         }
 
@@ -224,7 +214,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
 
         boolean checked = ((CheckBox) view).isChecked();
         if (checked) {
-            et2.setText(etxtDirec.getText());
+            et2.setText(edtextDirecc.getText());
             et2.setVisibility(View.GONE);
         } else{
             et2.setVisibility(View.VISIBLE);
@@ -283,15 +273,37 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==100 && requestCode== RESULT_OK){
-            Place place = Autocomplete.getPlaceFromIntent(data);
-            edtextDirecc.setText(place.getAddress());
-        }else if (resultCode== AutocompleteActivity.RESULT_ERROR){
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(getApplicationContext(),status.getStatusMessage(), Toast.LENGTH_SHORT).show();
 
+
+            if (requestCode == 100) {
+                if (resultCode == RESULT_OK) {
+                    Place place = Autocomplete.getPlaceFromIntent(data);
+                    edtextDirecc.setText(place.getName());
+                    //et2.setText(place.getName());
+                    // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    // TODO: Handle the error.
+                    Status status = Autocomplete.getStatusFromIntent(data);
+                    // Log.i(TAG, status.getStatusMessage());
+                } else if (resultCode == RESULT_CANCELED) {
+                    // The user canceled the operation.
+                }
+            }
+        if (requestCode == 101) {
+            if (resultCode == RESULT_OK) {
+                Place place = Autocomplete.getPlaceFromIntent(data);
+                et2.setText(place.getName());
+                // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                // TODO: Handle the error.
+                Status status = Autocomplete.getStatusFromIntent(data);
+                // Log.i(TAG, status.getStatusMessage());
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
         }
-    }
+        }
+
 
 }
 

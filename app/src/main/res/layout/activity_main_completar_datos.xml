@@ -73,14 +73,7 @@
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/etxtDirec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:hint="Ingrese su dirección"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent" />
+
 
         <CheckBox
             android:id="@+id/chubic"
@@ -154,6 +147,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
 
         </LinearLayout>
+
 
         <EditText
             android:id="@+id/editTextDirecc"

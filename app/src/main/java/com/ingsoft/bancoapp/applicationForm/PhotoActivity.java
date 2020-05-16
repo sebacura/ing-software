@@ -114,6 +114,7 @@ public class PhotoActivity extends AppCompatActivity {
 //                imageView.setImageBitmap(imageBitmap);
                 findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
                 findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
+                findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }

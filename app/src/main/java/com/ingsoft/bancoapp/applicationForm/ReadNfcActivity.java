@@ -32,6 +32,7 @@ import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -113,6 +114,7 @@ public class ReadNfcActivity extends AppCompatActivity {
 
     private View camposLayout;
     private View loadingLayout;
+    private Handler timer = new Handler();
 
     Button btnIrFormulario2;
 
@@ -120,6 +122,23 @@ public class ReadNfcActivity extends AppCompatActivity {
 
     View btnLeerMrz;
     private  Menu menu;
+
+    //Timer para error al leer mrz
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            // Start your application main_activity
+            if (!mrzOk) {
+                Intent i = new Intent(getApplicationContext(), ReadNfcActivity.class);
+                startActivity(i);
+                Toast.makeText(getApplicationContext(), "No se pudo leer la cédula correctamente, intente nuevamente!", Toast.LENGTH_LONG).show();
+
+                // Close this activity
+                finish();
+            }
+        }
+    }; // FIN Timer
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +157,7 @@ public class ReadNfcActivity extends AppCompatActivity {
             findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
         }
+
 
         //Seguir sin mrz
         findViewById(R.id.provisorio).setOnClickListener(new View.OnClickListener() {
@@ -158,22 +178,30 @@ public class ReadNfcActivity extends AppCompatActivity {
                 camera = findViewById(R.id.camera);
                 camera.setVisibility(View.VISIBLE);
                 camera.setLifecycleOwner(ReadNfcActivity.this);
-                main_layout=findViewById(R.id.main_layout);
+                main_layout = findViewById(R.id.main_layout);
                 main_layout.setVisibility(View.GONE);
                 footer = findViewById(R.id.footer);
                 footer.setVisibility(View.GONE);
                 menu.findItem(R.id.flash_menu).setVisible(true);
 
-                camera.addCameraListener(new CameraListener() {
-                    @Override
-                    public void onCameraOpened(@NonNull CameraOptions options) {
-                        viewFinder = new FrameOverlay(ReadNfcActivity.this);
-                        camera.addView(viewFinder);
-                        camera.addFrameProcessor(frameProcessor);
-                    }
-                });
 
-            }
+                if (!mrzOk) {
+                    camera.addCameraListener(new CameraListener() {
+                        @Override
+                        public void onCameraOpened(@NonNull CameraOptions options) {
+                            viewFinder = new FrameOverlay(ReadNfcActivity.this);
+
+                            // Timer para cerrar la camara despues de 20 segundos
+                            timer.postDelayed(runnable, 20000);
+
+
+                            camera.addView(viewFinder);
+                            camera.addFrameProcessor(frameProcessor);
+                            }
+                    });
+
+                    }
+                }
 
         });
         //Fin abrir camara
@@ -209,10 +237,11 @@ public class ReadNfcActivity extends AppCompatActivity {
                     footer.setVisibility(View.VISIBLE);
                     menu.findItem(R.id.flash_menu).setVisible(false);
                     camera.setFlash(Flash.OFF);
-                    mrzOk = false;
-
+                    mrzOk = true;
                     processing.set(false);
                     camera.removeFrameProcessor(frameProcessor);
+                    timer.removeCallbacks(runnable);
+                    camera.close();
                     return;
                 }
             }
@@ -502,10 +531,9 @@ public class ReadNfcActivity extends AppCompatActivity {
                 }
 
             } else {
-                //agregar excepcion
-                Log.d("error","error");
+                timer.removeCallbacks(runnable);
+                Toast.makeText(getApplicationContext(), "No se pudo leer la cédula correctamente, intente nuevamente!", Toast.LENGTH_LONG).show();
                 return;
-//                Toast.makeText(this, "No se puedo leer correctamente", Toast.LENGTH_LONG).show();
 
             }
             //Pasar a siguiente pantalla

@@ -69,7 +69,7 @@ public class FrameOverlay extends LinearLayout {
         RectF outerRectangle = new RectF(0, 0, getWidth(), viewHeight);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.argb(150, 0, 0, 0));
+        paint.setColor(Color.argb(100, 0, 0, 0));
         osCanvas.drawRect(outerRectangle, paint);
 
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OUT));
@@ -81,10 +81,11 @@ public class FrameOverlay extends LinearLayout {
         int left = sizeInPixel;
         int right = getWidth() - sizeInPixel;
         int width = right - left;
-        int frameHeight = (int) (width / 1.42f); // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
+//        int frameHeight = (int) (width / 1.42f); // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
+        int frameHeight = (int) (width / 16.42f); // Passport's size (ISO/IEC 7810 ID-3) is 125mm × 88mm
 
-        int top = center - (frameHeight / 2);
-        int bottom = center + (frameHeight / 2);
+        int top = center - (frameHeight / 32);
+        int bottom = center + (frameHeight * 4);
 
         RectF innerRectangle = new RectF(left, top, right, bottom);
         osCanvas.drawRect(innerRectangle, paint);

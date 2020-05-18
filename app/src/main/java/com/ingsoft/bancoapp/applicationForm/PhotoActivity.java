@@ -104,11 +104,14 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = null;
+//            Bitmap imageBitmap = null;
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(
-                        getContentResolver(), imageUri);
-                imageBitmap = rotateImage(imageBitmap, 90);
+//                imageBitmap = MediaStore.Images.Media.getBitmap(
+//                        getContentResolver(), imageUri);
+//                imageBitmap = rotateImage(imageBitmap, 90);
                 imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
                 //Para imprimir la foto en pantalla (para probar)
 //                imageView.setImageBitmap(imageBitmap);
@@ -170,10 +173,10 @@ public class PhotoActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private void dispatchTakePictureIntent() {
         ContentValues values = new ContentValues();
-        imageUri = getContentResolver().insert(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//        imageUri = getContentResolver().insert(
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+    //        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }

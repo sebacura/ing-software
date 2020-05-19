@@ -203,17 +203,41 @@ public class PhotoActivity extends AppCompatActivity {
                             } else {
                                 findViewById(R.id.loading_layout).setVisibility(View.GONE);
                                 findViewById(R.id.irFormulario3).setVisibility(View.GONE);
-                                new AlertDialog.Builder(PhotoActivity.this)
-                                    .setTitle("Validación fallida.")
-                                    .setMessage("Su solicitud no cumple con nuestros requisitos de validación.\n\nPorfavor contáctese para más información.")
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
-                                            startActivity(intent);
-                                            overridePendingTransition(0,0);
-                                        }
+
+                                String positiveButton;
+                                String message;
+                                if (numberOfAttemps.equals(2)) {
+                                    new AlertDialog.Builder(PhotoActivity.this)
+                                            .setTitle("Ha ocurrido un error en la validación de su identidad.")
+                                            .setMessage("Lo sentimos. No ha sido posible aceptar su solicitud.\n\nPorfavor contáctese para más información.")
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
+                                                    startActivity(intent);
+                                                    overridePendingTransition(0,0);
+                                                }
+                                            }).setCancelable(false).show();
+                                } else {
+                                    new AlertDialog.Builder(PhotoActivity.this)
+                                        .setTitle("Ha ocurrido un error en la validación de su identidad.")
+                                        .setMessage("Lo sentimos. Su solicitud no cumplió con los requisitos de validación.\n\nPorfavor contáctese para más información o intente nuevamente.")
+                                        .setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                findViewById(R.id.instruccionfoto).setVisibility(View.VISIBLE);
+                                                findViewById(R.id.avisofoto).setVisibility(View.GONE);
+                                                numberOfAttemps += 1;
+                                            }
+                                        }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
+                                                startActivity(intent);
+                                                overridePendingTransition(0, 0);
+                                            }
                                     }).setCancelable(false).show();
+                                }
                             }
                         } catch (Throwable tx) {
                             Log.e("My App", "Could not parse malformed JSON: \"" + response + "\"");
@@ -229,13 +253,10 @@ public class PhotoActivity extends AppCompatActivity {
                         try {
                             responseBody = new String(error.networkResponse.data, "utf-8");
                             JSONObject data = new JSONObject(responseBody);
-                            String message = data.optString("msg");
-
-                            if (numberOfAttemps.equals(3)) {
-
+                            if (numberOfAttemps.equals(2)) {
                                 new AlertDialog.Builder(PhotoActivity.this)
-                                    .setTitle("Validación de idententidad fallida.")
-                                    .setMessage("Porfavor contáctese para más información.")
+                                    .setTitle("Ha ocurrido un error en la validación de su identidad.")
+                                    .setMessage("Lo sentimos. No ha sido posible aceptar su solicitud.\n\nPorfavor contáctese para más información.")
                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -244,47 +265,42 @@ public class PhotoActivity extends AppCompatActivity {
                                             overridePendingTransition(0,0);
                                         }
                                     }).setCancelable(false).show();
-
                             } else {
+                                String positiveButton;
+                                String message;
+                                String title;
 
                                 if (data.optString("code").equals("NO_FACE")) {
-
-                                    new AlertDialog.Builder(PhotoActivity.this)
-                                            .setTitle("Verificación no exitosa.")
-                                            .setMessage("Porfavor reintente tomándose una foto donde su rostro esté visible.")
-                                            .setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    numberOfAttemps +=1;
-                                                }
-                                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
-                                            startActivity(intent);
-                                            overridePendingTransition(0,0);
-                                        }
-                                    }).setCancelable(false).show();
-
+                                    title = "Ha ocurrido un error.";
+                                    message = "Lo sentimos.\n\n Porfavor reintente tomándose una foto donde su rostro esté visible.";
+                                    positiveButton = "Reintentar";
+                                } else if (data.optString("code").equals("INTERNAL_SERVER_ERROR")) {
+                                    title = "Servicio no disponible.";
+                                    message = "Lo sentimos. Ha ocurrido un error inesperado.\n\nPorfavor reintente nuevamente o contactese para más información.";
+                                    positiveButton = "Reintentar";
                                 } else {
-                                    new AlertDialog.Builder(PhotoActivity.this)
-                                            .setTitle("Validación de idententidad fallida.")
-                                            .setMessage("Porfavor reintente nuevamente o contactese para más información.")
-                                            .setPositiveButton("Reintentar", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    numberOfAttemps +=1;
-                                                }
-                                            }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    title = "Un error inesperado ha ocurrido.";
+                                    message = "Lo sentimos. Ha ocurrido un error inesperado.\n\nPorfavor reintente nuevamente o contactese para más información.";
+                                    positiveButton = "Reintentar";
+                                }
+                                new AlertDialog.Builder(PhotoActivity.this)
+                                    .setTitle(title)
+                                    .setMessage(message)
+                                    .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            findViewById(R.id.instruccionfoto).setVisibility(View.VISIBLE);
+                                            findViewById(R.id.avisofoto).setVisibility(View.GONE);
+                                            numberOfAttemps +=1;
+                                        }
+                                    }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
                                             startActivity(intent);
                                             overridePendingTransition(0,0);
-                                        }
-                                    }).setCancelable(false).show();
-                                }
-
+                                    }
+                                }).setCancelable(false).show();
                             }
                         } catch (UnsupportedEncodingException | JSONException e) {
                             e.printStackTrace();

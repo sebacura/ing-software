@@ -74,18 +74,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
 
-
-        <CheckBox
-            android:id="@+id/chubic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:fontFamily="@font/open_sans_light"
-            android:text="Buscar mi ubicación actual "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
-
         <LinearLayout
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
@@ -109,13 +97,6 @@
             <!--                app:layout_constraintStart_toStartOf="parent"-->
             <!--                app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
 
-
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="agregarUbicActual"
-                android:text="Utilizar esta dirección como la de entrega" />
 
             <EditText
                 android:id="@+id/txt_direcc"
@@ -153,10 +134,27 @@
             android:id="@+id/editTextDirecc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ingrese dirección"
             android:ems="10"
-            android:inputType="textPostalAddress"
-            />
+            android:hint="Ingrese su dirección de residencia"
+            android:inputType="textPostalAddress" />
+
+        <CheckBox
+            android:id="@+id/chubic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/open_sans_light"
+            android:text="Buscar mi ubicación actual "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="agregarUbicActual"
+            android:text="Utilizar esta dirección como la de entrega" />
 
 
     </LinearLayout>

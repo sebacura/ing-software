@@ -126,7 +126,7 @@
             android:id="@+id/btnLeerMrz"
             android:layout_width="match_parent"
             android:layout_height="58dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             app:srcCompat="@drawable/ic_foto" />
 
 
@@ -135,7 +135,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -144,47 +145,66 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.278">
 
-            <TextView
+            <EditText
                 android:id="@+id/date_of_birth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:textAlignment="center"
-                android:textSize="20dp"
-                tools:text="Fecha de nacimiento" />
+                android:textSize="16dp"
+                android:text="Fecha de nacimiento" />
 
-            <TextView
+            <EditText
                 android:id="@+id/expiry_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:textAlignment="center"
-                android:textSize="20dp"
-                tools:text="Fecha de vencimiento" />
+                android:textSize="16dp"
+                android:text="Fecha de vencimiento" />
 
-            <TextView
+            <EditText
                 android:id="@+id/ci_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:textAlignment="center"
-                android:textSize="20dp"
-                tools:text="Código" />
+                android:textSize="16dp"
+                android:text="Código (9 caracteres de la primera fila después de URY)" />
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/date_of_birth"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:focusableInTouchMode="false"-->
+<!--                android:hint="Fecha de nacimiento"-->
+<!--                android:textAlignment="center"-->
+<!--                android:inputType="date"-->
+<!--                tools:layout_editor_absoluteX="19dp"-->
+<!--                tools:layout_editor_absoluteY="343dp" />-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/expiry_date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:focusableInTouchMode="false"-->
+<!--                android:hint="Fecha de vencimiento"-->
+<!--                android:inputType="date"-->
+<!--                android:textAlignment="center"-->
+<!--                tools:layout_editor_absoluteX="18dp"-->
+<!--                tools:layout_editor_absoluteY="286dp" />-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/ci_code"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:textAlignment="center"-->
+<!--                android:hint="Código detrás de cedula (9 caracteres)"-->
+<!--                tools:layout_editor_absoluteX="16dp"-->
+<!--                tools:layout_editor_absoluteY="230dp" />-->
 
         </LinearLayout>
 
-<!--        BOTON PROVISORIO PARA PODER SEGUIR-->
-        <Button
-            android:id="@+id/provisorio"
-            android:layout_width="229dp"
-            android:layout_height="wrap_content"
-            android:text="Seguir sin MRZ"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            app:layout_constraintHorizontal_bias="0.538"
-            app:layout_constraintTop_toTopOf="@id/footer"
-            app:layout_constraintVertical_bias="0.876" />
 
 
     </LinearLayout>
@@ -339,22 +359,43 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+<!--    FIN PASO 2 LAYOUT-->
+
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.278">
+
+        <!--        BOTON PROVISORIO PARA PODER SEGUIR-->
+        <Button
+            android:id="@+id/provisorio"
+            android:layout_width="229dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Seguir sin MRZ"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/irFormulario2"
             android:layout_width="229dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="220dp"
             android:text="Siguiente"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:visibility="gone"
-            app:layout_constraintHorizontal_bias="0.538"
-            app:layout_constraintTop_toTopOf="@id/footer"
-            app:layout_constraintVertical_bias="0.876" />
+            android:visibility="gone" />
 
     </LinearLayout>
-<!--    FIN PASO 2 LAYOUT-->
-
 
     <LinearLayout
         android:id="@+id/footer"

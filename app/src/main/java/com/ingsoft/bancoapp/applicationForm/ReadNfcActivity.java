@@ -150,13 +150,13 @@ public class ReadNfcActivity extends AppCompatActivity {
         adapter = manager.getDefaultAdapter();
 
         if (adapter != null && !adapter.isEnabled()) {
-            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
+//            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
             findViewById(R.id.btnLeerMrz).setVisibility(View.GONE);
 
             Toast.makeText(getApplicationContext(), "El NFC de su celular se encuentra apagado, enciéndalo para poder continuar", Toast.LENGTH_LONG).show();
 
         }else if (adapter==null) {
-            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
+//            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
             findViewById(R.id.btnLeerMrz).setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Su celular no cuenta con NFC, no es posible utilizar la aplicación!", Toast.LENGTH_LONG).show();
         } else {

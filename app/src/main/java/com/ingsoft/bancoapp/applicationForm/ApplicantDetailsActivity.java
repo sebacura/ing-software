@@ -60,7 +60,7 @@ import java.util.Locale;
 public class ApplicantDetailsActivity extends AppCompatActivity implements LocationListener {
 
     private EditText et1;
-    private EditText et2;
+    private static EditText et2;
     private EditText ubic;
     private CheckBox mySwitch;
     public LocationManager handle;
@@ -69,7 +69,10 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private EditText etxtLatitud;
     private EditText etxtLongitud;
    // private EditText etxtDirec;
-    EditText edtextDirecc;
+    static EditText edtextDirecc;
+
+    private static String direccion1;
+    private static String direccion2;
 
     @SuppressLint({"WrongConstant", "WrongViewCast"})
     @Override
@@ -83,7 +86,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         txtGPS = (TextView) findViewById(R.id.txtGPS);
         //etxtDirec = (EditText) findViewById(R.id.etxtDirec);
         edtextDirecc= findViewById(R.id.editTextDirecc);
-        Places.initialize(getApplicationContext(), "AIzaSyA6gncDZEiQj54ZBDNn9z2nnMDpyfgw5ic");
+        Places.initialize(getApplicationContext(), "AIzaSyCQ27Bj40QYHiAJHYF-n999qVqvzQGXrZQ");
         PlacesClient placesClient = Places.createClient(this);
         edtextDirecc.setFocusable(false);
         edtextDirecc.setOnClickListener(new View.OnClickListener() {
@@ -224,6 +227,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     public void btnSig(View view){
         String v1= et1.getText().toString();
         String v2= et2.getText().toString();
+        direccion1 = v1;
         if(v1.isEmpty()){
             Toast.makeText(this, "Debe ingresar su salario", Toast.LENGTH_LONG).show();
         } else {
@@ -279,6 +283,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 if (resultCode == RESULT_OK) {
                     Place place = Autocomplete.getPlaceFromIntent(data);
                     edtextDirecc.setText(place.getName());
+                    direccion2 = place.getName();
                     //et2.setText(place.getName());
                     // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
@@ -305,5 +310,12 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         }
 
 
+    public static String getDirection1(){
+        return direccion1;
+    }
+
+    public static String getDirection2(){
+        return direccion2;
+    }
 }
 

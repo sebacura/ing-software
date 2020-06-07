@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -40,6 +41,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 public class PhotoActivity extends AppCompatActivity {
 
@@ -60,6 +62,7 @@ public class PhotoActivity extends AppCompatActivity {
         this.imageView = (ImageView)this.findViewById(R.id.imageView1);
 
         loadingLayout = findViewById(R.id.loading_layout);
+
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);

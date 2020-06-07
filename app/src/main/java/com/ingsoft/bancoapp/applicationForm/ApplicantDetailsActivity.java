@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -28,6 +30,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -54,8 +61,10 @@ import com.ingsoft.bancoapp.applicationForm.PlaceAutoSuggestAdapter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ApplicantDetailsActivity extends AppCompatActivity implements LocationListener {
 
@@ -74,11 +83,19 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private static String direccion1;
     private static String direccion2;
 
+    private View loadingLayout;
+    private View errorMessage;
+    private  SharedPreferences sharedPref;
+
     @SuppressLint({"WrongConstant", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_completar_datos);
+
+       sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        loadingLayout = findViewById(R.id.loading_layout);
+        errorMessage = findViewById(R.id.error_message);
 
         et1 = findViewById(R.id.txt_sueldo);
         et2 = findViewById(R.id.txt_direcc);
@@ -136,6 +153,48 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     }
 
 
+    public void SendRequest() {
+
+        String url = "https://ingsoft-backend.herokuapp.com/applications";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String response) {
+                        Intent intent = new Intent(getApplicationContext(), SuccessActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(0,0);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loadingLayout.setVisibility(View.GONE);
+                        errorMessage.setVisibility(View.VISIBLE);
+                        error.printStackTrace();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+
+                Map<String, String>  params = new HashMap<>();
+                // the POST parameters:
+                params.put("nombrePersona",  sharedPref.getString("nombrePersona", "Not Available"));
+                params.put("apellidoPersona",  sharedPref.getString("apellidoPersona", "Not Available"));
+                params.put("cedulaPersona",  sharedPref.getString("cedulaPersona", "Not Available"));
+                params.put("direccionPersona",  sharedPref.getString("direccionPersona", "Not Available"));
+                params.put("sueldoPersona",  sharedPref.getString("sueldoPersona", "Not Available"));
+                params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
+                params.put("producto",  sharedPref.getString("producto", "Platino"));
+//                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));
+
+                return params;
+            }
+        };
+        Volley.newRequestQueue(this).add(postRequest);
+    }
 
     void setEstadoSwitch(boolean x){
         if(x){
@@ -225,23 +284,36 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         }
     }
     public void btnSig(View view){
-        String v1= et1.getText().toString();
-        String v2= et2.getText().toString();
-        direccion1 = v1;
-        if(v1.isEmpty()){
+        String sueldoString= et1.getText().toString(); //sueldo
+        String dirEntrega = et2.getText().toString(); //direccion entrega
+        String dirResidencia = edtextDirecc.getText().toString(); //direccion residencia
+
+
+        if(sueldoString.isEmpty()){
             Toast.makeText(this, "Debe ingresar su salario", Toast.LENGTH_LONG).show();
         } else {
-            int salario = Integer.parseInt(v1);
+            int salario = Integer.parseInt(sueldoString);
             if (salario < 0) {
                 Toast.makeText(this, "Salario no aceptado", Toast.LENGTH_LONG).show();
             } else if (salario < 10000) {
                 Toast.makeText(this, "Su salario no es suficiente para solicitar una tarjeta, disculpe", Toast.LENGTH_LONG).show();
-            } else if (v2.isEmpty()) {
+            } else if (dirEntrega.isEmpty()) {
                 Toast.makeText(this, "Debe ingresar su dirección", Toast.LENGTH_LONG).show();
             } else {
-                Intent intent = new Intent(getApplicationContext(), SuccessActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0,0);
+                //now get Editor
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //put your value
+                if (dirResidencia.isEmpty()) {
+                    dirResidencia = dirEntrega;
+                }
+                editor.putString("direccionPersona", dirResidencia);
+                editor.putString("sueldoPersona", sueldoString);
+                editor.putString("direccionEntrega", dirEntrega);
+                //commits your edits
+                editor.commit();
+                SendRequest();
+//                Log.d("datos solicitud", sharedPref.getAll().toString());
+
             }
         }
 

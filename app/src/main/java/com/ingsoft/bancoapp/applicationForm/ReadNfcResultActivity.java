@@ -16,12 +16,8 @@
 package com.ingsoft.bancoapp.applicationForm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +26,10 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 public class ReadNfcResultActivity extends AppCompatActivity {
 
@@ -56,7 +56,18 @@ public class ReadNfcResultActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.output_first_name)).setText(getIntent().getStringExtra(KEY_FIRST_NAME));
         ((TextView) findViewById(R.id.output_last_name)).setText(getIntent().getStringExtra(KEY_LAST_NAME));
         ((TextView) findViewById(R.id.output_ci)).setText(getIntent().getStringExtra(KEY_CI));
+        // Create object of SharedPreferences.
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        //now get Editor
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear(); //remove old keys
+        //put new values
+        editor.putString("nombrePersona", getIntent().getStringExtra(KEY_FIRST_NAME));
+        editor.putString("apellidoPersona", getIntent().getStringExtra(KEY_LAST_NAME));
+        editor.putString("cedulaPersona", getIntent().getStringExtra(KEY_CI));
 
+        //commits your edits
+        editor.commit();
 
         // bottom nav bar
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -85,6 +96,8 @@ public class ReadNfcResultActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), PhotoActivity.class);
                 intent.putExtra("CI_PHOTO_BASE_64", getIntent().getStringExtra(KEY_CI_PHOTO_BASE64));
                 intent.putExtra("KEY_CI", getIntent().getStringExtra(KEY_CI));
+
+
                 startActivity(intent);
                 overridePendingTransition(0,0);
             }

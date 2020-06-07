@@ -61,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
                         MenuItem logout = (MenuItem) _menu.findItem(R.id.item_logout);
                         logout.setVisible(true);
-                        ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
-//                        finish();
-//                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-//                        startActivity(intent);
+//                        ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
+                        finish();
+                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

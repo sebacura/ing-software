@@ -47,6 +47,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,8 +89,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.jmrtd.PassportService.DEFAULT_MAX_BLOCKSIZE;
@@ -107,6 +110,7 @@ public class ReadNfcActivity extends AppCompatActivity {
     private Bitmap scannable = null;
     private View main_layout;
     private View footer;
+
 
     private boolean mrzOk=false;
 
@@ -288,6 +292,7 @@ public class ReadNfcActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onResume() {

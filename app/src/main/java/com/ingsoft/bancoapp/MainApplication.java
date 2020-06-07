@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 package com.ingsoft.bancoapp;
-
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-
 import androidx.multidex.MultiDexApplication;
 
-
+import com.onesignal.OSPermissionSubscriptionState;
+import com.onesignal.OneSignal;
 import java.security.Security;
 
 public class MainApplication extends MultiDexApplication {
@@ -27,7 +26,11 @@ public class MainApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Security.insertProviderAt(new BouncyCastleProvider(), 1);
+        // OneSignal Initialization
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
     }
 
 }

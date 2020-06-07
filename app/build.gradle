@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/'}
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.6, 0.99.99]'
+    }
+}
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+repositories {
+    maven { url 'https://maven.google.com' }
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'groovyx.grooid.groovy-android'
 android.defaultConfig.vectorDrawables.useSupportLibrary = true
@@ -5,9 +18,13 @@ android.defaultConfig.vectorDrawables.useSupportLibrary = true
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.0'
-
     defaultConfig {
         applicationId "com.ingsoft.bancoapp"
+        manifestPlaceholders = [
+                onesignal_app_id: '79ef3369-e985-444d-9dc1-09994395b172',
+                // Project number pulled from dashboard, lo cal value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 15
@@ -58,8 +75,10 @@ dependencies {
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
     testImplementation "com.google.truth:truth:0.40"
-// Required for instrumented tests
+    // Required for instrumented tests
     androidTestImplementation 'com.android.support:support-annotations:24.0.0'
     androidTestImplementation 'com.android.support.test:runner:0.5'
 
+    // onesignal
+    implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]'
 }

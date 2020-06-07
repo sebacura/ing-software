@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.products.ProductListActivity;
+import com.onesignal.OneSignal;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,22 +50,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void RealizarPost() {
-
         String url = "https://ingsoft-backend.herokuapp.com/bank/login";
-
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-                        EditText username = (EditText)findViewById(R.id.username);
+                        EditText username = (EditText) findViewById(R.id.username);
                         setContentView(R.layout.activity_dashboard);
-
                         MenuItem logout = (MenuItem) _menu.findItem(R.id.item_logout);
                         logout.setVisible(true);
+                        OneSignal.setExternalUserId(username.getText().toString());
                         ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
-//                        finish();
-//                        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-//                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

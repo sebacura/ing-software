@@ -14,6 +14,8 @@
     <color name="red">#A50203</color>
     <color name="blue">#1d4e89</color>
     <color name="grey">#77ffffff</color>
+    <color name="green">#00D31A</color>
+
     <color name="light_grey">#ececec</color>
     <color name="black">#000000</color>
 </resources>

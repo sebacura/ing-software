@@ -6,7 +6,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
     tools:context=".applicationForm.SuccessActivity">
 
     <TextView
@@ -43,13 +43,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="normal"
-            android:text="Su solicitud está en proceso de aprobación."
+            android:text="Su solicitud está en la siguiente etapa:"
             android:textSize="15sp"
             android:gravity="center"
             android:layout_marginTop="10dp"
             tools:layout_editor_absoluteX="12dp"
             tools:layout_editor_absoluteY="73dp" />
 
+
+        <TextView
+            android:id="@+id/response"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text=""
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="73dp" />
         <TextView
             android:id="@+id/click"
             android:layout_width="match_parent"

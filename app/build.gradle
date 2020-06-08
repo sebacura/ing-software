@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        maven { url 'https://plugins.gradle.org/m2/'}
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
     dependencies {
         classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.6, 0.99.99]'
@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId "com.ingsoft.bancoapp"
         manifestPlaceholders = [
-                onesignal_app_id: '79ef3369-e985-444d-9dc1-09994395b172',
+                onesignal_app_id               : '79ef3369-e985-444d-9dc1-09994395b172',
                 // Project number pulled from dashboard, lo cal value is ignored.
                 onesignal_google_project_number: 'REMOTE'
         ]

@@ -11,46 +11,40 @@
         android:resource="@drawable/ic_notifications_black_24dp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".bankEmployer.RequestDetailActivity" android:parentActivityName=".bankEmployer.DashboardActivity"></activity>
         <activity android:name=".products.ProductListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".applicationForm.ReadNfcActivity"
             android:parentActivityName=".products.ProductListActivity">
             <intent-filter>
                 <action android:name="com.ingsoft.bancoapp.REQUEST" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".applicationForm.ReadNfcResultActivity"
             android:parentActivityName=".applicationForm.ReadNfcActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".applicationForm.PhotoActivity"
             android:parentActivityName=".applicationForm.ReadNfcResultActivity" />
-
-
-        <activity android:name=".applicationForm.SuccessActivity"></activity>
-
+        <activity android:name=".applicationForm.SuccessActivity" />
         <activity
             android:name=".bankEmployer.DashboardActivity"
             android:parentActivityName=".bankEmployer.LoginActivity" />
-
         <activity
             android:name=".applicationForm.ApplicantDetailsActivity"
             android:parentActivityName=".applicationForm.PhotoActivity" />
-
-        <activity android:name=".bankEmployer.LoginActivity"
-            android:parentActivityName=".products.ProductListActivity"/>
-
+        <activity
+            android:name=".bankEmployer.LoginActivity"
+            android:parentActivityName=".products.ProductListActivity" />
         <activity
             android:name=".myApplications.StatusActivity"
             android:screenOrientation="portrait" />
@@ -62,14 +56,17 @@
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
 </manifest>

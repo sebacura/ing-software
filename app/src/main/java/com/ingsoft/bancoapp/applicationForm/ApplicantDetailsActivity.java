@@ -57,6 +57,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.ingsoft.bancoapp.applicationForm.PlaceAutoSuggestAdapter;
+import com.onesignal.OneSignal;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -161,7 +165,23 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
+                        OneSignal.setExternalUserId(sharedPref.getString("cedulaPersona", "Not Available"));
                         Intent intent = new Intent(getApplicationContext(), SuccessActivity.class);
+                        JSONObject jsonResponse = null;
+                        try {
+                            jsonResponse = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        
+                        String state = null;
+                        try {
+                            state = jsonResponse.getString("estado");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("estado: ", state);
+                        intent.putExtra("state", state);
                         startActivity(intent);
                         overridePendingTransition(0,0);
                     }
@@ -181,11 +201,11 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
 
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
-                params.put("nombrePersona",  sharedPref.getString("nombrePersona", "Not Available"));
-                params.put("apellidoPersona",  sharedPref.getString("apellidoPersona", "Not Available"));
-                params.put("cedulaPersona",  sharedPref.getString("cedulaPersona", "Not Available"));
-                params.put("direccionPersona",  sharedPref.getString("direccionPersona", "Not Available"));
-                params.put("sueldoPersona",  sharedPref.getString("sueldoPersona", "Not Available"));
+                params.put("nombre",  sharedPref.getString("nombrePersona", "Not Available"));
+                params.put("apellido",  sharedPref.getString("apellidoPersona", "Not Available"));
+                params.put("cedula",  sharedPref.getString("cedulaPersona", "Not Available"));
+                params.put("direccion",  sharedPref.getString("direccionPersona", "Not Available"));
+                params.put("sueldo",  sharedPref.getString("sueldoPersona", "Not Available"));
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
                 params.put("producto",  sharedPref.getString("producto", "Platino"));
 //                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));

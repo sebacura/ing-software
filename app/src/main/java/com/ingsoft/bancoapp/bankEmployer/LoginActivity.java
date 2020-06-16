@@ -55,11 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-//                        EditText username = (EditText) findViewById(R.id.username);
+                        EditText username = (EditText) findViewById(R.id.username);
 //                        setContentView(R.layout.activity_dashboard);
 //                        MenuItem logout = (MenuItem) _menu.findItem(R.id.item_logout);
 //                        logout.setVisible(true);
-//                        OneSignal.setExternalUserId(username.getText().toString());
+                        OneSignal.setExternalUserId(username.getText().toString());
 //                        ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
 //                        finish();
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);

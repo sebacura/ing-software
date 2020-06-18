@@ -45,9 +45,9 @@ public class CustomListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) v.getTag();
         }
-        holder.name.setText(listData.get(position).getFirstName());
-        holder.address.setText(listData.get(position).getAddress());
-        holder.ci.setText(listData.get(position).getCi());
+        holder.name.setText(listData.get(position).getFirstName()+" "+ listData.get(position).getLastName());
+        holder.address.setText(listData.get(position).getProductId());
+        holder.ci.setText(listData.get(position).getDate());
         return v;
     }
     static class ViewHolder {

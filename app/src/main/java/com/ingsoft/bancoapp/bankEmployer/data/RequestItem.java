@@ -2,6 +2,9 @@ package com.ingsoft.bancoapp.bankEmployer.data;
 
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestItem implements Serializable {
     private String id;
@@ -25,7 +28,20 @@ public class RequestItem implements Serializable {
     private String birth;
 
     public String getDate() {
-        return date;
+
+        String startTime = date;
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date dateValue = null;
+
+        try {
+            dateValue = input.parse(startTime);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+        return (output.format(dateValue)+"hs");
     }
 
     public void setDate(String date) {

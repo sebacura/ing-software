@@ -18,9 +18,12 @@ import com.android.volley.toolbox.Volley;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.bankEmployer.data.RequestItem;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestDetailActivity extends AppCompatActivity {
     private RequestItem user;
@@ -30,9 +33,8 @@ public class RequestDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
         user = (RequestItem) getIntent().getSerializableExtra("user");
-//        String value = getIntent().getStringExtra("user");
-//        Toast.makeText(getApplicationContext(),user.getDeliveryAddress(), Toast.LENGTH_SHORT).show();
-        ((TextView) findViewById(R.id.name)).setText(user.getFirstName()+user.getLastName());
+        ((TextView) findViewById(R.id.name)).setText(user.getFirstName());
+        ((TextView) findViewById(R.id.lastName)).setText(user.getLastName());
         ((TextView) findViewById(R.id.product)).setText(user.getProductId());
         ((TextView) findViewById(R.id.ci)).setText(user.getCi());
         ((TextView) findViewById(R.id.address)).setText(user.getAddress());
@@ -40,7 +42,9 @@ public class RequestDetailActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.deliveryAddress)).setText(user.getDeliveryAddress());
         ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
-        ((TextView) findViewById(R.id.date)).setText(user.getDate());
+
+
+        ((TextView) findViewById(R.id.date)).setText(user.getDate()) ;
 
         Button btnAccept = (Button) findViewById(R.id.accept);
         btnAccept.setOnClickListener(new View.OnClickListener() {

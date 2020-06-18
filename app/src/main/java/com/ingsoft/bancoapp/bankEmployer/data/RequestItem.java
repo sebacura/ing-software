@@ -14,6 +14,16 @@ public class RequestItem implements Serializable {
     private String productId;
     private String stateId;
 
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    private String birth;
+
     public String getDate() {
         return date;
     }

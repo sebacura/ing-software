@@ -23,16 +23,24 @@ import java.util.Map;
 
 
 public class RequestDetailActivity extends AppCompatActivity {
+    private RequestItem user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
-        RequestItem user = (RequestItem) getIntent().getSerializableExtra("user");
+        user = (RequestItem) getIntent().getSerializableExtra("user");
 //        String value = getIntent().getStringExtra("user");
-        Toast.makeText(getApplicationContext(),user.getDeliveryAddress(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),user.getDeliveryAddress(), Toast.LENGTH_SHORT).show();
         ((TextView) findViewById(R.id.name)).setText(user.getFirstName()+user.getLastName());
         ((TextView) findViewById(R.id.product)).setText(user.getProductId());
+        ((TextView) findViewById(R.id.ci)).setText(user.getCi());
+        ((TextView) findViewById(R.id.address)).setText(user.getAddress());
+//        ((TextView) findViewById(R.id.birth)).setText(user.getBirth());
+
+        ((TextView) findViewById(R.id.deliveryAddress)).setText(user.getDeliveryAddress());
+        ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
+        ((TextView) findViewById(R.id.date)).setText(user.getDate());
 
         Button btnAccept = (Button) findViewById(R.id.accept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +89,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 
                 Map<String, String>  params = new HashMap<>();
                 // the POST parameters:
-                params.put("idSolicitude", "1");
+                params.put("idSolicitude", user.getId());
                 params.put("state", state);
                 return params;
             }

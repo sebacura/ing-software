@@ -100,6 +100,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
                                 user.setProductId(pendings.getJSONObject(i).getString("productId"));
                                 user.setStateId(pendings.getJSONObject(i).getString("StateId"));
+//                                user.setBirth(pendings.getJSONObject(i).getString(""));
 
                                 results.add(user);
 

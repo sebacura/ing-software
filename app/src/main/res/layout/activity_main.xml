@@ -6,7 +6,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".applficationForm.ReadNfcActivity"
+    tools:context=".applicationForm.ReadNfcActivity"
     android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
 
     <com.otaliastudios.cameraview.CameraView
@@ -80,6 +80,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
@@ -152,7 +153,8 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="center"
                 android:textSize="16dp"
-                android:text="Fecha de nacimiento" />
+                android:text="Fecha de nacimiento"
+                android:gravity="center_horizontal" />
 
             <EditText
                 android:id="@+id/expiry_date"
@@ -161,7 +163,8 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="center"
                 android:textSize="16dp"
-                android:text="Fecha de vencimiento" />
+                android:text="Fecha de vencimiento"
+                android:gravity="center_horizontal" />
 
             <EditText
                 android:id="@+id/ci_code"
@@ -170,7 +173,8 @@
                 android:layout_marginTop="8dp"
                 android:textAlignment="center"
                 android:textSize="16dp"
-                android:text="Código (9 caracteres de la primera fila después de URY)" />
+                android:text="Código (9 caracteres de la primera fila después de URY)"
+                android:gravity="center_horizontal" />
 
 <!--            <com.google.android.material.textfield.TextInputEditText-->
 <!--                android:id="@+id/date_of_birth"-->
@@ -207,6 +211,7 @@
 
 
 
+
     </LinearLayout>
 
 
@@ -222,7 +227,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="gone"
-        app:layout_constraintVertical_bias="0.225">
+        app:layout_constraintVertical_bias="0.225"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/textViewPaso2"
@@ -337,7 +343,8 @@
                 android:textSize="20dp"
                 android:layout_marginTop="10dp"
                 android:textAlignment="center"
-                tools:text="Peter" />
+                tools:text="Peter"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/output_last_name"
@@ -346,7 +353,8 @@
                 android:layout_marginTop="10dp"
                 android:textSize="20dp"
                 android:textAlignment="center"
-                tools:text="Jackson" />
+                tools:text="Jackson"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/output_ci"
@@ -355,7 +363,8 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"
-                tools:text="47976654" />
+                tools:text="47976654"
+                android:gravity="center_horizontal" />
 
         </LinearLayout>
 
@@ -384,7 +393,7 @@
             android:layout_gravity="center"
             android:text="Seguir sin MRZ"
             android:textColor="@color/white"
-            android:visibility="gone" />
+           />/ android:visibility="gone" />
 
         <Button
             android:id="@+id/irFormulario2"

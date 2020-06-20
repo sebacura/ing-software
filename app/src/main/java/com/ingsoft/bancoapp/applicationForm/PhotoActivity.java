@@ -30,6 +30,7 @@ import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.ingsoft.bancoapp.products.ProductListActivity;
 import com.ingsoft.bancoapp.tools.Tools;
+import com.ingsoft.bancoapp.applicationForm.lifeProof.EyesActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +71,12 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dispatchTakePictureIntent();
+                Intent intent = new Intent(PhotoActivity.this, EyesActivity.class);
+                startActivity(intent);
+
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                finish();
             }
         });
         //Fin tomar foto desde app

@@ -76,7 +76,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
-                        }).setCancelable(false).show();
+                        }).show();
             }
         });
 

@@ -1,5 +1,7 @@
 package com.ingsoft.bancoapp.bankEmployer;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,7 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import com.google.gson.JsonObject;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.bankEmployer.data.RequestItem;
 import com.ingsoft.bancoapp.bankEmployer.data.model.CustomListAdapter;
+import com.otaliastudios.cameraview.video.VideoRecorder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,21 +53,30 @@ public class DashboardActivity extends AppCompatActivity {
 
     private ListView mListView;
     private ArrayAdapter aAdapter;
+    private View loadingLayout;
+    private View isEmpty;
+
+    private ArrayList<RequestItem> results = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-//        listView=(ListView)findViewById(R.id.listView);
+        loadingLayout = findViewById(R.id.loading_layout);
+        isEmpty = findViewById(R.id.empty);
         textView=(TextView)findViewById(R.id.textView);
-//        MenuItem logout = _menu.findItem(R.id.item_logout);
-//        logout.setVisible(true);
+//        MenuItem search = _menu.findItem(R.id.search);
+//        search.setVisible(true);
         getListData();
     }
-    private void getListData() {
-        ArrayList<RequestItem> results = new ArrayList<>();
 
+    private void getListData() {
+        loadingLayout.setVisibility(View.VISIBLE);
         String url = "https://ingsoft-backend.herokuapp.com/applications/pending";
+        results = new ArrayList<>();
+        final ListView lv = (ListView) findViewById(R.id.requestlist);
+        lv.setAdapter(new CustomListAdapter(DashboardActivity.this, results));
+
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String >() {
                     @Override
@@ -79,25 +93,30 @@ public class DashboardActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        for(int i = 0 ; i < pendings.length() ; i++){
-                            try {
+                        if (pendings!=null) {
+                            isEmpty.setVisibility(View.GONE);
+                            for (int i = 0; i < pendings.length(); i++) {
+                                try {
 //                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
-                                RequestItem user = new RequestItem();
-                                user.setId(pendings.getJSONObject(i).getString("id"));
-                                user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
-                                user.setLastName(pendings.getJSONObject(i).getString("personLastName"));
-                                user.setCi(pendings.getJSONObject(i).getString("personCedula"));
-                                user.setAddress(pendings.getJSONObject(i).getString("personAddress"));
-                                user.setSalary(pendings.getJSONObject(i).getString("personSalary"));
-                                user.setDate(pendings.getJSONObject(i).getString("createdAt"));
-                                user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
-                                user.setProductId(pendings.getJSONObject(i).getString("productId"));
-                                user.setStateId(pendings.getJSONObject(i).getString("StateId"));
+                                    RequestItem user = new RequestItem();
+                                    user.setId(pendings.getJSONObject(i).getString("id"));
+                                    user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
+                                    user.setLastName(pendings.getJSONObject(i).getString("personLastName"));
+                                    user.setCi(pendings.getJSONObject(i).getString("personCedula"));
+                                    user.setAddress(pendings.getJSONObject(i).getString("personAddress"));
+                                    user.setSalary(pendings.getJSONObject(i).getString("personSalary"));
+                                    user.setDate(pendings.getJSONObject(i).getString("createdAt"));
+                                    user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
+                                    user.setProductId(pendings.getJSONObject(i).getString("productId"));
+                                    user.setStateId(pendings.getJSONObject(i).getString("StateId"));
 //                                user.setBirth(pendings.getJSONObject(i).getString(""));
-                                results.add(user);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                    results.add(user);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        } else {
+                            isEmpty.setVisibility(View.VISIBLE);
                         }
                         final ListView lv = (ListView) findViewById(R.id.requestlist);
                         lv.setAdapter(new CustomListAdapter(DashboardActivity.this, results));
@@ -111,13 +130,14 @@ public class DashboardActivity extends AppCompatActivity {
                                 overridePendingTransition(0,0);
                             }
                         });
+                        loadingLayout.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        loadingLayout.setVisibility(View.GONE);
-//                        errorMessage.setVisibility(View.VISIBLE);
+                        loadingLayout.setVisibility(View.GONE);
+                        isEmpty.setVisibility(View.VISIBLE);
                         error.printStackTrace();
                     }
                 }
@@ -127,52 +147,125 @@ public class DashboardActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(getRequest);
     }
 
-    //Logout ITEM IN TOP BAR
+    //Search ITEM IN TOP BAR
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.logout, menu);
-        _menu = menu;
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.dashboard, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        searchView.setQueryHint("Buscar por apellido");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchView.clearFocus();
+                if(query.equals("")){
+                    getListData();
+                }else{
+                    FilterList(query);
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+
+        });
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_logout:
-                finish();
-                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        return super.onOptionsItemSelected(item);
     }
 
-    public void RequestList(String state) {
-        String url = "https://ingsoft-backend.herokuapp.com/applications";
+    public void FilterList(String lastName) {
+        Log.d("last name", lastName);
+        String url = "https://ingsoft-backend.herokuapp.com/applications/pendingByName?clientLastName="+lastName;
+        Log.d("url", url);
+        loadingLayout.setVisibility(View.VISIBLE);
+        results = new ArrayList<>();
+        final ListView lv = (ListView) findViewById(R.id.requestlist);
+        lv.setAdapter(new CustomListAdapter(DashboardActivity.this, results));
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
-
-//                        arrayAdapterListView(response);
+                        JSONObject jsonObject = null;
+                        JSONArray pendings = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            pendings = new JSONArray(jsonObject.getString("applicationsByName"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if (pendings!=null) {
+                            isEmpty.setVisibility(View.GONE);
+                            for (int i = 0; i < pendings.length(); i++) {
+                                try {
+//                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
+                                    RequestItem user = new RequestItem();
+                                    user.setId(pendings.getJSONObject(i).getString("id"));
+                                    user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
+                                    user.setLastName(pendings.getJSONObject(i).getString("personLastName"));
+                                    user.setCi(pendings.getJSONObject(i).getString("personCedula"));
+                                    user.setAddress(pendings.getJSONObject(i).getString("personAddress"));
+                                    user.setSalary(pendings.getJSONObject(i).getString("personSalary"));
+                                    user.setDate(pendings.getJSONObject(i).getString("createdAt"));
+                                    user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
+                                    user.setProductId(pendings.getJSONObject(i).getString("productId"));
+                                    user.setStateId(pendings.getJSONObject(i).getString("StateId"));
+//                                user.setBirth(pendings.getJSONObject(i).getString(""));
+                                    results.add(user);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            isEmpty.setVisibility(View.VISIBLE);
+                        }
+                        final ListView lv = (ListView) findViewById(R.id.requestlist);
+                        lv.setAdapter(new CustomListAdapter(DashboardActivity.this, results));
+                        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                                Intent intent = new Intent(getApplicationContext(), RequestDetailActivity.class);
+                                RequestItem user = (RequestItem) lv.getItemAtPosition(position);
+                                intent.putExtra("user", (Serializable)user);
+                                startActivity(intent);
+                                overridePendingTransition(0,0);
+                            }
+                        });
+                        loadingLayout.setVisibility(View.GONE);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        loadingLayout.setVisibility(View.GONE);
-//                        errorMessage.setVisibility(View.VISIBLE);
+                        loadingLayout.setVisibility(View.GONE);
+                        isEmpty.setVisibility(View.VISIBLE);
                         error.printStackTrace();
                     }
                 }
-        ) {
-
-        };
+        ) { };
         Volley.newRequestQueue(this).add(getRequest);
     }
-
 
 }

@@ -66,10 +66,9 @@ public class RequestDetailActivity extends AppCompatActivity {
                         .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String comment = input.getText().toString(); // comentario para mandar al back
-
+                                String comment = input.getText().toString();
                                 // approve request
-                                RequestUpdateState("Aprobada");
+                                RequestUpdateState("Aprobada", comment);
                             }
                         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                             @Override
@@ -98,10 +97,9 @@ public class RequestDetailActivity extends AppCompatActivity {
                         .setPositiveButton("Rechazar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String comment = input.getText().toString(); // comentario para mandar al back
-
+                                String comment = input.getText().toString();
                                 // approve request
-                                RequestUpdateState("Rechazada");
+                                RequestUpdateState("Rechazada", comment);
                             }
                         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                             @Override
@@ -113,7 +111,7 @@ public class RequestDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void RequestUpdateState(String state) {
+    public void RequestUpdateState(String state, String comment) {
         String url = "https://ingsoft-backend.herokuapp.com/applications/updateState";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String >() {
@@ -141,6 +139,7 @@ public class RequestDetailActivity extends AppCompatActivity {
                 // the POST parameters:
                 params.put("idSolicitude", user.getId());
                 params.put("state", state);
+                params.put("comment", comment);
                 return params;
             }
         };

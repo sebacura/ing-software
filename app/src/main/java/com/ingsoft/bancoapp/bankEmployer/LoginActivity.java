@@ -62,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
                         OneSignal.setExternalUserId(username.getText().toString());
 //                        ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
 //                        finish();
+                        loadingLayout.setVisibility(View.GONE);
+
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                         startActivity(intent);
                     }

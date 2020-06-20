@@ -57,16 +57,10 @@ public class DashboardActivity extends AppCompatActivity {
         textView=(TextView)findViewById(R.id.textView);
 //        MenuItem logout = _menu.findItem(R.id.item_logout);
 //        logout.setVisible(true);
-
-
-
         getListData();
-
-
-
     }
     private void getListData() {
-            ArrayList<RequestItem> results = new ArrayList<>();
+        ArrayList<RequestItem> results = new ArrayList<>();
 
         String url = "https://ingsoft-backend.herokuapp.com/applications/pending";
         StringRequest getRequest = new StringRequest(Request.Method.GET, url,
@@ -87,7 +81,6 @@ public class DashboardActivity extends AppCompatActivity {
                         }
                         for(int i = 0 ; i < pendings.length() ; i++){
                             try {
-
 //                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
                                 RequestItem user = new RequestItem();
                                 user.setId(pendings.getJSONObject(i).getString("id"));
@@ -101,9 +94,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 user.setProductId(pendings.getJSONObject(i).getString("productId"));
                                 user.setStateId(pendings.getJSONObject(i).getString("StateId"));
 //                                user.setBirth(pendings.getJSONObject(i).getString(""));
-
                                 results.add(user);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

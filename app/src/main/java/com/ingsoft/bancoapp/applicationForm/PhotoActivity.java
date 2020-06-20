@@ -59,7 +59,7 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-        this.imageView = (ImageView)this.findViewById(R.id.imageView1);
+        this.imageView = (ImageView) this.findViewById(R.id.imageView1);
 
         loadingLayout = findViewById(R.id.loading_layout);
 

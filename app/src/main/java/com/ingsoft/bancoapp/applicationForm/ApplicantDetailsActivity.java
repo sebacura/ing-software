@@ -107,7 +107,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         setContentView(R.layout.activity_main_completar_datos);
         this.imageView = (ImageView)this.findViewById(R.id.btnFotoSueldo);
 
-       sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         loadingLayout = findViewById(R.id.loading_layout);
         errorMessage = findViewById(R.id.error_message);
 

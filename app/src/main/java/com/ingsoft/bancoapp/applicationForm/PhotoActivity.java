@@ -54,6 +54,7 @@ public class PhotoActivity extends AppCompatActivity {
     View errorMessage;
     private ImageView imageView;
     private Uri imageUri;
+    private  SharedPreferences sharedPref;
 
 
     @Override
@@ -61,6 +62,7 @@ public class PhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
         this.imageView = (ImageView) this.findViewById(R.id.imageView1);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(PhotoActivity.this);
 
         loadingLayout = findViewById(R.id.loading_layout);
 
@@ -73,7 +75,6 @@ public class PhotoActivity extends AppCompatActivity {
                 Intent intent = new Intent(PhotoActivity.this, EyesActivity.class);
                 //intent.putExtra("PhotoActivityInstance", );
                 startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
                 //finish();
@@ -123,10 +124,11 @@ public class PhotoActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE){
             System.out.println(resultCode);
             if(resultCode== 1) {//&& resultCode == RESULT_OK) {
-//            Bitmap imageBitmap = null;
-                Bundle extras = data.getExtras();
+                //Bitmap imageBitmap = null;
+                //Bundle extras = data.getExtras();
                 //Bitmap imageBitmap = (Bitmap) extras.get("IMAGE");
-                KEY_CAMERA_PHOTO_BASE64 = (String) extras.get("IMAGE"); //encodeImage(imageBitmap);
+                //KEY_CAMERA_PHOTO_BASE64 = (String) extras.get("IMAGE"); //encodeImage(imageBitmap);
+                KEY_CAMERA_PHOTO_BASE64 = sharedPref.getString("cameraPhoto_", "Not Available");
                 try {
                     requestPhotoComparison();
                     findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
@@ -165,19 +167,15 @@ public class PhotoActivity extends AppCompatActivity {
     private Bitmap rotateImage(Bitmap bitmap, int rotate){
 
         if (rotate != 0) {
-
             // Getting width & height of the given image.
             int w = bitmap.getWidth();
             int h = bitmap.getHeight();
-
             // Setting pre rotate
             Matrix mtx = new Matrix();
             mtx.preRotate(rotate);
-
             // Rotating Bitmap
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
         }
-
         // Convert to ARGB_8888, required by tess
         bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         return bitmap;

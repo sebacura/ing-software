@@ -23,7 +23,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +37,7 @@ import android.util.Base64;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
 
 import com.google.android.gms.common.ConnectionResult;
@@ -51,6 +56,7 @@ import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.CameraSourcePreview
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.FaceTracker;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.GraphicOverlay;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public final class EyesActivity extends AppCompatActivity {
@@ -72,6 +78,8 @@ public final class EyesActivity extends AppCompatActivity {
     private boolean individualStepsFulfilled = false;
     private String base64Image;
 
+    private SharedPreferences sharedPref;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +88,7 @@ public final class EyesActivity extends AppCompatActivity {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         //setContentView(R.layout.activity_main);
         setContentView(R.layout.activity_blink);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(EyesActivity.this);
 
         mPreview = findViewById(R.id.preview);
         mGraphicOverlay = findViewById(R.id.faceOverlay);
@@ -100,7 +109,6 @@ public final class EyesActivity extends AppCompatActivity {
      */
     private void requestCameraPermission() {
         Log.w(TAG, "Camera permission is not granted. Requesting permission");
-
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -246,13 +254,62 @@ public final class EyesActivity extends AppCompatActivity {
     private CameraSource.PictureCallback mPicture = new CameraSource.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes) {
-            base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-            System.out.println("Picture taken");
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes.length);
+            bitmap = getResizedBitmap(bitmap,320);
+            bitmap = rotateImage(bitmap, 270);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("cameraPhoto_", encodeImage(bitmap));
+            //commits your edits
+            editor.commit();
         }
     };
 
-    public String getImage(){
+    public String getImage() {
         return base64Image;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encImage;
+    }
+
+    private Bitmap rotateImage(Bitmap bitmap, int rotate){
+
+        if (rotate != 0) {
+
+            // Getting width & height of the given image.
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+
+            // Setting pre rotate
+            Matrix mtx = new Matrix();
+            mtx.preRotate(rotate);
+
+            // Rotating Bitmap
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+        }
+
+        // Convert to ARGB_8888, required by tess
+        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        return bitmap;
     }
 
 

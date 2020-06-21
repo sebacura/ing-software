@@ -258,11 +258,13 @@ public class FaceTracker extends Tracker<Face> {
                 System.out.println("En last, living person recognized: " + livingPersonRecognized);
                 if(livingPersonRecognized){
                     resultCode = 1;
-                }else{
+                } else {
                     resultCode = 2;
                 }
+                //System.out.println("Get image" + eyesActivity.getImage());
+
                 Intent intent = new Intent();
-                intent.putExtra("IMAGE", eyesActivity.getImage());
+                // intent.putExtra("IMAGE", eyesActivity.getImage());
                 eyesActivity.setResult(resultCode, intent);
                 eyesActivity.finish();
             } else {

@@ -92,11 +92,10 @@ dependencies {
     // onesignal
     implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]'
 
-    //    Google Vision API
+    // Google Vision API
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
 
-//    collect permission on runtime
+    // collect permission on runtime
     implementation 'com.karumi:dexter:4.2.0'
-
     implementation 'com.squareup.picasso:picasso:2.71828'
 }

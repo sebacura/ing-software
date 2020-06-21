@@ -24,6 +24,10 @@ import com.ingsoft.bancoapp.applicationForm.PhotoActivity;
 import com.ingsoft.bancoapp.bankEmployer.data.RequestItem;
 import com.ingsoft.bancoapp.products.ProductListActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -41,10 +45,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         user = (RequestItem) getIntent().getSerializableExtra("user");
         ((TextView) findViewById(R.id.name)).setText(user.getFirstName());
         ((TextView) findViewById(R.id.lastName)).setText(user.getLastName());
-        ((TextView) findViewById(R.id.product)).setText(user.getProductId());
+        ((TextView) findViewById(R.id.product)).setText(user.getProductName());
         ((TextView) findViewById(R.id.ci)).setText(user.getCi());
         ((TextView) findViewById(R.id.address)).setText(user.getAddress());
-//        ((TextView) findViewById(R.id.birth)).setText(user.getBirth());
         ((TextView) findViewById(R.id.deliveryAddress)).setText(user.getDeliveryAddress());
         ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
         ((TextView) findViewById(R.id.date)).setText(user.getDate()) ;
@@ -145,6 +148,5 @@ public class RequestDetailActivity extends AppCompatActivity {
         };
         Volley.newRequestQueue(this).add(postRequest);
     }
-
 
 }

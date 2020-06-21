@@ -11,7 +11,7 @@
         android:textStyle="bold"
         android:textSize="17dp" />
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
@@ -19,11 +19,11 @@
         android:textColor="#343434"
         android:textSize="14dp" />
     <TextView
-        android:id="@+id/ci"
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/address"
-        android:layout_alignBottom="@+id/address"
+        android:layout_alignBaseline="@+id/product"
+        android:layout_alignBottom="@+id/product"
         android:layout_alignParentRight="true"
         android:textColor="#343434"
         android:textSize="14dp" />

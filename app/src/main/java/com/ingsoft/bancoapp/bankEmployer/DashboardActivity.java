@@ -56,6 +56,7 @@ public class DashboardActivity extends AppCompatActivity {
     private View loadingLayout;
     private View isEmpty;
 
+    private String productName=null;
     private ArrayList<RequestItem> results = new ArrayList<>();
 
     @Override
@@ -99,6 +100,8 @@ public class DashboardActivity extends AppCompatActivity {
                                 try {
 //                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
                                     RequestItem user = new RequestItem();
+//                                    getProduct(pendings.getJSONObject(i).getString("id"));
+                                    JSONObject product = pendings.getJSONObject(i).getJSONObject("product");
                                     user.setId(pendings.getJSONObject(i).getString("id"));
                                     user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
                                     user.setLastName(pendings.getJSONObject(i).getString("personLastName"));
@@ -108,8 +111,10 @@ public class DashboardActivity extends AppCompatActivity {
                                     user.setDate(pendings.getJSONObject(i).getString("createdAt"));
                                     user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
                                     user.setProductId(pendings.getJSONObject(i).getString("productId"));
+                                    user.setProductName(product.getString("name"));
                                     user.setStateId(pendings.getJSONObject(i).getString("StateId"));
 //                                user.setBirth(pendings.getJSONObject(i).getString(""));
+
                                     results.add(user);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -176,6 +181,9 @@ public class DashboardActivity extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")) {
+                    getListData();
+                }
                 return false;
             }
 
@@ -267,5 +275,44 @@ public class DashboardActivity extends AppCompatActivity {
         ) { };
         Volley.newRequestQueue(this).add(getRequest);
     }
+
+//    public void getProduct(String id) {
+//        String url = "https://ingsoft-backend.herokuapp.com/applications/getProductById?productId="+id;
+//
+//        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String >() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        JSONObject jsonObject = null;
+//                        JSONObject product = null;
+//
+//                        try {
+//                            jsonObject = new JSONObject(response);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+////                        try {
+////                            ((TextView) findViewById(R.id.product)).setText(user.getProductId());
+////                        } catch (JSONException e) {
+////                            e.printStackTrace();
+////                        }
+//                        try {
+//                            product = new JSONObject(jsonObject.getString("product"));
+//                            productName = product.getString("product");
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//
+//                        error.printStackTrace();
+//                    }
+//                }
+//        ) { };
+//        Volley.newRequestQueue(this).add(getRequest);
+//    }
 
 }

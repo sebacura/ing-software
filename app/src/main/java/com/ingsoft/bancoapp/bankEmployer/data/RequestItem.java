@@ -17,6 +17,16 @@ public class RequestItem implements Serializable {
     private String productId;
     private String stateId;
 
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    private String productName;
+
     public String getBirth() {
         return birth;
     }
@@ -121,4 +131,5 @@ public class RequestItem implements Serializable {
     public void setStateId(String stateId) {
         this.stateId = stateId;
     }
+
 }

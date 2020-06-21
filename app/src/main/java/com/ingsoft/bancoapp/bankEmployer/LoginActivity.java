@@ -1,6 +1,7 @@
 package com.ingsoft.bancoapp.bankEmployer;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,10 +20,15 @@ import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.products.ProductListActivity;
 import com.onesignal.OneSignal;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
@@ -56,10 +62,26 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         EditText username = (EditText) findViewById(R.id.username);
-//                        setContentView(R.layout.activity_dashboard);
-//                        MenuItem logout = (MenuItem) _menu.findItem(R.id.item_logout);
-//                        logout.setVisible(true);
                         OneSignal.setExternalUserId(username.getText().toString());
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        String token = null;
+                        try {
+                             token = jsonObject.getString("token");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.clear(); //remove old keys
+                        editor.putString("token", token);
+                        //commits your edits
+                        editor.commit();
+
 //                        ((TextView)findViewById(R.id.TextResult)).setText("Bienvenido " +(username.getText().toString()));
 //                        finish();
                         loadingLayout.setVisibility(View.GONE);

@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,6 +30,7 @@ import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.applicationForm.PhotoActivity;
 import com.ingsoft.bancoapp.bankEmployer.data.RequestItem;
 import com.ingsoft.bancoapp.products.ProductListActivity;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,9 +60,9 @@ public class RequestDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
         ((TextView) findViewById(R.id.date)).setText(user.getDate()) ;
 
-        byte[] decodedString = Base64.decode(user.getSalaryPhoto(), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        ((ImageView)findViewById(R.id.salaryPhoto)).setImageBitmap(decodedByte);
+        ImageView imgFoto = (ImageView) findViewById(R.id.salaryPhoto);
+        Log.d("Foto salario", user.getSalaryPhoto());
+        Picasso.get().load(user.getSalaryPhoto()).into(imgFoto);
 
         Button btnAccept = (Button) findViewById(R.id.accept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +146,15 @@ public class RequestDetailActivity extends AppCompatActivity {
                     }
                 }
         ) {
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(RequestDetailActivity.this);
+                String token = sharedPref.getString("token", "");
+                headers.put("Authorization", "bearer " + token);
+                return headers;
+            }
+
             @Override
             protected Map<String, String> getParams()
             {

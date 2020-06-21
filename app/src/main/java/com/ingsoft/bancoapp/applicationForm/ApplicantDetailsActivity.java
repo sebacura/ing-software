@@ -82,6 +82,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private static EditText et2;
     private EditText ubic;
     private CheckBox mySwitch;
+    private CheckBox mySwitchSameAddress;
+
     public LocationManager handle;
     private String provider;
     private TextView txtGPS;
@@ -106,16 +108,16 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_completar_datos);
         this.imageView = (ImageView)this.findViewById(R.id.btnFotoSueldo);
-
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
         loadingLayout = findViewById(R.id.loading_layout);
         errorMessage = findViewById(R.id.error_message);
 
         et1 = findViewById(R.id.txt_sueldo);
         et2 = findViewById(R.id.txt_direcc);
         mySwitch = (CheckBox) findViewById(R.id.chubic);
+        mySwitchSameAddress = (CheckBox) findViewById(R.id.checkbox);
+
         txtGPS = (TextView) findViewById(R.id.txtGPS);
-        //etxtDirec = (EditText) findViewById(R.id.etxtDirec);
         edtextDirecc= findViewById(R.id.editTextDirecc);
         Places.initialize(getApplicationContext(), "AIzaSyCQ27Bj40QYHiAJHYF-n999qVqvzQGXrZQ");
         PlacesClient placesClient = Places.createClient(this);
@@ -130,23 +132,32 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         });
         //Fin tomar foto desde app
 
-        edtextDirecc.setFocusable(false);
+
         edtextDirecc.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
-                startActivityForResult(intent, 100);
-                edtextDirecc.getText().clear();
+                public void onClick(View v) {
+                if (!mySwitch.isChecked()) {
+                    Log.d("equals", String.valueOf(edtextDirecc.getText()));
+                    if ((String.valueOf((edtextDirecc.getText()))).equals("")) {
+                        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
+                        startActivityForResult(intent, 100);
+                        edtextDirecc.getText().clear();
+                    }
+                }
             }
             });
         et2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
-                startActivityForResult(intent, 101);
-                et2.getText().clear();
+                if (!mySwitchSameAddress.isChecked()) {
+                    if ((String.valueOf((et2.getText()))).equals("")) {
+                        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).setCountry("UY").build(ApplicantDetailsActivity.this);
+                        startActivityForResult(intent, 101);
+                        et2.getText().clear();
+                    }
+                }
             }
         });
 
@@ -235,6 +246,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 params.put("sueldo",  sharedPref.getString("sueldoPersona", "Not Available"));
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
                 params.put("producto",  sharedPref.getString("producto", "Tarjeta Black"));
+                params.put("comprobanteSueldo",  sharedPref.getString("comprobanteSueldo", ""));
                 return params;
             }
         };
@@ -254,6 +266,9 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         Criteria c = new Criteria();
         c.setAccuracy(Criteria.ACCURACY_FINE);
         provider = handle.getBestProvider(c, true);
+        if (handle.NETWORK_PROVIDER!=null) {
+            provider = handle.NETWORK_PROVIDER;
+        }
         txtGPS.setText("Proveedor: " + provider);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mySwitch.setChecked(false);
@@ -277,15 +292,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 120); //*** Agrega la petición!
         }
         Location location = handle.getLastKnownLocation(provider);
-        if(location==null){
-            //etxtLatitud.setText("Desconocida");
-           // etxtLongitud.setText("Desconocida");
-        }else{
-           // etxtLatitud.setText(String.valueOf(location.getLatitude()));
-           // etxtLongitud.setText(String.valueOf(location.getLongitude()));
 
-
-            }
         setDireccion(location);
         }
         
@@ -354,6 +361,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 editor.putString("direccionPersona", dirResidencia);
                 editor.putString("sueldoPersona", sueldoString);
                 editor.putString("direccionEntrega", dirEntrega);
+                editor.putString("comprobanteSueldo", KEY_CAMERA_PHOTO_BASE64);
+
                 //commits your edits
                 editor.commit();
                 SendRequest();

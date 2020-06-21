@@ -80,6 +80,17 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="413dp" />
 
+        <TextView
+            android:id="@+id/avisofotoError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Hubo un error al verificar su identidad. Inténtelo nuevamente."
+            android:textSize="15sp"
+            android:visibility="gone"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="413dp" />
 
 
     </LinearLayout>

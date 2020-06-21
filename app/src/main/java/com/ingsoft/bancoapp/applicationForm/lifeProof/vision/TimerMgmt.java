@@ -1,5 +1,7 @@
 package com.ingsoft.bancoapp.applicationForm.lifeProof.vision;
 
+import android.content.Intent;
+
 import com.ingsoft.bancoapp.applicationForm.lifeProof.EyesActivity;
 
 import java.util.Timer;
@@ -85,6 +87,10 @@ public class TimerMgmt {
     class NoFaceTask extends TimerTask {
         public void run(){
             mNoFaceTimer.cancel();
+            Intent intent = new Intent();
+            //intent.putExtra("MESSAGE", "No face");
+            //intent.putExtra("IMAGE", base64Image);
+            eyesActivity.setResult(2, intent);
             eyesActivity.finish();
         }
     }

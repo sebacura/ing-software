@@ -16,6 +16,7 @@
 package com.ingsoft.bancoapp.applicationForm.lifeProof.vision;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Build;
 
@@ -70,11 +71,12 @@ public class FaceTracker extends Tracker<Face> {
 
     //This variable is used to determine when no face has been detected for a long time.
     private boolean faceWasSeen;
+    private boolean livingPersonRecognized = false;
 
     //Blink detection from start
     private boolean eyesCurrentlyOpen;
     private int amountOfBlinksSinceStart;
-    private final int acceptableAmountOfBlinks = 3;
+    private final int acceptableAmountOfBlinks = 1;
 
     //Steps
     private int currentInstruction;
@@ -135,7 +137,8 @@ public class FaceTracker extends Tracker<Face> {
         } else if (status == "Steps") {
             if (mStep3IndividualInstructions == null) {
                 if (amountOfBlinksSinceStart >= acceptableAmountOfBlinks) {
-                    eyesActivity.recognizedLivingPerson();
+                    livingPersonRecognized = true;
+                    //eyesActivity.recognizedLivingPerson();
                     eyesActivity.saveCurrentImage();
                 }
                 updateStep();
@@ -250,7 +253,16 @@ public class FaceTracker extends Tracker<Face> {
         boolean last = mStep3IndividualInstructions.completeTask();
         if(stepsTimerDone) {
             if (last) {
-                eyesActivity.fulfilledIndividualSteps();
+                int resultCode;
+                if(livingPersonRecognized){
+                    resultCode = 1;
+                }else{
+                    resultCode = 2;
+                }
+                //eyesActivity.fulfilledIndividualSteps();
+                Intent intent = new Intent();
+                intent.putExtra("IMAGE", eyesActivity.getImage());
+                eyesActivity.setResult(resultCode, intent);
                 eyesActivity.finish();
             } else {
                 status = "StepNumbers";

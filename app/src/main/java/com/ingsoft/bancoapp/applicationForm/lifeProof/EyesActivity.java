@@ -46,6 +46,7 @@ import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
 import com.google.android.material.snackbar.Snackbar;
 import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.applicationForm.PhotoActivity;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.CameraSourcePreview;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.FaceTracker;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.GraphicOverlay;
@@ -69,7 +70,7 @@ public final class EyesActivity extends AppCompatActivity {
     //BancoApp specifics
     private boolean livingPersonRecognized = false;
     private boolean individualStepsFulfilled = false;
-
+    private String base64Image;
 
 
     @Override
@@ -150,16 +151,26 @@ public final class EyesActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        String message = "";
         if (mCameraSource != null) {
             if(livingPersonRecognized && individualStepsFulfilled){
                 System.out.println("EXITO!!!");
             } else {
                 System.out.println("FAILED");
             }
+            final int REQUEST_IMAGE_CAPTURE = 0;
+            //startActivityForResult(this.getIntent(), REQUEST_IMAGE_CAPTURE);
             mCameraSource.release();
+
+           /* System.out.println("creating intent to return");
+            Intent intent = new Intent();
+           // intent.putExtra("MESSAGE", message);
+            intent.putExtra("IMAGE", base64Image);
+            setResult(1, intent);
+            finish();//finishing activity
+            System.out.println("After finishing");*/
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -239,10 +250,14 @@ public final class EyesActivity extends AppCompatActivity {
     private CameraSource.PictureCallback mPicture = new CameraSource.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] bytes) {
-            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
             System.out.println("Picture taken");
         }
     };
+
+    public String getImage(){
+        return base64Image;
+    }
 
 
     //==============================================================================================

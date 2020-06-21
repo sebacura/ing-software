@@ -64,19 +64,19 @@ public class PhotoActivity extends AppCompatActivity {
 
         loadingLayout = findViewById(R.id.loading_layout);
 
-
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
         btnTomarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+                //dispatchTakePictureIntent();
                 Intent intent = new Intent(PhotoActivity.this, EyesActivity.class);
-                startActivity(intent);
+                //intent.putExtra("PhotoActivityInstance", );
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                finish();
+                //finish();
             }
         });
         //Fin tomar foto desde app
@@ -86,12 +86,12 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingLayout.setVisibility(View.VISIBLE);
-                try {
+               /* try {
                     requestPhotoComparison();
                 } catch (Exception e) {
                     // This will catch any exception, because they are all descended from Exception
                     Log.d("Error", e.getMessage());
-                }
+                }*/
             }
         });
 
@@ -119,25 +119,29 @@ public class PhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        System.out.println("En Activity result");
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            if(resultCode== 1) {//&& resultCode == RESULT_OK) {
 //            Bitmap imageBitmap = null;
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
-            try {
-//                imageBitmap = MediaStore.Images.Media.getBitmap(
-//                        getContentResolver(), imageUri);
-//                imageBitmap = rotateImage(imageBitmap, 90);
-                imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
-                //Para imprimir la foto en pantalla (para probar)
-//                imageView.setImageBitmap(imageBitmap);
-                findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
-                findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
-                findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-                e.printStackTrace();
+                Bundle extras = data.getExtras();
+                //Bitmap imageBitmap = (Bitmap) extras.get("IMAGE");
+                KEY_CAMERA_PHOTO_BASE64 = (String) extras.get("IMAGE"); //encodeImage(imageBitmap);
+                try {
+                    requestPhotoComparison();
+                    findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
+                    findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
+                    findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
+            }else{
+                try {
+                    findViewById(R.id.avisofotoError).setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
         }
     }
 

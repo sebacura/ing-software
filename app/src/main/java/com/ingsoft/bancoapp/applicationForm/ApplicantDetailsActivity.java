@@ -109,7 +109,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         setContentView(R.layout.activity_main_completar_datos);
         this.imageView = (ImageView)this.findViewById(R.id.btnFotoSueldo);
 
-       sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+       sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
         loadingLayout = findViewById(R.id.loading_layout);
         errorMessage = findViewById(R.id.error_message);
 
@@ -249,6 +249,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 params.put("sueldo",  sharedPref.getString("sueldoPersona", "Not Available"));
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
                 params.put("producto",  sharedPref.getString("producto", "Tarjeta Black"));
+                params.put("comprobanteSueldo",  sharedPref.getString("comprobanteSueldo", ""));
 
 //                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));
 
@@ -366,6 +367,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 editor.putString("direccionPersona", dirResidencia);
                 editor.putString("sueldoPersona", sueldoString);
                 editor.putString("direccionEntrega", dirEntrega);
+                editor.putString("comprobanteSueldo", KEY_CAMERA_PHOTO_BASE64);
+
                 //commits your edits
                 editor.commit();
                 SendRequest();

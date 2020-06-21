@@ -138,7 +138,8 @@ public class RequestItem implements Serializable {
     }
 
     public void setSalaryPhoto(String salaryPhoto) {
-        this.salaryPhoto = salaryPhoto;
+        String photo = salaryPhoto.replace("http", "https");
+        this.salaryPhoto = photo;
     }
 
 }

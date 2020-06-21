@@ -20,6 +20,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -54,6 +57,7 @@ public class ProductListActivity extends AppCompatActivity {
     private ExpandableListView listView;
     SparseArray<GroupProducts> groups = new SparseArray<GroupProducts>();
     private int lastExpandedPosition = -1;
+    String productoSeleccionado;
     View loadingLayout;
 
     @Override
@@ -86,6 +90,9 @@ public class ProductListActivity extends AppCompatActivity {
 
     public void irAFormulario (View v){
         Log.d("View", v.toString());
+        LinearLayout parent = (LinearLayout) v.getParent();
+        TextView child = (TextView) parent.getChildAt(0);
+        productoSeleccionado = child.getText().toString();
         Intent intent = new Intent(getApplicationContext(), ReadNfcActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);

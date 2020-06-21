@@ -30,6 +30,7 @@ import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.ingsoft.bancoapp.products.ProductListActivity;
 import com.ingsoft.bancoapp.tools.Tools;
+import com.ingsoft.bancoapp.applicationForm.lifeProof.EyesActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,6 +54,7 @@ public class PhotoActivity extends AppCompatActivity {
     View errorMessage;
     private ImageView imageView;
     private Uri imageUri;
+    private  SharedPreferences sharedPref;
 
 
     @Override
@@ -60,16 +62,18 @@ public class PhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
         this.imageView = (ImageView) this.findViewById(R.id.imageView1);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(PhotoActivity.this);
 
         loadingLayout = findViewById(R.id.loading_layout);
-
 
         //Tomar foto desde app
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
         btnTomarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+                Intent intent = new Intent(PhotoActivity.this, EyesActivity.class);
+                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
         //Fin tomar foto desde app
@@ -79,12 +83,6 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingLayout.setVisibility(View.VISIBLE);
-                try {
-                    requestPhotoComparison();
-                } catch (Exception e) {
-                    // This will catch any exception, because they are all descended from Exception
-                    Log.d("Error", e.getMessage());
-                }
             }
         });
 
@@ -112,28 +110,26 @@ public class PhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bitmap imageBitmap = null;
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
-            try {
-//                imageBitmap = MediaStore.Images.Media.getBitmap(
-//                        getContentResolver(), imageUri);
-//                imageBitmap = rotateImage(imageBitmap, 90);
-                imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
-                //Para imprimir la foto en pantalla (para probar)
-//                imageView.setImageBitmap(imageBitmap);
-                findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
-                findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
-                findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (requestCode == REQUEST_IMAGE_CAPTURE){
+            if(resultCode== 1) {
+                try {
+                    KEY_CAMERA_PHOTO_BASE64 = sharedPref.getString("cameraPhoto_", "Not Available");
+                    requestPhotoComparison();
+                    findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
+                    findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
+                    findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    findViewById(R.id.avisofotoError).setVisibility(View.VISIBLE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
         }
     }
-
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
@@ -153,19 +149,15 @@ public class PhotoActivity extends AppCompatActivity {
     private Bitmap rotateImage(Bitmap bitmap, int rotate){
 
         if (rotate != 0) {
-
             // Getting width & height of the given image.
             int w = bitmap.getWidth();
             int h = bitmap.getHeight();
-
             // Setting pre rotate
             Matrix mtx = new Matrix();
             mtx.preRotate(rotate);
-
             // Rotating Bitmap
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
         }
-
         // Convert to ARGB_8888, required by tess
         bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         return bitmap;
@@ -180,12 +172,10 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private void dispatchTakePictureIntent() {
         ContentValues values = new ContentValues();
-//        imageUri = getContentResolver().insert(
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    //        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -315,13 +305,9 @@ public class PhotoActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<>();
-//                Log.d("a",getIntent().getStringExtra(KEY_CI));
-//                Log.d("b",getIntent().getStringExtra("CI_PHOTO_BASE_64"));
                 params.put("userIdCardNumber", getIntent().getStringExtra("KEY_CI"));
                 params.put("fotoCedula", getIntent().getStringExtra("CI_PHOTO_BASE_64"));
                 params.put("fotoSelfie", KEY_CAMERA_PHOTO_BASE64);
-//                Log.d("C",params.toString());
-
                 return params;
             }
         };

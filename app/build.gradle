@@ -17,7 +17,7 @@ android.defaultConfig.vectorDrawables.useSupportLibrary = true
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.0'
+    buildToolsVersion '29.0.3'
     defaultConfig {
         applicationId "com.ingsoft.bancoapp"
         manifestPlaceholders = [
@@ -42,6 +42,12 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
 }
 
 dependencies {
@@ -60,7 +66,8 @@ dependencies {
     implementation 'com.android.support:design:29.0.1'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.kofigyan.stateprogressbar:stateprogressbar:1.0.0'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    //implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation "androidx.preference:preference:1.1.0"
 
 
@@ -84,6 +91,11 @@ dependencies {
 
     // onesignal
     implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]'
-    implementation 'com.squareup.picasso:picasso:2.71828'
 
+    // Google Vision API
+    implementation 'com.google.android.gms:play-services-vision:19.0.0'
+
+    // collect permission on runtime
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

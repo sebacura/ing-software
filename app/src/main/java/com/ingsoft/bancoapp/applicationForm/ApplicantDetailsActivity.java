@@ -108,8 +108,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_completar_datos);
         this.imageView = (ImageView)this.findViewById(R.id.btnFotoSueldo);
-
-       sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
         loadingLayout = findViewById(R.id.loading_layout);
         errorMessage = findViewById(R.id.error_message);
 
@@ -239,9 +238,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             @Override
             protected Map<String, String> getParams()
             {
-
                 Map<String, String>  params = new HashMap<>();
-                // the POST parameters:
                 params.put("nombre",  sharedPref.getString("nombrePersona", "Not Available"));
                 params.put("apellido",  sharedPref.getString("apellidoPersona", "Not Available"));
                 params.put("cedula",  sharedPref.getString("cedulaPersona", "Not Available"));
@@ -250,9 +247,6 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
                 params.put("producto",  sharedPref.getString("producto", "Tarjeta Black"));
                 params.put("comprobanteSueldo",  sharedPref.getString("comprobanteSueldo", ""));
-
-//                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));
-
                 return params;
             }
         };

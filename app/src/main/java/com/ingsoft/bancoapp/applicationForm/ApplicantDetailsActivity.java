@@ -227,9 +227,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             @Override
             protected Map<String, String> getParams()
             {
-
                 Map<String, String>  params = new HashMap<>();
-                // the POST parameters:
                 params.put("nombre",  sharedPref.getString("nombrePersona", "Not Available"));
                 params.put("apellido",  sharedPref.getString("apellidoPersona", "Not Available"));
                 params.put("cedula",  sharedPref.getString("cedulaPersona", "Not Available"));
@@ -237,8 +235,6 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 params.put("sueldo",  sharedPref.getString("sueldoPersona", "Not Available"));
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
                 params.put("producto",  sharedPref.getString("producto", "Tarjeta Black"));
-//                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));
-
                 return params;
             }
         };

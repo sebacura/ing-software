@@ -161,18 +161,8 @@ public final class EyesActivity extends AppCompatActivity {
         super.onDestroy();
         String message = "";
         if (mCameraSource != null) {
-
             final int REQUEST_IMAGE_CAPTURE = 0;
-            //startActivityForResult(this.getIntent(), REQUEST_IMAGE_CAPTURE);
             mCameraSource.release();
-
-           /* System.out.println("creating intent to return");
-            Intent intent = new Intent();
-           // intent.putExtra("MESSAGE", message);
-            intent.putExtra("IMAGE", base64Image);
-            setResult(1, intent);
-            finish();//finishing activity
-            System.out.println("After finishing");*/
         }
     }
 

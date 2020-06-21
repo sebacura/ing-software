@@ -17,19 +17,26 @@ package com.ingsoft.bancoapp.applicationForm.lifeProof.vision;
 
 import android.annotation.SuppressLint;
 import android.graphics.PointF;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.Landmark;
+import com.ingsoft.bancoapp.applicationForm.lifeProof.EyesActivity;
+import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.messages.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+
 /**
  * Tracks the eye positions and state over time, managing an underlying graphic which renders googly
  * eyes over the source video.<p>
- *
+ * <p>
  * To improve eye tracking performance, it also helps to keep track of the previous landmark
  * proportions relative to the detected face and to interpolate landmark positions for future
  * updates if the landmarks are missing.  This helps to compensate for intermediate frames where the
@@ -39,8 +46,16 @@ import java.util.Map;
 public class FaceTracker extends Tracker<Face> {
     private static final float EYE_CLOSED_THRESHOLD = 0.4f;
 
+    private EyesActivity eyesActivity;
     private GraphicOverlay mOverlay;
-    private EyesGraphics mEyesGraphics;
+    private TimerMgmt mTimerMgmt;
+    private String status;  //Possible values are: Initial, Secondary, Steps, StepNumbers
+
+    // messages
+    private Step1_LookAtCameraMessage mStep1LookAtCameraMessage;
+    private Step2_InstructionsMessage mStep2InstructionsMessage;
+    private Step3_IndividualInstructions mStep3IndividualInstructions;
+    private Step3_NumberInstruction mStep3NumberInstruction;
 
     // Record the previously seen proportions of the landmark locations relative to the bounding box
     // of the face.  These proportions can be used to approximate where the landmarks are within the
@@ -53,13 +68,33 @@ public class FaceTracker extends Tracker<Face> {
     private boolean mPreviousIsLeftOpen = true;
     private boolean mPreviousIsRightOpen = true;
 
+    //This variable is used to determine when no face has been detected for a long time.
+    private boolean faceWasSeen;
+
+    //Blink detection from start
+    private boolean eyesCurrentlyOpen;
+    private int amountOfBlinksSinceStart;
+    private final int acceptableAmountOfBlinks = 3;
+
+    //Steps
+    private int currentInstruction;
+    private String[] instructions;
+    private final int amountOfInstructions = 3;
+    private boolean stepsTimerDone = false;
 
     //==============================================================================================
     // Methods
     //==============================================================================================
 
-    public FaceTracker(GraphicOverlay overlay) {
+    // @RequiresApi(api = Build.VERSION_CODES.O)
+    public FaceTracker(EyesActivity ea, GraphicOverlay overlay) {
+        eyesActivity = ea;
         mOverlay = overlay;
+        status = "Initial";
+        faceWasSeen = false;
+        eyesCurrentlyOpen = true;
+        amountOfBlinksSinceStart = 0;
+        mTimerMgmt = new TimerMgmt(this, eyesActivity);
     }
 
     /**
@@ -67,7 +102,7 @@ public class FaceTracker extends Tracker<Face> {
      */
     @Override
     public void onNewItem(int id, Face face) {
-        mEyesGraphics = new EyesGraphics(mOverlay);
+        //mEyesGraphics = new EyesGraphics(mOverlay);
     }
 
     /**
@@ -75,34 +110,51 @@ public class FaceTracker extends Tracker<Face> {
      * recent face detection results.  The graphic will render the eyes and simulate the motion of
      * the iris based upon these changes over time.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
-        mOverlay.add(mEyesGraphics);
+        faceWasSeen = true;
+        mTimerMgmt.stopNoFaceTimer();
 
-        updatePreviousProportions(face);
+        boolean eyesOpen[] = updateEyeStatus(face);
+        boolean isLeftOpen = eyesOpen[0];
+        boolean isRightOpen = eyesOpen[1];
 
-        PointF leftPosition = getLandmarkPosition(face, Landmark.LEFT_EYE);
-        PointF rightPosition = getLandmarkPosition(face, Landmark.RIGHT_EYE);
-
-        float leftOpenScore = face.getIsLeftEyeOpenProbability();
-        boolean isLeftOpen;
-        if (leftOpenScore == Face.UNCOMPUTED_PROBABILITY) {
-            isLeftOpen = mPreviousIsLeftOpen;
-        } else {
-            isLeftOpen = (leftOpenScore > EYE_CLOSED_THRESHOLD);
-            mPreviousIsLeftOpen = isLeftOpen;
+        if(status == "Initial" || status == "Secondary"){
+            updateOverlayPrimarySteps(status);
+            if(eyesCurrentlyOpen){
+                if(!isLeftOpen && !isRightOpen){
+                    eyesCurrentlyOpen = false;
+                }
+            } else {
+                if(isLeftOpen && isRightOpen){
+                    eyesCurrentlyOpen = true;
+                    amountOfBlinksSinceStart ++;
+                }
+            }
+        } else if (status == "Steps") {
+            if (mStep3IndividualInstructions == null) {
+                if (amountOfBlinksSinceStart >= acceptableAmountOfBlinks) {
+                    eyesActivity.recognizedLivingPerson();
+                    eyesActivity.saveCurrentImage();
+                }
+                updateStep();
+            }
+            //Check if the step is fulfilled
+            if (mStep3IndividualInstructions.getEye() == "Left") {
+                if (!isLeftOpen && isRightOpen) {
+                    stepFulfilled();
+                }
+            } else if (mStep3IndividualInstructions.getEye() == "Right") {
+                if (isLeftOpen && !isRightOpen) {
+                    stepFulfilled();
+                }
+            }
+        } else if(status == "StepNumbers" && mStep3NumberInstruction==null){
+            currentInstruction = 0;
+            instructions = generateInstructions();
+            updateStep();
         }
-
-        float rightOpenScore = face.getIsRightEyeOpenProbability();
-        boolean isRightOpen;
-        if (rightOpenScore == Face.UNCOMPUTED_PROBABILITY) {
-            isRightOpen = mPreviousIsRightOpen;
-        } else {
-            isRightOpen = (rightOpenScore > EYE_CLOSED_THRESHOLD);
-            mPreviousIsRightOpen = isRightOpen;
-        }
-
-        mEyesGraphics.updateEyes(leftPosition, isLeftOpen, rightPosition, isRightOpen);
     }
 
     /**
@@ -112,7 +164,17 @@ public class FaceTracker extends Tracker<Face> {
      */
     @Override
     public void onMissing(FaceDetector.Detections<Face> detectionResults) {
-        mOverlay.remove(mEyesGraphics);
+        if (status == "Initial" && mStep1LookAtCameraMessage==null){
+            mStep1LookAtCameraMessage = new Step1_LookAtCameraMessage(mOverlay);
+            mOverlay.add(mStep1LookAtCameraMessage);
+            mTimerMgmt.startTimer(status);
+        } else if (faceWasSeen) {
+            faceWasSeen = false;
+            mTimerMgmt.startNoFaceTimer();
+        }
+
+        //mOverlay.remove(mEyesGraphics);
+        //mOverlay.add(mLookAtCameraMessage);
     }
 
     /**
@@ -121,14 +183,15 @@ public class FaceTracker extends Tracker<Face> {
      */
     @Override
     public void onDone() {
-        mOverlay.remove(mEyesGraphics);
+        //mOverlay.remove(mEyesGraphics);
+        //mOverlay.add(mLookAtCameraMessage);
     }
 
     //==============================================================================================
     // Private
     //==============================================================================================
 
-    private void updatePreviousProportions(Face face) {
+    private void updatePreviousProsportions(Face face) {
         for (Landmark landmark : face.getLandmarks()) {
             PointF position = landmark.getPosition();
             float xProp = (position.x - face.getPosition().x) / face.getWidth();
@@ -156,5 +219,95 @@ public class FaceTracker extends Tracker<Face> {
         float x = face.getPosition().x + (prop.x * face.getWidth());
         float y = face.getPosition().y + (prop.y * face.getHeight());
         return new PointF(x, y);
+    }
+
+    private boolean[] updateEyeStatus(Face face){
+        boolean isOpen[] = new boolean[2];
+        updatePreviousProsportions(face);
+
+        PointF leftPosition = getLandmarkPosition(face, Landmark.LEFT_EYE);
+        PointF rightPosition = getLandmarkPosition(face, Landmark.RIGHT_EYE);
+
+        float leftOpenScore = face.getIsRightEyeOpenProbability();
+
+        if (leftOpenScore == Face.UNCOMPUTED_PROBABILITY) {
+            isOpen[0] = mPreviousIsLeftOpen;
+        } else {
+            isOpen[0] = (leftOpenScore > EYE_CLOSED_THRESHOLD);
+            mPreviousIsLeftOpen = isOpen[0];
+        }
+        float rightOpenScore = face.getIsLeftEyeOpenProbability();
+        if (rightOpenScore == Face.UNCOMPUTED_PROBABILITY) {
+            isOpen[1] = mPreviousIsRightOpen;
+        } else {
+            isOpen[1] = (rightOpenScore > EYE_CLOSED_THRESHOLD);
+            mPreviousIsRightOpen = isOpen[1];
+        }
+        return isOpen;
+    }
+
+    private void stepFulfilled(){
+        boolean last = mStep3IndividualInstructions.completeTask();
+        if(stepsTimerDone) {
+            if (last) {
+                eyesActivity.fulfilledIndividualSteps();
+                eyesActivity.finish();
+            } else {
+                status = "StepNumbers";
+                stepsTimerDone = false;
+                currentInstruction++;
+                updateStep();
+            }
+        }
+    }
+
+    private String[] generateInstructions(){
+        String[] instructions = new String[amountOfInstructions];
+        for(int i=0; i<instructions.length; i++){
+            if(Math.random()<0.5){
+                instructions[i] = "Left";
+            } else {
+                instructions[i] = "Right";
+            }
+        }
+        return instructions;
+    }
+
+    private void updateOverlayPrimarySteps(String status){
+        if(status == "Initial" && mStep1LookAtCameraMessage==null){
+            mStep1LookAtCameraMessage = new Step1_LookAtCameraMessage(mOverlay);
+            mOverlay.add(mStep1LookAtCameraMessage);
+            mTimerMgmt.startTimer(status);
+        } else if (status == "Secondary" && mStep2InstructionsMessage == null) {
+            mOverlay.remove(mStep1LookAtCameraMessage);
+            mStep2InstructionsMessage = new Step2_InstructionsMessage(mOverlay);
+            mOverlay.add(mStep2InstructionsMessage);
+            mTimerMgmt.startTimer(status);
+        }
+    }
+
+    private void updateStep(){
+        mOverlay.clear();
+        mStep3NumberInstruction = new Step3_NumberInstruction(mOverlay, currentInstruction+1);
+        mOverlay.add(mStep3NumberInstruction);
+        mTimerMgmt.startTimer(status);
+    }
+
+    public void updateStatus(String newStatus) {
+        status = newStatus;
+    }
+
+    public void stepsTimerDone(){
+        stepsTimerDone = true;
+    }
+
+    public void stepsNumberTimerDone(){
+        status = "Steps";
+        mOverlay.clear();
+        mStep3IndividualInstructions = new Step3_IndividualInstructions(mOverlay, instructions[currentInstruction], currentInstruction+1,currentInstruction==amountOfInstructions-1);
+        mOverlay.add(mStep3IndividualInstructions);
+        mTimerMgmt.startTimer(status);
+       // stepsTimerDone = false;
+
     }
 }

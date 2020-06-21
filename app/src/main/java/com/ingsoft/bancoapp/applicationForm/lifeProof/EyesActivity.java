@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,13 +45,12 @@ import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.io.IOException;
-
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.CameraSourcePreview;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.FaceTracker;
 import com.ingsoft.bancoapp.applicationForm.lifeProof.vision.GraphicOverlay;
+
+import java.io.IOException;
 
 public final class EyesActivity extends AppCompatActivity {
     private static final String TAG = "GooglyEyes";
@@ -65,6 +65,12 @@ public final class EyesActivity extends AppCompatActivity {
     private GraphicOverlay mGraphicOverlay;
 
     private boolean mIsFrontFacing = true;
+
+    //BancoApp specifics
+    private boolean livingPersonRecognized = false;
+    private boolean individualStepsFulfilled = false;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,6 +151,11 @@ public final class EyesActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if (mCameraSource != null) {
+            if(livingPersonRecognized && individualStepsFulfilled){
+                System.out.println("EXITO!!!");
+            } else {
+                System.out.println("FAILED");
+            }
             mCameraSource.release();
         }
     }
@@ -209,6 +220,32 @@ public final class EyesActivity extends AppCompatActivity {
     };
 
     //==============================================================================================
+    // BancoApp-specific functionalities
+    //==============================================================================================
+
+    public void recognizedLivingPerson(){
+        livingPersonRecognized = true;
+    }
+
+    public void fulfilledIndividualSteps(){
+        individualStepsFulfilled = true;
+    }
+
+    public void saveCurrentImage() {
+        if (mCameraSource != null) {
+            mCameraSource.takePicture(null, mPicture);
+        }
+    }
+    private CameraSource.PictureCallback mPicture = new CameraSource.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] bytes) {
+            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            System.out.println("Picture taken");
+        }
+    };
+
+
+    //==============================================================================================
     // Detector
     //==============================================================================================
 
@@ -233,7 +270,7 @@ public final class EyesActivity extends AppCompatActivity {
         if (mIsFrontFacing) {
             // For front facing mode
 
-            Tracker<Face> tracker = new FaceTracker(mGraphicOverlay);
+            Tracker<Face> tracker = new FaceTracker(this, mGraphicOverlay);
             processor = new LargestFaceFocusingProcessor.Builder(detector, tracker).build();
         } else {
             // For rear facing mode, a factory is used to create per-face tracker instances.
@@ -241,9 +278,10 @@ public final class EyesActivity extends AppCompatActivity {
             MultiProcessor.Factory<Face> factory = new MultiProcessor.Factory<Face>() {
                 @Override
                 public Tracker<Face> create(Face face) {
-                    return new FaceTracker(mGraphicOverlay);
+                    return new FaceTracker(EyesActivity.this, mGraphicOverlay);
                 }
             };
+
             processor = new MultiProcessor.Builder<>(factory).build();
         }
 

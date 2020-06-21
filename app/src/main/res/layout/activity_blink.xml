@@ -5,15 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".applicationForm.lifeProof.EyesActivity">
 
-    <me.prapon.eyeblinkdetection.vision.CameraSourcePreview
+    <com.ingsoft.bancoapp.applicationForm.lifeProof.vision.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <me.prapon.eyeblinkdetection.vision.GraphicOverlay
+        <com.ingsoft.bancoapp.applicationForm.lifeProof.vision.GraphicOverlay
             android:id="@+id/faceOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-    </me.prapon.eyeblinkdetection.vision.CameraSourcePreview>
+    </com.ingsoft.bancoapp.applicationForm.lifeProof.vision.CameraSourcePreview>
 </LinearLayout>

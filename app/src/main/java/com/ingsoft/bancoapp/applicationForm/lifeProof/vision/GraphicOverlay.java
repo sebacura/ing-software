@@ -113,7 +113,9 @@ public class GraphicOverlay extends View {
      */
     public void remove(Graphic graphic) {
         synchronized (mLock) {
-            mGraphics.remove(graphic);
+            if(mGraphics.contains(graphic)){
+                mGraphics.remove(graphic);
+            }
         }
         postInvalidate();
     }

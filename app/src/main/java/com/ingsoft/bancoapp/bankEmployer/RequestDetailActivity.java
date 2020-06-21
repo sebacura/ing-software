@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Base64;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -142,6 +144,15 @@ public class RequestDetailActivity extends AppCompatActivity {
                     }
                 }
         ) {
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(RequestDetailActivity.this);
+                String token = sharedPref.getString("token", "");
+                headers.put("Authorization", "bearer " + token);
+                return headers;
+            }
+
             @Override
             protected Map<String, String> getParams()
             {

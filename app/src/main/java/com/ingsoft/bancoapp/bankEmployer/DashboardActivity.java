@@ -3,6 +3,7 @@ package com.ingsoft.bancoapp.bankEmployer;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -20,12 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.Dash;
 import com.google.gson.JsonObject;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.bankEmployer.data.RequestItem;
@@ -147,7 +150,16 @@ public class DashboardActivity extends AppCompatActivity {
                         error.printStackTrace();
                     }
                 }
+
         ) {
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(DashboardActivity.this);
+                String token = sharedPref.getString("token", "");
+                headers.put("Authorization", "bearer " + token);
+                return headers;
+            }
 
         };
         Volley.newRequestQueue(this).add(getRequest);
@@ -273,47 +285,16 @@ public class DashboardActivity extends AppCompatActivity {
                         error.printStackTrace();
                     }
                 }
-        ) { };
+        ) {
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(DashboardActivity.this);
+                String token = sharedPref.getString("token", "");
+                headers.put("Authorization", "bearer " + token);
+                return headers;
+            }
+        };
         Volley.newRequestQueue(this).add(getRequest);
     }
-
-//    public void getProduct(String id) {
-//        String url = "https://ingsoft-backend.herokuapp.com/applications/getProductById?productId="+id;
-//
-//        StringRequest getRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String >() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        JSONObject jsonObject = null;
-//                        JSONObject product = null;
-//
-//                        try {
-//                            jsonObject = new JSONObject(response);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-////                        try {
-////                            ((TextView) findViewById(R.id.product)).setText(user.getProductId());
-////                        } catch (JSONException e) {
-////                            e.printStackTrace();
-////                        }
-//                        try {
-//                            product = new JSONObject(jsonObject.getString("product"));
-//                            productName = product.getString("product");
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//
-//                        error.printStackTrace();
-//                    }
-//                }
-//        ) { };
-//        Volley.newRequestQueue(this).add(getRequest);
-//    }
-
 }

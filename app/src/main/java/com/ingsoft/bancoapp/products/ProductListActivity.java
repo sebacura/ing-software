@@ -2,9 +2,11 @@ package com.ingsoft.bancoapp.products;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -20,6 +22,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -85,6 +90,16 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     public void irAFormulario (View v){
+        LinearLayout parent = (LinearLayout) v.getParent();
+        TextView child = (TextView) parent.getChildAt(0);
+        String productoSeleccionado = child.getText().toString();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ProductListActivity.this);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.clear(); //remove old keys
+        editor.putString("producto", productoSeleccionado);
+        //commits your edits
+        editor.commit();
+
         Intent intent = new Intent(getApplicationContext(), ReadNfcActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);

@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Ingrese su dirección de residencia"
-            android:inputType="textPostalAddress" />
+            android:inputType="textMultiLine" />
 
         <CheckBox
             android:id="@+id/chubic"
@@ -170,16 +170,16 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
 
 
-        <Button
-        android:id="@+id/button2"
-        android:layout_width="345dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="agregarUbicActual"
-        android:text="Seleccionar como ubicación de entrega"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+<!--        <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="345dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:onClick="agregarUbicActual"-->
+<!--        android:text="Seleccionar como ubicación de entrega"-->
+<!--        android:textColor="@color/white"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
 
         <EditText
             android:id="@+id/txt_direcc"
@@ -187,7 +187,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Ingrese la dirección de entrega"
-            android:inputType="textPostalAddress"
+            android:inputType="textMultiLine"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent" />
 

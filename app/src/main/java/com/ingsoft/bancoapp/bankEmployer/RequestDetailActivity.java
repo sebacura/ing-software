@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import java.util.Date;
 
 public class RequestDetailActivity extends AppCompatActivity {
     private RequestItem user;
+    private boolean zoomOut =  false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,30 @@ public class RequestDetailActivity extends AppCompatActivity {
         ImageView imgFoto = (ImageView) findViewById(R.id.salaryPhoto);
         Log.d("Foto salario", user.getSalaryPhoto());
         Picasso.get().load(user.getSalaryPhoto()).into(imgFoto);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//        imgFoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        lp.setMargins(0, 10, 0, 0);
+        imgFoto.setLayoutParams(lp);
+        imgFoto.setAdjustViewBounds(true);
+
+        imgFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(zoomOut) {
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    lp.setMargins(0, 10, 0, 0);
+                    imgFoto.setLayoutParams(lp);
+                    imgFoto.setAdjustViewBounds(true);
+                    zoomOut =false;
+                }else{
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    lp.setMargins(0, 10, 0, 0);
+                    imgFoto.setLayoutParams(lp);
+                    imgFoto.setScaleType(ImageView.ScaleType.FIT_XY);
+                    zoomOut = true;
+                }
+            }
+        });
 
         Button btnAccept = (Button) findViewById(R.id.accept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +98,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 //                loadingLayout.setVisibility(View.VISIBLE);
                 EditText input = new EditText(RequestDetailActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setLines(3);
-                input.setMaxLines(3);
+                input.setSingleLine(false);
                 input.setGravity(Gravity.LEFT | Gravity.TOP);
                 new AlertDialog.Builder(RequestDetailActivity.this)
                         .setTitle("Estas seguro que deseas aceptar esta solicitud?")
@@ -103,8 +128,7 @@ public class RequestDetailActivity extends AppCompatActivity {
 //                loadingLayout.setVisibility(View.VISIBLE);
                 EditText input = new EditText(RequestDetailActivity.this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setLines(3);
-                input.setMaxLines(3);
+                input.setSingleLine(false);
                 input.setGravity(Gravity.LEFT | Gravity.TOP);
                 new AlertDialog.Builder(RequestDetailActivity.this)
                         .setTitle("Estas seguro que deseas rechazar esta solicitud?")

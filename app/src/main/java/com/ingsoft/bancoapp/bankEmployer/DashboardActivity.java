@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
     private View loadingLayout;
     private View isEmpty;
 
+    private Spinner opciones;
+    private String currentState;
     private String productName=null;
     private ArrayList<RequestItem> results = new ArrayList<>();
 
@@ -71,12 +74,40 @@ public class DashboardActivity extends AppCompatActivity {
         textView=(TextView)findViewById(R.id.textView);
 //        MenuItem search = _menu.findItem(R.id.search);
 //        search.setVisible(true);
-        getListData();
+        currentState = "pending";
+
+        opciones= (Spinner)findViewById(R.id.filtro);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        opciones.setAdapter(adapter);
+        String[] states = getResources().getStringArray(R.array.opciones);
+
+        opciones.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                int index = arg0.getSelectedItemPosition();
+                if (states[index].equals("Mostrar pendientes")) {
+                    currentState = "pending";
+                } else if (states[index].equals("Mostrar aprobadas")) {
+                    currentState = "approved";
+                } else {
+                    currentState = "pending";
+                }
+                getListData(currentState);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
     }
 
-    private void getListData() {
+
+    private void getListData(String state) {
         loadingLayout.setVisibility(View.VISIBLE);
-        String url = "https://ingsoft-backend.herokuapp.com/applications/pending";
+        String url = "https://ingsoft-backend.herokuapp.com/applications/"+state;
         results = new ArrayList<>();
         final ListView lv = (ListView) findViewById(R.id.requestlist);
         lv.setAdapter(new CustomListAdapter(DashboardActivity.this, results));
@@ -104,6 +135,7 @@ public class DashboardActivity extends AppCompatActivity {
 //                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
                                     RequestItem user = new RequestItem();
 //                                    getProduct(pendings.getJSONObject(i).getString("id"));
+
                                     JSONObject product = pendings.getJSONObject(i).getJSONObject("product");
                                     user.setId(pendings.getJSONObject(i).getString("id"));
                                     user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
@@ -167,6 +199,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     //Search ITEM IN TOP BAR
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -186,7 +220,7 @@ public class DashboardActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 searchView.clearFocus();
                 if(query.equals("")){
-                    getListData();
+                    getListData(currentState);
                 }else{
                     FilterList(query);
                 }
@@ -195,7 +229,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
-                    getListData();
+                    getListData(currentState);
                 }
                 return false;
             }

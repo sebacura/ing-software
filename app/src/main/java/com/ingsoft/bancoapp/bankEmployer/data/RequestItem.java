@@ -4,6 +4,7 @@ package com.ingsoft.bancoapp.bankEmployer.data;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RequestItem implements Serializable {
@@ -50,9 +51,13 @@ public class RequestItem implements Serializable {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateValue);
+        calendar.add(Calendar.HOUR_OF_DAY, -3); //Timezone MDEO
+
         SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        return (output.format(dateValue)+"hs");
+        return (output.format(calendar.getTime())+"hs");
     }
 
     public void setDate(String date) {

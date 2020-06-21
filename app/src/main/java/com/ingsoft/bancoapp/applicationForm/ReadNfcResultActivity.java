@@ -60,7 +60,6 @@ public class ReadNfcResultActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         //now get Editor
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear(); //remove old keys
         //put new values
         editor.putString("nombrePersona", getIntent().getStringExtra(KEY_FIRST_NAME));
         editor.putString("apellidoPersona", getIntent().getStringExtra(KEY_LAST_NAME));

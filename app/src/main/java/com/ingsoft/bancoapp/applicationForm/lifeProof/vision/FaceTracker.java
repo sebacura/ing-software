@@ -132,17 +132,17 @@ public class FaceTracker extends Tracker<Face> {
                 if(isLeftOpen && isRightOpen){
                     eyesCurrentlyOpen = true;
                     amountOfBlinksSinceStart ++;
+                    System.out.println("Amount of blinks: " + amountOfBlinksSinceStart);
                 }
             }
         } else if (status == "Steps") {
-            if (mStep3IndividualInstructions == null) {
+           // if (mStep3IndividualInstructions == null) {
+                System.out.println("Actualizando que se reconocio persona: " + amountOfBlinksSinceStart + "accept: "+ acceptableAmountOfBlinks);
                 if (amountOfBlinksSinceStart >= acceptableAmountOfBlinks) {
                     livingPersonRecognized = true;
-                    //eyesActivity.recognizedLivingPerson();
-                    eyesActivity.saveCurrentImage();
                 }
-                updateStep();
-            }
+               // updateStep();
+           // }
             //Check if the step is fulfilled
             if (mStep3IndividualInstructions.getEye() == "Left") {
                 if (!isLeftOpen && isRightOpen) {
@@ -154,6 +154,7 @@ public class FaceTracker extends Tracker<Face> {
                 }
             }
         } else if(status == "StepNumbers" && mStep3NumberInstruction==null){
+            eyesActivity.saveCurrentImage();
             currentInstruction = 0;
             instructions = generateInstructions();
             updateStep();
@@ -254,12 +255,12 @@ public class FaceTracker extends Tracker<Face> {
         if(stepsTimerDone) {
             if (last) {
                 int resultCode;
+                System.out.println("En last, living person recognized: " + livingPersonRecognized);
                 if(livingPersonRecognized){
                     resultCode = 1;
                 }else{
                     resultCode = 2;
                 }
-                //eyesActivity.fulfilledIndividualSteps();
                 Intent intent = new Intent();
                 intent.putExtra("IMAGE", eyesActivity.getImage());
                 eyesActivity.setResult(resultCode, intent);

@@ -121,6 +121,7 @@ public class PhotoActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("En Activity result");
         if (requestCode == REQUEST_IMAGE_CAPTURE){
+            System.out.println(resultCode);
             if(resultCode== 1) {//&& resultCode == RESULT_OK) {
 //            Bitmap imageBitmap = null;
                 Bundle extras = data.getExtras();

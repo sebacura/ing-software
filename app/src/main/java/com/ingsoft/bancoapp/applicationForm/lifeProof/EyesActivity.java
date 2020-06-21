@@ -153,11 +153,7 @@ public final class EyesActivity extends AppCompatActivity {
         super.onDestroy();
         String message = "";
         if (mCameraSource != null) {
-            if(livingPersonRecognized && individualStepsFulfilled){
-                System.out.println("EXITO!!!");
-            } else {
-                System.out.println("FAILED");
-            }
+
             final int REQUEST_IMAGE_CAPTURE = 0;
             //startActivityForResult(this.getIntent(), REQUEST_IMAGE_CAPTURE);
             mCameraSource.release();

@@ -76,7 +76,7 @@ public class FaceTracker extends Tracker<Face> {
     //Blink detection from start
     private boolean eyesCurrentlyOpen;
     private int amountOfBlinksSinceStart;
-    private final int acceptableAmountOfBlinks = 1;
+    private final int acceptableAmountOfBlinks = 3;
 
     //Steps
     private int currentInstruction;

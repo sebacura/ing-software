@@ -3,12 +3,16 @@ package com.ingsoft.bancoapp.bankEmployer;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +55,11 @@ public class RequestDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.deliveryAddress)).setText(user.getDeliveryAddress());
         ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
         ((TextView) findViewById(R.id.date)).setText(user.getDate()) ;
+
+        byte[] decodedString = Base64.decode(user.getSalaryPhoto(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        ((ImageView)findViewById(R.id.salaryPhoto)).setImageBitmap(decodedByte);
+
         Button btnAccept = (Button) findViewById(R.id.accept);
         btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override

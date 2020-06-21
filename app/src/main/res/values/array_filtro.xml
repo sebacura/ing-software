@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="opciones">
-        <item>Mostrar todas las solicitudes </item>
-        <item>Mostrar solo solicitudes aprobadas </item>
-        <item>Mostrar solo solicitudes aceptadas </item>
+        <item>Mostrar todo</item>
+        <item>Mostrar aprobadas</item>
+        <item>Mostrar pendientes</item>
     </string-array>
 </resources>

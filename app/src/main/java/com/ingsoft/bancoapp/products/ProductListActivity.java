@@ -85,6 +85,7 @@ public class ProductListActivity extends AppCompatActivity {
     }
 
     public void irAFormulario (View v){
+        Log.d("View", v.toString());
         Intent intent = new Intent(getApplicationContext(), ReadNfcActivity.class);
         startActivity(intent);
         overridePendingTransition(0, 0);

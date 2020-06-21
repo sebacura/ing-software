@@ -74,7 +74,7 @@ public class DashboardActivity extends AppCompatActivity {
         textView=(TextView)findViewById(R.id.textView);
 //        MenuItem search = _menu.findItem(R.id.search);
 //        search.setVisible(true);
-        currentState = "pending";
+        currentState = "getAllApplications";
 
         opciones= (Spinner)findViewById(R.id.filtro);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
@@ -92,7 +92,7 @@ public class DashboardActivity extends AppCompatActivity {
                 } else if (states[index].equals("Mostrar aprobadas")) {
                     currentState = "approved";
                 } else {
-                    currentState = "pending";
+                    currentState = "getAllApplications";
                 }
                 getListData(currentState);
 

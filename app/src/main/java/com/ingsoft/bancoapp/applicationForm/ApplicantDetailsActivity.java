@@ -236,6 +236,14 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 }
         ) {
             @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
+                String apikey = sharedPref.getString("apikey", "");
+                headers.put("Authorization", "bearer " + apikey);
+                return headers;
+            }
+            @Override
             protected Map<String, String> getParams()
             {
                 Map<String, String>  params = new HashMap<>();

@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
+import com.ingsoft.bancoapp.bankEmployer.DashboardActivity;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
 import com.ingsoft.bancoapp.products.ProductListActivity;
 import com.ingsoft.bancoapp.tools.Tools;
@@ -55,7 +56,8 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView imageView;
     private Uri imageUri;
     private  SharedPreferences sharedPref;
-
+    private String apikeyProof;
+    private String apikeyComparison;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +116,7 @@ public class PhotoActivity extends AppCompatActivity {
             if(resultCode== 1) {
                 try {
                     KEY_CAMERA_PHOTO_BASE64 = sharedPref.getString("cameraPhoto_", "Not Available");
-                    requestPhotoComparison();
-                    findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
-                    findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
-                    findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
+                    proofOfLife();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -181,7 +180,7 @@ public class PhotoActivity extends AppCompatActivity {
         }
     }
 
-    public void requestPhotoComparison() {
+    public void requestPhotoComparison(String apikey) {
         String url = "https://ingsoft-backend.herokuapp.com/applications/assets";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String >() {
@@ -190,6 +189,17 @@ public class PhotoActivity extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (obj.getString("result").equals("true")) {
+                                try {
+                                    apikeyComparison = obj.getString("apiKey");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(PhotoActivity.this);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString("apikey", apikeyComparison);
+                                //commits your edits
+                                editor.commit();
+
                                 Intent intent = new Intent(getApplicationContext(), ApplicantDetailsActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(0, 0);
@@ -310,11 +320,51 @@ public class PhotoActivity extends AppCompatActivity {
                 params.put("fotoSelfie", KEY_CAMERA_PHOTO_BASE64);
                 return params;
             }
+            @Override
+            public Map<String, String> getHeaders()  {
+                Map<String, String> headers = new HashMap<String, String> ();
+                headers.put("Authorization", "bearer " + apikey);
+                return headers;
+            }
         };
         postRequest.setRetryPolicy(new DefaultRetryPolicy(
                 0,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(this).add(postRequest);
+    }
+
+
+    public void proofOfLife() {
+        String url = "https://ingsoft-backend.herokuapp.com/applications/proofOfLifeApproved";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONObject jsonObject=null;
+                        try {
+                            jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            apikeyProof = jsonObject.getString("apiKey");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        requestPhotoComparison(apikeyProof);
+                        findViewById(R.id.instruccionfoto).setVisibility(View.GONE);
+                        findViewById(R.id.avisofoto).setVisibility(View.VISIBLE);
+                        findViewById(R.id.irFormulario3).setVisibility(View.VISIBLE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        ) {};
         Volley.newRequestQueue(this).add(postRequest);
     }
 }

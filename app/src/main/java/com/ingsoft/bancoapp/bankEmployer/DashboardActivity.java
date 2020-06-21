@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,8 @@ public class DashboardActivity extends AppCompatActivity {
     private View loadingLayout;
     private View isEmpty;
 
+    private Spinner opciones;
+
     private String productName=null;
     private ArrayList<RequestItem> results = new ArrayList<>();
 
@@ -72,6 +75,10 @@ public class DashboardActivity extends AppCompatActivity {
 //        MenuItem search = _menu.findItem(R.id.search);
 //        search.setVisible(true);
         getListData();
+
+        opciones= (Spinner)findViewById(R.id.filtro);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
+        opciones.setAdapter(adapter);
     }
 
     private void getListData() {

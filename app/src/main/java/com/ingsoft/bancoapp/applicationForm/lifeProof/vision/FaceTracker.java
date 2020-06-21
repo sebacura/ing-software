@@ -83,6 +83,7 @@ public class FaceTracker extends Tracker<Face> {
     private String[] instructions;
     private final int amountOfInstructions = 3;
     private boolean stepsTimerDone = false;
+    private boolean couldNotTakePhoto = false;
 
     //==============================================================================================
     // Methods
@@ -154,10 +155,20 @@ public class FaceTracker extends Tracker<Face> {
                 }
             }
         } else if(status == "StepNumbers" && mStep3NumberInstruction==null){
-            eyesActivity.saveCurrentImage();
+            if(isLeftOpen && isRightOpen) {
+                eyesActivity.saveCurrentImage();
+            }else{
+                couldNotTakePhoto = true;
+            }
             currentInstruction = 0;
             instructions = generateInstructions();
             updateStep();
+        }
+        if(couldNotTakePhoto){
+            if(isLeftOpen && isRightOpen){
+                eyesActivity.saveCurrentImage();
+                couldNotTakePhoto = false;
+            }
         }
     }
 

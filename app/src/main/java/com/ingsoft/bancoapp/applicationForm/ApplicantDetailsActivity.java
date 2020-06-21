@@ -236,7 +236,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 params.put("direccion",  sharedPref.getString("direccionPersona", "Not Available"));
                 params.put("sueldo",  sharedPref.getString("sueldoPersona", "Not Available"));
                 params.put("direccionEntrega",  sharedPref.getString("direccionEntrega", "Not Available"));
-                params.put("producto",  sharedPref.getString("producto", "Platino"));
+                params.put("producto",  sharedPref.getString("producto", "Tarjeta Black"));
 //                params.put("stateId",  sharedPref.getString("stateId", "Not Available"));
 
                 return params;

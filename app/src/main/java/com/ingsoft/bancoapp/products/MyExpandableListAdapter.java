@@ -1,9 +1,13 @@
 package com.ingsoft.bancoapp.products;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +15,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.ingsoft.bancoapp.R;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     private final SparseArray<GroupProducts> groups;
@@ -44,8 +48,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final String children = (String) getChild(groupPosition, childPosition);
         TextView text = null;
         if (convertView == null) {
@@ -93,41 +96,35 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         return 0;
     }
 
-
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item, null);
         }
 
         GroupProducts group = (GroupProducts) getGroup(groupPosition);
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.tituloTarjeta);
+
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.tituloTarjeta);
         lblListHeader.setText(group.title);
-
         lblListHeader.setTypeface(lblListHeader.getTypeface(),Typeface.BOLD);
-
-        TextView lblListHeaderDescription = (TextView) convertView
-                .findViewById(R.id.contenidoTarjeta);
+        TextView lblListHeaderDescription = (TextView) convertView.findViewById(R.id.contenidoTarjeta);
         lblListHeaderDescription.setText(group.description);
 
         ImageView imgFoto = (ImageView) convertView.findViewById(R.id.imgFoto);
-        imgFoto.setImageResource(group.image);
+        Picasso.get().load(group.image).into(imgFoto);
 
         Button seeDetails = (Button) convertView.findViewById(R.id.btnVerDetalles);
-
         View finalConvertView = convertView;
 
-        if(isExpanded){
+        if (isExpanded){
             seeDetails.setText("Ver menos");
             finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#72FFFFFF"));
-        }else{
+        } else {
             finalConvertView.findViewById(R.id.itemLayout).setBackgroundColor(Color.parseColor("#00000000"));
             seeDetails.setText("Ver más");
         }
 
-        seeDetails.setOnClickListener(new View.OnClickListener() {
+        seeDetails.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(isExpanded){

@@ -84,4 +84,6 @@ dependencies {
 
     // onesignal
     implementation 'com.onesignal:OneSignal:[3.13.0, 3.99.99]'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 }

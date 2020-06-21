@@ -115,6 +115,17 @@
                 android:visibility="gone"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="413dp" />
+<!--            <Button-->
+<!--            android:id="@+id/button2"-->
+<!--            android:layout_width="345dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:onClick="agregarUbicActual"-->
+<!--            android:text="Seleccionar como ubicación de entrega"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
+
 
 
             <TextView

@@ -113,6 +113,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     user.setProductId(pendings.getJSONObject(i).getString("productId"));
                                     user.setProductName(product.getString("name"));
                                     user.setStateId(pendings.getJSONObject(i).getString("StateId"));
+                                    user.setSalaryPhoto(pendings.getJSONObject(i).getString("personSalaryPhoto"));
 //                                user.setBirth(pendings.getJSONObject(i).getString(""));
 
                                     results.add(user);

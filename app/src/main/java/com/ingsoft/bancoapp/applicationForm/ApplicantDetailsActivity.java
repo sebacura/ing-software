@@ -8,10 +8,12 @@ import androidx.preference.PreferenceManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -19,6 +21,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +67,7 @@ import com.onesignal.OneSignal;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,12 +96,16 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private View loadingLayout;
     private View errorMessage;
     private  SharedPreferences sharedPref;
+    View btnTomarFoto;
+    public String KEY_CAMERA_PHOTO_BASE64 = "";
+    private ImageView imageView;
 
     @SuppressLint({"WrongConstant", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_completar_datos);
+        this.imageView = (ImageView)this.findViewById(R.id.btnFotoSueldo);
 
        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         loadingLayout = findViewById(R.id.loading_layout);
@@ -109,6 +119,17 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         edtextDirecc= findViewById(R.id.editTextDirecc);
         Places.initialize(getApplicationContext(), "AIzaSyCQ27Bj40QYHiAJHYF-n999qVqvzQGXrZQ");
         PlacesClient placesClient = Places.createClient(this);
+
+        //Tomar foto desde app
+        btnTomarFoto = findViewById(R.id.btnFotoSueldo);
+        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
+        //Fin tomar foto desde app
+
         edtextDirecc.setFocusable(false);
         edtextDirecc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +177,14 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         });
     }
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private void dispatchTakePictureIntent() {
+        ContentValues values = new ContentValues();
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
 
     public void SendRequest() {
 
@@ -369,6 +398,26 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+//            Bitmap imageBitmap = null;
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
+            try {
+//                imageBitmap = MediaStore.Images.Media.getBitmap(
+//                        getContentResolver(), imageUri);
+//                imageBitmap = rotateImage(imageBitmap, 90);
+                imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
+                //Para imprimir la foto en pantalla (para probar)
+                imageView.setImageBitmap(imageBitmap);
+                findViewById(R.id.instruccionfoto2).setVisibility(View.GONE);
+                findViewById(R.id.avisofoto2).setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
+        }
+
             if (requestCode == 100) {
                 if (resultCode == RESULT_OK) {
                     Place place = Autocomplete.getPlaceFromIntent(data);
@@ -398,6 +447,29 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             }
         }
         }
+
+    private String encodeImage(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte[] b = baos.toByteArray();
+        String encImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encImage;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
 
 
     public static String getDirection1(){

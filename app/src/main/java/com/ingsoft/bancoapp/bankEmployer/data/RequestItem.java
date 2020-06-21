@@ -16,6 +16,7 @@ public class RequestItem implements Serializable {
     private String deliveryAddress;
     private String productId;
     private String stateId;
+    private String salaryPhoto;
 
     public String getProductName() {
         return productName;
@@ -130,6 +131,14 @@ public class RequestItem implements Serializable {
 
     public void setStateId(String stateId) {
         this.stateId = stateId;
+    }
+
+    public String getSalaryPhoto() {
+        return salaryPhoto;
+    }
+
+    public void setSalaryPhoto(String salaryPhoto) {
+        this.salaryPhoto = salaryPhoto;
     }
 
 }

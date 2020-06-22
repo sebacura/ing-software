@@ -170,17 +170,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_direcc" />
 
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="agregarUbicActual"
+            android:text="Utilizar esta dirección como la de entrega" />
 
-<!--        <Button-->
-<!--        android:id="@+id/button2"-->
-<!--        android:layout_width="345dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:onClick="agregarUbicActual"-->
-<!--        android:text="Seleccionar como ubicación de entrega"-->
-<!--        android:textColor="@color/white"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView7" />-->
 
         <EditText
             android:id="@+id/txt_direcc"
@@ -191,13 +187,6 @@
             android:inputType="textMultiLine"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="agregarUbicActual"
-            android:text="Utilizar esta dirección como la de entrega" />
 
 
     </LinearLayout>

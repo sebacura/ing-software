@@ -29,14 +29,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".bankEmployer.LoginActivity"
-            android:parentActivityName=".products.ProductListActivity">
-            <intent-filter>
-                <action android:name="com.ingsoft.bancoapp.REQUEST" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".applicationForm.ReadNfcResultActivity"
             android:parentActivityName=".applicationForm.ReadNfcActivity"
             android:screenOrientation="portrait" />
@@ -53,6 +45,9 @@
         <activity
             android:name=".applicationForm.ApplicantDetailsActivity"
             android:parentActivityName=".applicationForm.PhotoActivity" />
+        <activity
+            android:name=".bankEmployer.LoginActivity"
+            android:parentActivityName=".products.ProductListActivity" />
         <activity
             android:name=".myApplications.StatusActivity"
             android:screenOrientation="portrait" />

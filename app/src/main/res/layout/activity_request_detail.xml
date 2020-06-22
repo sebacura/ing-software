@@ -375,8 +375,7 @@
             android:layout_gravity="center"
             android:textColor="@color/white"
             android:background="@color/green"
-
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/refuse"
@@ -387,7 +386,7 @@
             android:layout_marginLeft="20dp"
             android:layout_gravity="center"
             android:textColor="@color/white"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </LinearLayout>
 

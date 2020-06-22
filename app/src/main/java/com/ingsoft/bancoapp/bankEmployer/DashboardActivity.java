@@ -62,6 +62,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     private Spinner opciones;
     private String currentState;
+    private String currentQuery;
+
     private String productName=null;
     private ArrayList<RequestItem> results = new ArrayList<>();
 
@@ -75,7 +77,7 @@ public class DashboardActivity extends AppCompatActivity {
 //        MenuItem search = _menu.findItem(R.id.search);
 //        search.setVisible(true);
         currentState = "getAllApplications";
-
+        currentQuery = "";
         opciones= (Spinner)findViewById(R.id.filtro);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.opciones, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -94,7 +96,12 @@ public class DashboardActivity extends AppCompatActivity {
                 } else {
                     currentState = "getAllApplications";
                 }
-                getListData(currentState);
+                if (currentQuery.equals("")) {
+                    getListData(currentState);
+
+                } else {
+                    FilterList(currentQuery);
+                }
 
             }
 
@@ -149,7 +156,8 @@ public class DashboardActivity extends AppCompatActivity {
                                     user.setProductName(product.getString("name"));
                                     user.setStateId(pendings.getJSONObject(i).getString("StateId"));
                                     user.setSalaryPhoto(pendings.getJSONObject(i).getString("personSalaryPhoto"));
-//                                user.setBirth(pendings.getJSONObject(i).getString(""));
+                                    JSONObject state = pendings.getJSONObject(i).getJSONObject("State");
+                                    user.setState(state.getString("name"));
 
                                     results.add(user);
                                 } catch (JSONException e) {
@@ -218,6 +226,7 @@ public class DashboardActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                currentQuery=query;
                 searchView.clearFocus();
                 if(query.equals("")){
                     getListData(currentState);
@@ -229,6 +238,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.equals("")) {
+                    currentQuery = "";
                     getListData(currentState);
                 }
                 return false;
@@ -248,8 +258,8 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     public void FilterList(String lastName) {
-        Log.d("last name", lastName);
-        String url = "https://ingsoft-backend.herokuapp.com/applications/pendingByName?clientLastName="+lastName;
+
+        String url = "https://ingsoft-backend.herokuapp.com/applications/"+currentState+"ByName?clientLastName="+lastName;
         Log.d("url", url);
         loadingLayout.setVisibility(View.VISIBLE);
         results = new ArrayList<>();
@@ -277,6 +287,7 @@ public class DashboardActivity extends AppCompatActivity {
                                 try {
 //                                Log.d("pendiente", pendings.getJSONObject(i).getString("id"));
                                     RequestItem user = new RequestItem();
+                                    JSONObject product = pendings.getJSONObject(i).getJSONObject("product");
                                     user.setId(pendings.getJSONObject(i).getString("id"));
                                     user.setFirstName(pendings.getJSONObject(i).getString("personFirstName"));
                                     user.setLastName(pendings.getJSONObject(i).getString("personLastName"));
@@ -287,7 +298,9 @@ public class DashboardActivity extends AppCompatActivity {
                                     user.setDeliveryAddress(pendings.getJSONObject(i).getString("personDeliveryAddress"));
                                     user.setProductId(pendings.getJSONObject(i).getString("productId"));
                                     user.setStateId(pendings.getJSONObject(i).getString("StateId"));
-//                                user.setBirth(pendings.getJSONObject(i).getString(""));
+                                    user.setProductName(product.getString("name"));
+                                    JSONObject state = pendings.getJSONObject(i).getJSONObject("State");
+                                    user.setState(state.getString("name"));
                                     results.add(user);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

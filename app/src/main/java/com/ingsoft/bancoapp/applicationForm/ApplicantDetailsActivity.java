@@ -14,12 +14,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -40,28 +42,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ingsoft.bancoapp.R;
 import com.ingsoft.bancoapp.myApplications.StatusActivity;
-import com.ingsoft.bancoapp.applicationForm.PlaceAutoSuggestAdapter;
 import com.onesignal.OneSignal;
 
 import org.json.JSONException;
@@ -69,7 +59,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +69,6 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
 
     private EditText et1;
     private static EditText et2;
-    private EditText ubic;
     private CheckBox mySwitch;
     private CheckBox mySwitchSameAddress;
 
@@ -89,11 +77,11 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     private TextView txtGPS;
     private EditText etxtLatitud;
     private EditText etxtLongitud;
-   // private EditText etxtDirec;
     static EditText edtextDirecc;
 
     private static String direccion1;
     private static String direccion2;
+    private Uri imageUri;
 
     private View loadingLayout;
     private View errorMessage;
@@ -191,7 +179,13 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private void dispatchTakePictureIntent() {
         ContentValues values = new ContentValues();
+        imageUri = getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+//        Intent takePictureIntent = new Intent(MediaStore.EXTRA_OUTPUT);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
@@ -412,23 +406,24 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bitmap imageBitmap = null;
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(
+                        getContentResolver(), imageUri);
+                imageBitmap = rotateImage(imageBitmap, 90);
+                imageBitmap = getResizedBitmap(imageBitmap, 1080); //limito el tamaño de la imagen
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
             try {
-//                imageBitmap = MediaStore.Images.Media.getBitmap(
-//                        getContentResolver(), imageUri);
-//                imageBitmap = rotateImage(imageBitmap, 90);
-                imageBitmap = getResizedBitmap(imageBitmap, 320); //limito el tamaño de la imagen
-                //Para imprimir la foto en pantalla (para probar)
                 imageView.setImageBitmap(imageBitmap);
                 findViewById(R.id.instruccionfoto2).setVisibility(View.GONE);
                 findViewById(R.id.avisofoto2).setVisibility(View.VISIBLE);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            KEY_CAMERA_PHOTO_BASE64 = encodeImage(imageBitmap);
         }
 
             if (requestCode == 100) {
@@ -436,12 +431,10 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                     Place place = Autocomplete.getPlaceFromIntent(data);
                     edtextDirecc.setText(place.getName());
                     direccion2 = place.getName();
-                    //et2.setText(place.getName());
-                    // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
                 } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                     // TODO: Handle the error.
                     Status status = Autocomplete.getStatusFromIntent(data);
-                    // Log.i(TAG, status.getStatusMessage());
                 } else if (resultCode == RESULT_CANCELED) {
                     // The user canceled the operation.
                 }
@@ -450,11 +443,9 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             if (resultCode == RESULT_OK) {
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 et2.setText(place.getName());
-                // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // TODO: Handle the error.
                 Status status = Autocomplete.getStatusFromIntent(data);
-                // Log.i(TAG, status.getStatusMessage());
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
             }
@@ -467,6 +458,27 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         byte[] b = baos.toByteArray();
         String encImage = Base64.encodeToString(b, Base64.DEFAULT);
         return encImage;
+    }
+
+    private Bitmap rotateImage(Bitmap bitmap, int rotate){
+
+        if (rotate != 0) {
+
+            // Getting width & height of the given image.
+            int w = bitmap.getWidth();
+            int h = bitmap.getHeight();
+
+            // Setting pre rotate
+            Matrix mtx = new Matrix();
+            mtx.preRotate(rotate);
+
+            // Rotating Bitmap
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
+        }
+
+        // Convert to ARGB_8888, required by tess
+        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        return bitmap;
     }
 
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {

@@ -19,6 +19,16 @@ public class RequestItem implements Serializable {
     private String stateId;
     private String salaryPhoto;
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private String state;
+
     public String getProductName() {
         return productName;
     }

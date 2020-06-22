@@ -393,7 +393,7 @@
             android:layout_gravity="center"
             android:text="Seguir sin MRZ"
             android:textColor="@color/white"
-           />/ android:visibility="gone" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/irFormulario2"

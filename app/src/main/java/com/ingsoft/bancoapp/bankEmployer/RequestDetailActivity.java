@@ -61,14 +61,19 @@ public class RequestDetailActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.deliveryAddress)).setText(user.getDeliveryAddress());
         ((TextView) findViewById(R.id.salary)).setText(user.getSalary());
         ((TextView) findViewById(R.id.date)).setText(user.getDate()) ;
-
+        if (user.getStateId().equals("3")) {
+            findViewById(R.id.refuse).setVisibility(View.VISIBLE);
+            findViewById(R.id.accept).setVisibility(View.VISIBLE);
+        }
         ImageView imgFoto = (ImageView) findViewById(R.id.salaryPhoto);
-        Log.d("Foto salario", user.getSalaryPhoto());
         Picasso.get().load(user.getSalaryPhoto()).into(imgFoto);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //        imgFoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
         lp.setMargins(0, 10, 0, 0);
         imgFoto.setLayoutParams(lp);
+        imgFoto.getLayoutParams().height = 100;
+        imgFoto.getLayoutParams().width = 100;
+
         imgFoto.setAdjustViewBounds(true);
 
         imgFoto.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +83,8 @@ public class RequestDetailActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(0, 10, 0, 0);
                     imgFoto.setLayoutParams(lp);
+                    imgFoto.getLayoutParams().height = 100;
+                    imgFoto.getLayoutParams().width = 100;
                     imgFoto.setAdjustViewBounds(true);
                     zoomOut =false;
                 }else{

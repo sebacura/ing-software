@@ -152,7 +152,6 @@ public class ReadNfcActivity extends AppCompatActivity {
         //Controlo que tenga NFC y que lo tenga prendido
         NfcManager manager = (NfcManager) getSystemService(Context.NFC_SERVICE);
         adapter = manager.getDefaultAdapter();
-         findViewById(R.id.provisorio).setVisibility(View.VISIBLE);
 
         if (adapter != null && !adapter.isEnabled()) {
 //            findViewById(R.id.provisorio).setVisibility(View.VISIBLE);

@@ -9,8 +9,7 @@
     tools:context=".applicationForm.ReadNfcActivity"
     android:background="@drawable/banking_business_banner_finance_savings_bank_building_silhouette_city_background_48369_11853">
 
-
-    <LinearLayout
+<LinearLayout
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

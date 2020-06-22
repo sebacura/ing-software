@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     View loadingLayout;
     View errorMessage;
-    private Menu _menu = null;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,27 +115,16 @@ public class LoginActivity extends AppCompatActivity {
         Volley.newRequestQueue(this).add(postRequest);
     }
 
-    //LOGIN ITEM IN TOP BAR
-    @Override
+
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.logout, menu);
-        _menu = menu;
+        getMenuInflater().inflate(R.menu.login  , menu);
+        this.menu = menu;
         return true;
     }
 
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_logout:
-                finish();
-                Intent intent = new Intent(getApplicationContext(), ProductListActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0,0);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+
+        return false;
     }
 
 }

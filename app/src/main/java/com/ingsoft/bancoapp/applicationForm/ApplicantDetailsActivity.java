@@ -99,6 +99,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         sharedPref = PreferenceManager.getDefaultSharedPreferences(ApplicantDetailsActivity.this);
         loadingLayout = findViewById(R.id.loading_layout);
         errorMessage = findViewById(R.id.error_message);
+        findViewById(R.id.button).setVisibility(View.GONE);
 
         et1 = findViewById(R.id.txt_sueldo);
         et2 = findViewById(R.id.txt_direcc);
@@ -116,6 +117,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
             @Override
             public void onClick(View view) {
                 dispatchTakePictureIntent();
+                findViewById(R.id.button).setVisibility(View.VISIBLE);
             }
         });
         //Fin tomar foto desde app
@@ -199,6 +201,7 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String response) {
+
                         OneSignal.setExternalUserId(sharedPref.getString("cedulaPersona", "Not Available"));
                         Intent intent = new Intent(getApplicationContext(), SuccessActivity.class);
                         JSONObject jsonResponse = null;
@@ -346,6 +349,8 @@ public class ApplicantDetailsActivity extends AppCompatActivity implements Locat
         if(sueldoString.isEmpty()){
             Toast.makeText(this, "Debe ingresar su salario", Toast.LENGTH_LONG).show();
         } else {
+            findViewById(R.id.loading_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.button).setVisibility(View.GONE);
             int salario = Integer.parseInt(sueldoString);
             if (salario < 0) {
                 Toast.makeText(this, "Salario no aceptado", Toast.LENGTH_LONG).show();
